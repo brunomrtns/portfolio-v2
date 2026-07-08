@@ -1,0 +1,9 @@
+<svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Bruno Integrations favicon — minimal "b." monogram -->
+  <rect width="36" height="36" rx="8" fill="#07070a"/>
+  <!-- "b" letterform — geometric, monospace style -->
+  <path d="M12 9 L12 27 M12 9 L12 18 Q12 14 16 14 Q20 14 20 18 Q20 22 16 22 Q12 22 12 18" 
+        stroke="#f5f5f7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- The signature accent dot -->
+  <circle cx="24" cy="25.5" r="2" fill="hsl(172, 72%, 44%)"/>
+</svg>
