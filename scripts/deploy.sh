@@ -65,6 +65,7 @@ NO_BUILD=0
 MIGRATE_ONLY=0
 NO_COMMIT=0
 AUTO_COMMIT=0
+TAG_ONLY=0
 BUMP="patch"
 
 while [[ $# -gt 0 ]]; do
@@ -74,6 +75,7 @@ while [[ $# -gt 0 ]]; do
     --migrate-only) MIGRATE_ONLY=1; shift ;;
     --no-commit)    NO_COMMIT=1;   shift ;;
     --auto-commit)  AUTO_COMMIT=1; shift ;;
+    --tag-only)     TAG_ONLY=1;    shift ;;
     --bump)         BUMP="$2";     shift 2 ;;
     -h|--help)
       echo "Uso: ./deploy.sh [opções]"
@@ -83,6 +85,7 @@ while [[ $# -gt 0 ]]; do
       echo "  --migrate-only     Só roda migrations"
       echo "  --no-commit        Não commita/bumpa versão após deploy"
       echo "  --auto-commit      Commita mudanças não-commitadas antes do deploy"
+      echo "  --tag-only         Só cria a tag no git remote (sem deploy)"
       echo "  --bump patch|minor|major  Tipo de bump (default: patch)"
       exit 0
       ;;
@@ -109,6 +112,38 @@ bump_version() {
 }
 
 # ── Helper: buildar imagem e abortar se falhar ────────────────────────────────
+
+# ── Mode: --tag-only (cria tag sem deploy) ────────────────────────────────────
+if [[ "$TAG_ONLY" -eq 1 ]]; then
+  log "Modo tag-only: criando tag sem deploy..."
+
+  if [[ -n "$(git status --porcelain 2>/dev/null)" ]]; then
+    err "Working tree não está limpa. Commite antes de criar a tag."
+    git status --short
+    exit 1
+  fi
+
+  CURRENT_VERSION=$(get_version)
+  NEW_VERSION=$(bump_version "$CURRENT_VERSION" "$BUMP")
+
+  node -e "
+    const fs = require('fs');
+    const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+    pkg.version = '$NEW_VERSION';
+    fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
+  "
+
+  git add package.json
+  git commit -m "chore: bump versão v$NEW_VERSION"
+  git tag "v$NEW_VERSION"
+
+  git push origin main 2>/dev/null && ok "Commits enviados" || err "Falha ao pushar commits"
+  git push origin "v$NEW_VERSION" 2>/dev/null && ok "Tag v$NEW_VERSION enviada" || err "Falha ao pushar tag"
+
+  ok "Tag v$CURRENT_VERSION → v$NEW_VERSION criada (sem deploy)"
+  exit 0
+fi
+
 build_image() {
   local name="$1" dockerfile="$2"
   log "  Buildando $name..."
