@@ -13,6 +13,7 @@ const NAV_LINKS = [
   { labelKey: 'nav.stack', href: '#stack' },
   { labelKey: 'nav.experiencia', href: '#experiencia' },
   { labelKey: 'nav.blog', href: '/portfolio/blog' },
+  { labelKey: 'nav.contato', href: '#contato' },
 ];
 
 export function Navbar(): React.ReactNode {
