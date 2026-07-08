@@ -45,7 +45,7 @@ PORTFOLIO_LOCATIONS = """    # ── Portfolio Locations ───────�
     # Portfolio API
     location /portfolio/api/ {
         limit_req zone=api_limit burst=30 nodelay;
-        rewrite ^/portfolio/api/(.*)$ /$1 break;
+        rewrite ^/portfolio/api/(.*)$ /api/$1 break;
         proxy_pass         http://portfolio_api;
         proxy_http_version 1.1;
         proxy_set_header   Host              $host;
