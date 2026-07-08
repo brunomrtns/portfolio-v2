@@ -27,7 +27,7 @@ services:
     restart: unless-stopped
     depends_on:
       portfolio-postgres:
-        condition: healthy
+        condition: service_healthy
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@portfolio-postgres:5432/${POSTGRES_DB}?schema=public
       JWT_SECRET: ${JWT_SECRET}
@@ -49,7 +49,7 @@ services:
     restart: unless-stopped
     depends_on:
       portfolio-api:
-        condition: healthy
+        condition: service_healthy
     networks:
       - portfolio-net
       - trivestia-net
