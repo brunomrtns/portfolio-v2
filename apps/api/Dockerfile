@@ -11,7 +11,7 @@ WORKDIR /app
 RUN corepack enable pnpm
 
 # Copy workspace config
-COPY pnpm-workspace.yaml package.json turbo.json ./
+COPY pnpm-workspace.yaml package.json pnpm-lock.yaml turbo.json ./
 COPY packages/types/package.json packages/types/tsconfig.json ./packages/types/
 COPY packages/shared/package.json packages/shared/tsconfig.json ./packages/shared/
 COPY apps/api/package.json apps/api/tsconfig.json ./apps/api/
@@ -50,7 +50,7 @@ WORKDIR /app
 RUN corepack enable pnpm
 
 # Copy workspace config
-COPY pnpm-workspace.yaml package.json turbo.json ./
+COPY pnpm-workspace.yaml package.json pnpm-lock.yaml turbo.json ./
 COPY packages/types/package.json ./packages/types/
 COPY packages/shared/package.json ./packages/shared/
 COPY apps/api/package.json ./apps/api/

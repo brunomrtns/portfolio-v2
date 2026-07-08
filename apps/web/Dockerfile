@@ -9,12 +9,12 @@ WORKDIR /app
 RUN corepack enable && corepack prepare pnpm@10.32.0 --activate
 
 # Copy workspace root files + all source
-COPY package.json pnpm-workspace.yaml pnpm-lock.yaml* turbo.json ./
+COPY package.json pnpm-workspace.yaml pnpm-lock.yaml turbo.json ./
 COPY apps/web/ ./apps/web/
 COPY packages/ ./packages/
 
 # Install all workspace dependencies
-RUN pnpm install --frozen-lockfile || pnpm install
+RUN pnpm install --frozen-lockfile
 
 # Build packages manually in dependency order
 RUN cd packages/types && pnpm exec tsc -p tsconfig.json
