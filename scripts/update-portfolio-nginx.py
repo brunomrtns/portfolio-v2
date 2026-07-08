@@ -5,15 +5,16 @@ para incluir as rotas do portfolio.
 
 Uso: python3 update-portfolio-nginx.py
 
-O que faz:
-  1. Lê /opt/trivestia/nginx/nginx.conf
-  2. Adiciona/remova upstreams do portfolio no bloco http
-  3. Substitui location = / (redirect para /trivestia/) por proxy para portfolio-web
-  4. Adiciona location blocks do portfolio no bloco server
-  5. Escreve o arquivo de volta
-  6. Cria backup automático
+Estratégia:
+  1. Usa /opt/trivestia/nginx/nginx.conf.clean como base (estado original, sem portfolio)
+  2. Adiciona upstreams do portfolio no bloco http
+  3. Remove o redirect "location = /" (que vai para /trivestia/)
+  4. Adiciona locations do portfolio no bloco server
+  5. Escreve o resultado para nginx.conf
+  6. Cria backup automático do nginx.conf atual
 
-Idempotente: pode ser rodado múltiplas vezes sem duplicar config.
+Idempotente: sempre começa do clean base, então múltiplas execuções
+não acumulam duplicatas.
 """
 
 import re
@@ -23,6 +24,7 @@ from datetime import datetime
 from pathlib import Path
 
 NGINX_CONF = Path("/opt/trivestia/nginx/nginx.conf")
+CLEAN_BASE = Path("/opt/trivestia/nginx/nginx.conf.clean")
 
 # ── Portfolio upstreams (vão no bloco http) ────────────────────────────────────
 PORTFOLIO_UPSTREAMS = """    # ── Portfolio Upstreams ───────────────────────────────────────────────
@@ -84,29 +86,25 @@ PORTFOLIO_LOCATIONS = """    # ── Portfolio Locations ───────�
 
 
 def main():
-    if not NGINX_CONF.exists():
-        print(f"✗ {NGINX_CONF} não encontrado", file=sys.stderr)
+    if not CLEAN_BASE.exists():
+        print(f"✗ Clean base não encontrado: {CLEAN_BASE}", file=sys.stderr)
+        print("  Crie-o manualmente antes do primeiro deploy:")
+        print(f"    cp {NGINX_CONF} {CLEAN_BASE}")
         sys.exit(1)
 
-    # Backup
-    backup = NGINX_CONF.with_suffix(
-        f".conf.bak.portfolio.{datetime.now().strftime('%Y%m%d%H%M%S')}"
-    )
-    shutil.copy2(NGINX_CONF, backup)
-    print(f"  ✓ Backup criado: {backup}")
+    # Backup do nginx.conf atual (pode estar modificado)
+    if NGINX_CONF.exists():
+        backup = NGINX_CONF.with_suffix(
+            f".conf.bak.portfolio.{datetime.now().strftime('%Y%m%d%H%M%S')}"
+        )
+        shutil.copy2(NGINX_CONF, backup)
+        print(f"  ✓ Backup criado: {backup}")
 
-    content = NGINX_CONF.read_text()
+    # Sempre começa do clean base
+    content = CLEAN_BASE.read_text()
+    print(f"  ✓ Base limpa carregada: {CLEAN_BASE}")
 
-    # ── Step 1: Remove existing portfolio upstreams ─────────────────────────
-    content = re.sub(
-        r"\n\s*# ── Portfolio Upstreams[^\n]*\n.*?keepalive 16;\n\s*}\n",
-        "\n",
-        content,
-        flags=re.DOTALL,
-    )
-
-    # ── Step 2: Insert portfolio upstreams after avesia upstreams ───────────
-    # Find the avesia_web upstream block end and insert after it
+    # ── Step 1: Insert portfolio upstreams after avesia upstreams ───────────
     avesia_pattern = r"(upstream avesia_web \{[^}]+keepalive 32;\s*\})"
     match = re.search(avesia_pattern, content)
     if match:
@@ -123,30 +121,18 @@ def main():
             print("  ✓ Portfolio upstreams adicionados (fallback position)")
         else:
             print("  ⚠ Não foi possível encontrar posição para upstreams", file=sys.stderr)
+            sys.exit(1)
 
-    # ── Step 3: Remove existing portfolio locations ─────────────────────────
-    content = re.sub(
-        r"\n\s*# ── Portfolio Locations[^\n]*\n.*?proxy_set_header\s+X-Forwarded-Proto\s+\$scheme;\s*\n\s*}\n",
-        "\n",
-        content,
-        flags=re.DOTALL,
-    )
-
-    # ── Step 4: Remove existing location = / (redirect to /trivestia/) ──────
-    # Replace the redirect with nothing — the portfolio location = / will handle it
+    # ── Step 2: Remove the "location = /" redirect to /trivestia/ ───────────
     content = re.sub(
         r"\n\s*# Redirect raiz → /trivestia/\n\s*location = / \{\n\s*return 301 https://\$host/trivestia/;\n\s*\}\n",
         "\n",
         content,
     )
 
-    # ── Step 5: Insert portfolio locations before the closing of server block ─
-    # The server block ends with the last location block + closing braces
-    # We need to insert before the final "  }" that closes the server block
-    # Strategy: find the last "  }" in the file (which closes the server block)
-    # and insert before it
-
+    # ── Step 3: Insert portfolio locations after the Avesia /avesia/ block ───
     # Find the Avesia /avesia/ location block and insert after it
+    # The Avesia block is the last location in the server block
     avesia_loc_pattern = r"(location /avesia/ \{[^}]*proxy_set_header\s+X-Forwarded-Proto\s+\$scheme;\s*\n\s*\})"
     match = re.search(avesia_loc_pattern, content)
     if match:
@@ -154,11 +140,8 @@ def main():
         content = content[:insert_pos] + "\n\n" + PORTFOLIO_LOCATIONS + content[insert_pos:]
         print("  ✓ Portfolio locations adicionados")
     else:
-        # Fallback: find the closing of the server block
-        # The server block is the last one, ending with "  }" before the final "}"
-        # We insert before the last "  }" (2-space indent = server block close)
+        # Fallback: find the closing of the server block (last "  }" before final "}")
         lines = content.split("\n")
-        # Find the last line that is exactly "  }" (server block close)
         last_server_close = -1
         for i in range(len(lines) - 1, -1, -1):
             if lines[i].strip() == "}" and lines[i].startswith("  }"):
@@ -170,8 +153,9 @@ def main():
             print("  ✓ Portfolio locations adicionados (fallback position)")
         else:
             print("  ⚠ Não foi possível encontrar posição para locations", file=sys.stderr)
+            sys.exit(1)
 
-    # ── Step 6: Write the updated config ────────────────────────────────────
+    # ── Step 4: Write the updated config ────────────────────────────────────
     NGINX_CONF.write_text(content)
     print(f"  ✓ {NGINX_CONF} atualizado")
 
