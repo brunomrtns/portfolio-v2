@@ -1,18 +1,20 @@
 {
   "meta": {
-    "title": "Bruno Integrations — Ingeniería de software con precisión y propósito",
-    "description": "Bruno Martins — Ingeniero de software | Pila completa | Automatización IA. Productos digitales de alta calidad: Trivestia y Avesia.",
-    "blogTitle": "Blog — Integraciones Bruno",
-    "adminTitle": "Administrador — Bruno Integraciones"
+    "title": "Bruno Integrations: Ingeniería de software con precisión y propósito",
+    "description": "Bruno Martins | Ingeniero de software | Pila completa | Automatización IA. Productos digitales de alta calidad: Trivestia y Avesia.",
+    "blogTitle": "Blog | Integraciones Bruno",
+    "adminTitle": "Administrador | Bruno Integraciones"
   },
   "nav": {
     "sobre": "En",
     "produtos": "Productos",
     "stack": "Pila",
     "experiencia": "Experiencia",
+    "portfolio": "Portfolio",
     "blog": "Blog",
     "contato": "Contacto",
-    "github": "GitHub"
+    "github": "GitHub",
+    "solucoes": "Soluciones"
   },
   "hero": {
     "badge": "Disponible para proyectos",
@@ -27,7 +29,7 @@
     "statExperience": "Años de experiencia",
     "statTech": "Tecnologías",
     "statProblems": "Problemas resueltos",
-    "location": "Florianópolis, Carolina del Sur — Brasil"
+    "location": "Florianópolis, Carolina del Sur, Brasil"
   },
   "about": {
     "label": "En",
@@ -165,5 +167,61 @@
   },
   "language": {
     "switch": "Cambiar idioma"
+  },
+  "portfolioAbout": {
+    "label": "Meta",
+    "title": "Este sitio web en sí",
+    "subtitle": "El portafolio que está viendo ahora también es un proyecto de código abierto, creado desde cero con una arquitectura moderna, i18n en 6 idiomas e implementación automatizada.",
+    "projectName": "Portafolio v2",
+    "projectTagline": "Portafolio y plataforma de contenido",
+    "projectDescription": "Monorepo con frontend React SPA y backend Fastify API, implementación automatizada vía Docker en VPS con proxy inverso Nginx. Traducción automática de contenido dinámico a través de Google Translate, sistema de diseño oscuro premium con diseño de movimiento cinematográfico y panel de administración para administrar productos, artículos, habilidades y experiencias.",
+    "viewSource": "Ver código en GitHub",
+    "featureI18nTitle": "i18n en 6 idiomas",
+    "featureI18nDesc": "Interfaz y contenido dinámico traducidos automáticamente a pt-BR, en, es, de, fr y ja.",
+    "featureMonorepoTitle": "Monorepo Turborepo",
+    "featureMonorepoDesc": "Aplicaciones (API + Web) y paquetes compartidos (tipos, compartidos) con compilación paralela a través de Turborepo.",
+    "featureDeployTitle": "Implementación automatizada",
+    "featureDeployDesc": "Implemente secuencias de comandos con rsync, compilación de Docker en VPS, migraciones, configuración de nginx y prueba de humo, todo en un solo comando.",
+    "featureTranslationsTitle": "Traducción en escritura",
+    "featureTranslationsDesc": "El contenido de la base de datos se traduce en el momento en que el administrador lo guarda, con respaldo a PT-BR en las lecturas."
+  },
+  "brand": {
+    "label": "la iniciativa",
+    "title": "Integraciones de Bruno",
+    "subtitle": "La iniciativa detrás de los productos. Desarrollamos productos digitales completos combinando ingeniería de software, infraestructura, automatización e inteligencia artificial.",
+    "pillarProductTitle": "Ingeniería de software",
+    "pillarProductDesc": "Aplicaciones web full stack con arquitectura escalable, sistema de diseño y código limpio.",
+    "pillarAiTitle": "Inteligencia artificial",
+    "pillarAiDesc": "Agentes de IA, canales con LLM y automatización inteligente para acelerar el desarrollo.",
+    "pillarInfraTitle": "Infraestructura y DevOps",
+    "pillarInfraDesc": "Implementación automatizada, Docker, CI/CD y observabilidad para una producción sin fricciones."
+  },
+  "solutions": {
+    "label": "lo que construyo",
+    "title": "Soluciones que desarrollo",
+    "subtitle": "Trabajo en tres frentes complementarios que se conectan en cada proyecto: inteligencia artificial, productos digitales e infraestructura.",
+    "aiTitle": "Inteligencia artificial",
+    "aiDesc": "Agentes de IA, pipelines con LLM, GraphRAG y automatización inteligente. Desde la idea hasta la implementación, integrando modelos de lenguaje en productos reales.",
+    "productTitle": "Productos digitales",
+    "productDesc": "Aplicaciones web de pila completa desde cero hasta la implementación. Frontend de React con sistema de diseño premium, backend Fastify con API REST, base de datos PostgreSQL y panel de administración.",
+    "infraTitle": "Infraestructura y DevOps",
+    "infraDesc": "Implementación automatizada con Docker, proxy inverso Nginx, CI/CD y observabilidad. Producción estable, escalable y sin fricciones."
+  },
+  "principles": {
+    "label": "como pienso",
+    "title": "Cómo desarrollo",
+    "subtitle": "Principios que guían cada decisión de ingeniería, desde el compromiso hasta la implementación.",
+    "simplicityTitle": "Sencillez",
+    "simplicityDesc": "La mejor solución es la más sencilla que soluciona el problema. Menos código, menos complejidad, menos errores.",
+    "performanceTitle": "Actuación",
+    "performanceDesc": "Obsessive Core Web Vitals, paquete optimizado, carga diferida y consultas eficientes. La velocidad es una característica.",
+    "reliabilityTitle": "Fiabilidad",
+    "reliabilityDesc": "Manejo de errores, degradación elegante y observabilidad. Producción sin sorpresas, retroceso en segundos.",
+    "automationTitle": "Automatización",
+    "automationDesc": "Implemente con un solo comando, migraciones automáticas, prueba de humo incorporada. Si es repetitivo, está automatizado.",
+    "scalabilityTitle": "Escalabilidad",
+    "scalabilityDesc": "Arquitectura que crece con el producto. Monorepo, paquetes y patrones compartidos que apoyan la evolución.",
+    "productTitle": "Enfoque del producto",
+    "productDesc": "Tecnología al servicio del producto. Cada decisión técnica implica la pregunta: ¿ayuda esto al usuario?"
   }
 }

@@ -1,24 +1,26 @@
 {
   "meta": {
-    "title": "Bruno Integrations — Software engineering with precision and purpose",
-    "description": "Bruno Martins — Software Engineer | Full Stack | Automation AI. High quality digital products: Trivestia and Avesia.",
-    "blogTitle": "Blog — Bruno Integrations",
-    "adminTitle": "Admin — Bruno Integrations"
+    "title": "Bruno Integrations: Software engineering with precision and purpose",
+    "description": "Bruno Martins | Software Engineer | Full Stack | Automation AI. High quality digital products: Trivestia and Avesia.",
+    "blogTitle": "Blog | Bruno Integrations",
+    "adminTitle": "Admin | Bruno Integrations"
   },
   "nav": {
     "sobre": "On",
     "produtos": "Products",
     "stack": "Stack",
     "experiencia": "Experience",
+    "portfolio": "Portfolio",
     "blog": "Blog",
     "contato": "Contact",
-    "github": "GitHub"
+    "github": "GitHub",
+    "solucoes": "Solutions"
   },
   "hero": {
     "badge": "Available for projects",
     "titleLine1": "Software engineering",
     "titleLine2": "with precision and purpose",
-    "subtitle": "Bruno Martins — Full Stack Software Engineer focused on high-quality digital products, automation with AI and scalable infrastructure.",
+    "subtitle": "Bruno Martins | Full Stack Software Engineer focused on high-quality digital products, automation with AI and scalable infrastructure.",
     "ctaProducts": "View products",
     "ctaGithub": "GitHub",
     "ctaLinkedin": "LinkedIn",
@@ -27,19 +29,19 @@
     "statExperience": "Years of experience",
     "statTech": "Technologies",
     "statProblems": "Problems resolved",
-    "location": "Florianópolis, SC — Brazil"
+    "location": "Florianópolis, SC, Brazil"
   },
   "about": {
     "label": "On",
     "titleLine1": "I solve problems in a way",
     "titleLine2": "practical and efficient",
     "bio1": "I work in the development of web applications and systems, moving between frontend, backend, automation and infrastructure. I have been applying generative AI to building agents and pipelines to automate processes and accelerate the development of solutions.",
-    "bio2": "I prioritize {{highlight1}}, {{highlight2}} and {{highlight3}} in each solution — constantly seeking to evolve the way I develop software.",
+    "bio2": "I prioritize {{highlight1}}, {{highlight2}} and {{highlight3}} in each solution, constantly seeking to evolve the way I develop software.",
     "bioHighlight1": "simplicity",
     "bioHighlight2": "clarity",
     "bioHighlight3": "efficiency",
     "pillarFullStackTitle": "Full Stack",
-    "pillarFullStackDesc": "React, Node.js, TypeScript and Python — from frontend to backend with scalable architecture and clean code.",
+    "pillarFullStackDesc": "React, Node.js, TypeScript and Python, from frontend to backend with scalable architecture and clean code.",
     "pillarAiTitle": "AI & Automation",
     "pillarAiDesc": "AI agents, pipelines with LLMs, MCP and Ollama to automate processes and accelerate development.",
     "pillarInfraTitle": "Infra & DevOps",
@@ -67,7 +69,7 @@
   "stack": {
     "label": "Stack",
     "title": "Technologies & tools",
-    "subtitle": "A complete arsenal to build, deploy and maintain high-quality digital products — from frontend to DevOps."
+    "subtitle": "A complete arsenal to build, deploy and maintain high-quality digital products, from frontend to DevOps."
   },
   "experience": {
     "label": "Experience",
@@ -79,7 +81,7 @@
   "contact": {
     "label": "Contact",
     "title": "Let's talk",
-    "subtitle": "Do you have a project in mind or want to know more about a product? Send me a message — I'll respond quickly.",
+    "subtitle": "Do you have a project in mind or want to know more about a product? Send me a message, I'll respond quickly.",
     "linkGithub": "GitHub",
     "linkGithubValue": "@brunomrtns",
     "linkLinkedin": "LinkedIn",
@@ -165,5 +167,61 @@
   },
   "language": {
     "switch": "Change language"
+  },
+  "portfolioAbout": {
+    "label": "Goal",
+    "title": "This website itself",
+    "subtitle": "The portfolio you are seeing now is also an open-source project, built from scratch with modern architecture, i18n in 6 languages ​​and automated deployment.",
+    "projectName": "Portfolio v2",
+    "projectTagline": "Portfolio & content platform",
+    "projectDescription": "Monorepo with React SPA frontend and Fastify API backend, automated deployment via Docker on VPS with Nginx reverse proxy. Automatic translation of dynamic content via Google Translate, premium dark design system with cinematic motion design, and admin panel to manage products, articles, skills and experiences.",
+    "viewSource": "View code on GitHub",
+    "featureI18nTitle": "i18n in 6 languages",
+    "featureI18nDesc": "Interface and dynamic content automatically translated into pt-BR, en, es, de, fr and ja.",
+    "featureMonorepoTitle": "Monorepo Turborepo",
+    "featureMonorepoDesc": "Apps (API + Web) and shared packages (types, shared) with parallel build via Turborepo.",
+    "featureDeployTitle": "Automated deployment",
+    "featureDeployDesc": "Deploy script with rsync, Docker build on VPS, migrations, nginx config and smoke test, all in one command.",
+    "featureTranslationsTitle": "On-write translation",
+    "featureTranslationsDesc": "Database content is translated at the time of save by the admin, with fallback to PT-BR in reads."
+  },
+  "brand": {
+    "label": "The initiative",
+    "title": "Bruno Integrations",
+    "subtitle": "The initiative behind the products. We develop complete digital products combining software engineering, infrastructure, automation and artificial intelligence.",
+    "pillarProductTitle": "Software engineering",
+    "pillarProductDesc": "Full stack web applications with scalable architecture, design system and clean code.",
+    "pillarAiTitle": "Artificial intelligence",
+    "pillarAiDesc": "AI agents, pipelines with LLMs and intelligent automation to accelerate development.",
+    "pillarInfraTitle": "Infrastructure & DevOps",
+    "pillarInfraDesc": "Automated deployment, Docker, CI/CD, and observability for frictionless production."
+  },
+  "solutions": {
+    "label": "What I build",
+    "title": "Solutions I develop",
+    "subtitle": "I work on three complementary fronts that connect in each project: artificial intelligence, digital products and infrastructure.",
+    "aiTitle": "Artificial intelligence",
+    "aiDesc": "AI agents, pipelines with LLMs, GraphRAG and intelligent automation. From ideation to deployment, integrating language models into real products.",
+    "productTitle": "Digital Products",
+    "productDesc": "Full stack web applications from scratch to deployment. React frontend with premium design system, Fastify backend with REST API, PostgreSQL database and admin panel.",
+    "infraTitle": "Infrastructure & DevOps",
+    "infraDesc": "Automated deployment with Docker, Nginx reverse proxy, CI/CD and observability. Stable, scalable, frictionless production."
+  },
+  "principles": {
+    "label": "How I think",
+    "title": "How I develop",
+    "subtitle": "Principles that guide every engineering decision, from commit to deployment.",
+    "simplicityTitle": "Simplicity",
+    "simplicityDesc": "The best solution is the simplest one that solves the problem. Less code, less complexity, fewer bugs.",
+    "performanceTitle": "Performance",
+    "performanceDesc": "Obsessive Core Web Vitals, optimized bundle, lazy loading and efficient queries. Speed ​​is a feature.",
+    "reliabilityTitle": "Reliability",
+    "reliabilityDesc": "Error handling, graceful degradation and observability. Production without surprises, rollback in seconds.",
+    "automationTitle": "Automation",
+    "automationDesc": "Deploy with one command, automatic migrations, built-in smoke test. If it's repetitive, it's automated.",
+    "scalabilityTitle": "Scalability",
+    "scalabilityDesc": "Architecture that grows with the product. Monorepo, shared packages and patterns that support evolution.",
+    "productTitle": "Product focus",
+    "productDesc": "Technology at the service of the product. Every technical decision involves the question: does this help the user?"
   }
 }

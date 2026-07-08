@@ -18,7 +18,7 @@ export function Products(): React.ReactNode {
         {/* Section label */}
         <Reveal>
           <div className="mb-16 flex items-center gap-3">
-            <span className="font-mono text-xs text-[var(--color-accent)]">02</span>
+            <span className="font-mono text-xs text-[var(--color-accent)]">03</span>
             <div className="h-px w-12 bg-[var(--color-border)]" />
             <span className="font-mono text-xs uppercase tracking-[0.15em] text-[var(--color-text-muted)]">
               {t('products.label')}

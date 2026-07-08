@@ -1,24 +1,26 @@
 {
   "meta": {
-    "title": "Bruno Integrations — 正確さと目的を備えたソフトウェア エンジニアリング",
-    "description": "Bruno Martins — ソフトウェア エンジニア |フルスタック |自動化AI。高品質のデジタル製品: Trivestia と Avesia。",
-    "blogTitle": "ブログ — ブルーノ統合",
-    "adminTitle": "管理者 — Bruno Integrations"
+    "title": "Bruno Integrations: 正確さと目的を備えたソフトウェア エンジニアリング",
+    "description": "Bruno Martins | ソフトウェア エンジニア |フルスタック |自動化AI。高品質のデジタル製品: Trivestia と Avesia。",
+    "blogTitle": "ブログ | ブルーノ統合",
+    "adminTitle": "管理者 | Bruno Integrations"
   },
   "nav": {
     "sobre": "の上",
     "produtos": "製品",
     "stack": "スタック",
     "experiencia": "経験",
+    "portfolio": "ポートフォリオ",
     "blog": "ブログ",
     "contato": "お問い合わせ",
-    "github": "GitHub"
+    "github": "GitHub",
+    "solucoes": "ソリューション"
   },
   "hero": {
     "badge": "プロジェクトで利用可能",
     "titleLine1": "ソフトウェアエンジニアリング",
     "titleLine2": "正確さと目的を持って",
-    "subtitle": "Bruno Martins — フルスタック ソフトウェア エンジニアは、高品質のデジタル製品、AI による自動化、スケーラブルなインフラストラクチャに重点を置いています。",
+    "subtitle": "Bruno Martins | フルスタック ソフトウェア エンジニアは、高品質のデジタル製品、AI による自動化、スケーラブルなインフラストラクチャに重点を置いています。",
     "ctaProducts": "製品を見る",
     "ctaGithub": "GitHub",
     "ctaLinkedin": "リンクトイン",
@@ -27,7 +29,7 @@
     "statExperience": "長年の経験",
     "statTech": "テクノロジー",
     "statProblems": "解決された問題",
-    "location": "サウスカロライナ州フロリアノポリス — ブラジル"
+    "location": "サウスカロライナ州フロリアノポリス, ブラジル"
   },
   "about": {
     "label": "の上",
@@ -39,7 +41,7 @@
     "bioHighlight2": "明瞭さ",
     "bioHighlight3": "効率",
     "pillarFullStackTitle": "フルスタック",
-    "pillarFullStackDesc": "React、Node.js、TypeScript、Python — スケーラブルなアーキテクチャとクリーンなコードを備えたフロントエンドからバックエンドまで。",
+    "pillarFullStackDesc": "React、Node.js、TypeScript、Python, スケーラブルなアーキテクチャとクリーンなコードを備えたフロントエンドからバックエンドまで。",
     "pillarAiTitle": "AIとオートメーション",
     "pillarAiDesc": "AI エージェント、LLM、MCP、Ollama とのパイプラインにより、プロセスを自動化し、開発を加速します。",
     "pillarInfraTitle": "インフラとDevOps",
@@ -165,5 +167,61 @@
   },
   "language": {
     "switch": "言語を変更する"
+  },
+  "portfolioAbout": {
+    "label": "ゴール",
+    "title": "このウェブサイト自体",
+    "subtitle": "現在ご覧いただいているポートフォリオもオープンソース プロジェクトであり、最新のアーキテクチャ、6 か国語の i18n、自動展開を使用してゼロから構築されています。",
+    "projectName": "ポートフォリオ v2",
+    "projectTagline": "ポートフォリオとコンテンツのプラットフォーム",
+    "projectDescription": "React SPA フロントエンドと Fastify API バックエンドを備えた Monorepo、Nginx リバース プロキシを備えた VPS 上の Docker 経由の自動デプロイメント。 Google 翻訳による動的コンテンツの自動翻訳、映画のようなモーション デザインを備えたプレミアム ダーク デザイン システム、製品、記事、スキル、エクスペリエンスを管理する管理パネル。",
+    "viewSource": "GitHub でコードを表示する",
+    "featureI18nTitle": "6 ヶ国語の i18n",
+    "featureI18nDesc": "インターフェイスと動的コンテンツは、pt-BR、en、es、de、fr、ja に自動的に変換されます。",
+    "featureMonorepoTitle": "モノレポ ターボレポ",
+    "featureMonorepoDesc": "Turborepo 経由で並列ビルドを行うアプリ (API + Web) と共有パッケージ (タイプ、共有)。",
+    "featureDeployTitle": "自動展開",
+    "featureDeployDesc": "rsync を使用したスクリプトのデプロイ、VPS での Docker ビルド、移行、nginx 構成、スモーク テストをすべて 1 つのコマンドで実行します。",
+    "featureTranslationsTitle": "書き込み中の翻訳",
+    "featureTranslationsDesc": "データベースのコンテンツは管理者による保存時に変換され、読み取り時に PT-BR にフォールバックされます。"
+  },
+  "brand": {
+    "label": "イニシアチブ",
+    "title": "ブルーノ・インテグレーション",
+    "subtitle": "製品の背後にある取り組み。当社は、ソフトウェアエンジニアリング、インフラストラクチャ、自動化、人工知能を組み合わせた完全なデジタル製品を開発しています。",
+    "pillarProductTitle": "ソフトウェアエンジニアリング",
+    "pillarProductDesc": "スケーラブルなアーキテクチャ、設計システム、クリーンなコードを備えたフルスタック Web アプリケーション。",
+    "pillarAiTitle": "人工知能",
+    "pillarAiDesc": "AI エージェント、LLM を使用したパイプライン、および開発を加速するインテリジェントな自動化。",
+    "pillarInfraTitle": "インフラストラクチャと DevOps",
+    "pillarInfraDesc": "自動化されたデプロイメント、Docker、CI/CD、およびオブザーバビリティによるスムーズな運用。"
+  },
+  "solutions": {
+    "label": "私が構築するもの",
+    "title": "私が開発するソリューション",
+    "subtitle": "私は、人工知能、デジタル製品、インフラストラクチャという、各プロジェクトを結び付ける 3 つの補完的な分野に取り組んでいます。",
+    "aiTitle": "人工知能",
+    "aiDesc": "AI エージェント、LLM を使用したパイプライン、GraphRAG、インテリジェントな自動化。アイデアの立案から展開まで、言語モデルを実際の製品に統合します。",
+    "productTitle": "デジタル製品",
+    "productDesc": "フルスタックの Web アプリケーションを最初から展開まで行います。プレミアム デザイン システムを備えた React フロントエンド、REST API を備えた Fastify バックエンド、PostgreSQL データベース、管理パネル。",
+    "infraTitle": "インフラストラクチャと DevOps",
+    "infraDesc": "Docker、Nginx リバース プロキシ、CI/CD、オブザーバビリティによる自動デプロイメント。安定した、スケーラブルな、摩擦のない生産。"
+  },
+  "principles": {
+    "label": "私の考え方",
+    "title": "私の開発アプローチ",
+    "subtitle": "コミットからデプロイメントに至るまで、エンジニアリング上のあらゆる決定を導く原則。",
+    "simplicityTitle": "シンプルさ",
+    "simplicityDesc": "最良の解決策とは、問題を解決する最も単純な解決策です。コードが減り、複雑さが減り、バグが減ります。",
+    "performanceTitle": "パフォーマンス",
+    "performanceDesc": "執拗な Core Web Vitals、最適化されたバンドル、遅延読み込み、効率的なクエリ。スピードが特徴です。",
+    "reliabilityTitle": "信頼性",
+    "reliabilityDesc": "エラー処理、正常な劣化、および可観測性。予期せぬ本番環境、数秒でのロールバック。",
+    "automationTitle": "オートメーション",
+    "automationDesc": "1 つのコマンド、自動移行、組み込みのスモーク テストでデプロイします。繰り返しの場合は自動化されます。",
+    "scalabilityTitle": "スケーラビリティ",
+    "scalabilityDesc": "製品とともに成長するアーキテクチャ。モノリポジトリ、進化をサポートする共有パッケージとパターン。",
+    "productTitle": "製品の焦点",
+    "productDesc": "製品に役立つテクノロジー。すべての技術的な決定には、「これはユーザーの役に立つか?」という疑問が伴います。"
   }
 }

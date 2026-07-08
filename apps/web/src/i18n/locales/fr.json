@@ -1,24 +1,26 @@
 {
   "meta": {
-    "title": "Bruno Integrations — Un génie logiciel avec précision et détermination",
-    "description": "Bruno Martins — Ingénieur logiciel | Pile complète | IA d'automatisation. Produits numériques de haute qualité : Trivestia et Avesia.",
-    "blogTitle": "Blog — Bruno Intégrations",
-    "adminTitle": "Administrateur — Bruno Intégrations"
+    "title": "Bruno Integrations: Un génie logiciel avec précision et détermination",
+    "description": "Bruno Martins | Ingénieur logiciel | Pile complète | IA d'automatisation. Produits numériques de haute qualité : Trivestia et Avesia.",
+    "blogTitle": "Blog | Bruno Intégrations",
+    "adminTitle": "Administrateur, Bruno Intégrations"
   },
   "nav": {
     "sobre": "Sur",
     "produtos": "Produits",
     "stack": "Empiler",
     "experiencia": "Expérience",
+    "portfolio": "Portfolio",
     "blog": "Blogue",
     "contato": "Contact",
-    "github": "GitHub"
+    "github": "GitHub",
+    "solucoes": "Solutions"
   },
   "hero": {
     "badge": "Disponible pour les projets",
     "titleLine1": "Génie logiciel",
     "titleLine2": "avec précision et détermination",
-    "subtitle": "Bruno Martins — Ingénieur logiciel Full Stack axé sur les produits numériques de haute qualité, l'automatisation avec l'IA et l'infrastructure évolutive.",
+    "subtitle": "Bruno Martins | Ingénieur logiciel Full Stack axé sur les produits numériques de haute qualité, l'automatisation avec l'IA et l'infrastructure évolutive.",
     "ctaProducts": "Voir les produits",
     "ctaGithub": "GitHub",
     "ctaLinkedin": "LinkedIn",
@@ -27,7 +29,7 @@
     "statExperience": "Années d'expérience",
     "statTech": "Technologies",
     "statProblems": "Problèmes résolus",
-    "location": "Florianópolis, Caroline du Sud — Brésil"
+    "location": "Florianópolis, Caroline du Sud, Brésil"
   },
   "about": {
     "label": "Sur",
@@ -39,7 +41,7 @@
     "bioHighlight2": "clarté",
     "bioHighlight3": "efficacité",
     "pillarFullStackTitle": "Pile complète",
-    "pillarFullStackDesc": "React, Node.js, TypeScript et Python — du frontend au backend avec une architecture évolutive et un code propre.",
+    "pillarFullStackDesc": "React, Node.js, TypeScript et Python, du frontend au backend avec une architecture évolutive et un code propre.",
     "pillarAiTitle": "IA et automatisation",
     "pillarAiDesc": "Agents IA, pipelines avec LLM, MCP et Ollama pour automatiser les processus et accélérer le développement.",
     "pillarInfraTitle": "Infra et DevOps",
@@ -165,5 +167,61 @@
   },
   "language": {
     "switch": "Changer de langue"
+  },
+  "portfolioAbout": {
+    "label": "But",
+    "title": "Ce site Web lui-même",
+    "subtitle": "Le portefeuille que vous voyez maintenant est également un projet open source, construit à partir de zéro avec une architecture moderne, i18n en 6 langues et un déploiement automatisé.",
+    "projectName": "Portefeuille v2",
+    "projectTagline": "Plateforme de portfolio et de contenu",
+    "projectDescription": "Monorepo avec frontend React SPA et backend Fastify API, déploiement automatisé via Docker sur VPS avec proxy inverse Nginx. Traduction automatique de contenu dynamique via Google Translate, système de conception sombre premium avec motion design cinématographique et panneau d'administration pour gérer les produits, les articles, les compétences et les expériences.",
+    "viewSource": "Afficher le code sur GitHub",
+    "featureI18nTitle": "i18n en 6 langues",
+    "featureI18nDesc": "Interface et contenu dynamique traduits automatiquement en pt-BR, en, es, de, fr et ja.",
+    "featureMonorepoTitle": "Monorepo Turborepo",
+    "featureMonorepoDesc": "Applications (API + Web) et packages partagés (types, partagés) avec construction parallèle via Turborepo.",
+    "featureDeployTitle": "Déploiement automatisé",
+    "featureDeployDesc": "Déployez un script avec rsync, la version Docker sur VPS, les migrations, la configuration nginx et le smoke test, le tout dans une seule commande.",
+    "featureTranslationsTitle": "Traduction en écriture",
+    "featureTranslationsDesc": "Le contenu de la base de données est traduit au moment de la sauvegarde par l'administrateur, avec recours à PT-BR pour les lectures."
+  },
+  "brand": {
+    "label": "L'initiative",
+    "title": "Bruno Intégrations",
+    "subtitle": "L'initiative derrière les produits. Nous développons des produits numériques complets alliant ingénierie logicielle, infrastructure, automatisation et intelligence artificielle.",
+    "pillarProductTitle": "Génie logiciel",
+    "pillarProductDesc": "Applications Web complètes avec architecture évolutive, système de conception et code propre.",
+    "pillarAiTitle": "Intelligence artificielle",
+    "pillarAiDesc": "Agents IA, pipelines avec LLM et automatisation intelligente pour accélérer le développement.",
+    "pillarInfraTitle": "Infrastructures et DevOps",
+    "pillarInfraDesc": "Déploiement automatisé, Docker, CI/CD et observabilité pour une production sans friction."
+  },
+  "solutions": {
+    "label": "Ce que je construis",
+    "title": "Les solutions que je développe",
+    "subtitle": "Je travaille sur trois fronts complémentaires qui s'articulent dans chaque projet : l'intelligence artificielle, les produits numériques et les infrastructures.",
+    "aiTitle": "Intelligence artificielle",
+    "aiDesc": "Agents IA, pipelines avec LLM, GraphRAG et automatisation intelligente. De l'idéation au déploiement, en intégrant des modèles de langage dans des produits réels.",
+    "productTitle": "Produits numériques",
+    "productDesc": "Applications Web complètes, de zéro jusqu'au déploiement. Frontend React avec un système de conception premium, backend Fastify avec API REST, base de données PostgreSQL et panneau d'administration.",
+    "infraTitle": "Infrastructures et DevOps",
+    "infraDesc": "Déploiement automatisé avec Docker, proxy inverse Nginx, CI/CD et observabilité. Production stable, évolutive et sans friction."
+  },
+  "principles": {
+    "label": "Comment je pense",
+    "title": "Ma façon de développer",
+    "subtitle": "Des principes qui guident chaque décision d'ingénierie, de l'engagement au déploiement.",
+    "simplicityTitle": "Simplicité",
+    "simplicityDesc": "La meilleure solution est la plus simple qui résout le problème. Moins de code, moins de complexité, moins de bugs.",
+    "performanceTitle": "Performance",
+    "performanceDesc": "Obsessive Core Web Vitals, bundle optimisé, chargement paresseux et requêtes efficaces. La vitesse est une fonctionnalité.",
+    "reliabilityTitle": "Fiabilité",
+    "reliabilityDesc": "Gestion des erreurs, dégradation gracieuse et observabilité. Production sans surprises, rollback en quelques secondes.",
+    "automationTitle": "Automation",
+    "automationDesc": "Déployez avec une seule commande, migrations automatiques, test de fumée intégré. Si c’est répétitif, c’est automatisé.",
+    "scalabilityTitle": "Évolutivité",
+    "scalabilityDesc": "Une architecture qui évolue avec le produit. Monorepo, packages et modèles partagés qui prennent en charge l'évolution.",
+    "productTitle": "Focus produit",
+    "productDesc": "La technologie au service du produit. Chaque décision technique implique la question : est-ce que cela aide l'utilisateur ?"
   }
 }

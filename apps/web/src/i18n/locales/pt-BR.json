@@ -1,15 +1,17 @@
 {
   "meta": {
-    "title": "Bruno Integrations — Engenharia de software com precisão e propósito",
-    "description": "Bruno Martins — Software Engineer | Full Stack | Automation AI. Produtos digitais de altíssima qualidade: Trivestia e Avesia.",
-    "blogTitle": "Blog — Bruno Integrations",
-    "adminTitle": "Admin — Bruno Integrations"
+    "title": "Bruno Integrations: Engenharia de software com precisão e propósito",
+    "description": "Bruno Martins | Software Engineer | Full Stack | Automation AI. Produtos digitais de altíssima qualidade: Trivestia e Avesia.",
+    "blogTitle": "Blog | Bruno Integrations",
+    "adminTitle": "Admin | Bruno Integrations"
   },
   "nav": {
     "sobre": "Sobre",
+    "solucoes": "Soluções",
     "produtos": "Produtos",
     "stack": "Stack",
     "experiencia": "Experiência",
+    "portfolio": "Portfolio",
     "blog": "Blog",
     "contato": "Contato",
     "github": "GitHub"
@@ -18,7 +20,7 @@
     "badge": "Disponível para projetos",
     "titleLine1": "Engenharia de software",
     "titleLine2": "com precisão e propósito",
-    "subtitle": "Bruno Martins — Software Engineer Full Stack focado em produtos digitais de altíssima qualidade, automação com IA e infraestrutura escalável.",
+    "subtitle": "Bruno Martins | Software Engineer Full Stack focado em produtos digitais de altíssima qualidade, automação com IA e infraestrutura escalável.",
     "ctaProducts": "Ver produtos",
     "ctaGithub": "GitHub",
     "ctaLinkedin": "LinkedIn",
@@ -27,19 +29,30 @@
     "statExperience": "Anos de experiência",
     "statTech": "Tecnologias",
     "statProblems": "Problemas resolvidos",
-    "location": "Florianópolis, SC — Brasil"
+    "location": "Florianópolis, SC, Brasil"
+  },
+  "brand": {
+    "label": "A iniciativa",
+    "title": "Bruno Integrations",
+    "subtitle": "A iniciativa por trás dos produtos. Desenvolvemos produtos digitais completos combinando engenharia de software, infraestrutura, automação e inteligência artificial.",
+    "pillarProductTitle": "Engenharia de software",
+    "pillarProductDesc": "Aplicações web full stack com arquitetura escalável, design system e código limpo.",
+    "pillarAiTitle": "Inteligência artificial",
+    "pillarAiDesc": "Agentes de IA, pipelines com LLMs e automação inteligente para acelerar desenvolvimento.",
+    "pillarInfraTitle": "Infraestrutura & DevOps",
+    "pillarInfraDesc": "Deploy automatizado, Docker, CI/CD e observabilidade para produção sem fricção."
   },
   "about": {
     "label": "Sobre",
     "titleLine1": "Resolvo problemas de forma",
     "titleLine2": "prática e eficiente",
     "bio1": "Atuo no desenvolvimento de aplicações web e sistemas, transitando entre frontend, backend, automação e infraestrutura. Tenho aplicado IA generativa na construção de agentes e pipelines para automatizar processos e acelerar o desenvolvimento de soluções.",
-    "bio2": "Priorizo {{highlight1}}, {{highlight2}} e {{highlight3}} em cada solução — buscando constantemente evoluir a forma como desenvolvo software.",
+    "bio2": "Priorizo {{highlight1}}, {{highlight2}} e {{highlight3}} em cada solução, buscando constantemente evoluir a forma como desenvolvo software.",
     "bioHighlight1": "simplicidade",
     "bioHighlight2": "clareza",
     "bioHighlight3": "eficiência",
     "pillarFullStackTitle": "Full Stack",
-    "pillarFullStackDesc": "React, Node.js, TypeScript e Python — do frontend ao backend com arquitetura escalável e código limpo.",
+    "pillarFullStackDesc": "React, Node.js, TypeScript e Python, do frontend ao backend com arquitetura escalável e código limpo.",
     "pillarAiTitle": "AI & Automation",
     "pillarAiDesc": "Agentes de IA, pipelines com LLMs, MCP e Ollama para automatizar processos e acelerar desenvolvimento.",
     "pillarInfraTitle": "Infra & DevOps",
@@ -50,6 +63,17 @@
     "pillarPerfDesc": "Otimização de bundle, lazy loading, query caching e atenção obsessiva a Core Web Vitals.",
     "pillarReliabilityTitle": "Confiabilidade",
     "pillarReliabilityDesc": "Testes, error handling, graceful degradation e observabilidade para produção sem surpresas."
+  },
+  "solutions": {
+    "label": "O que construo",
+    "title": "Soluções que desenvolvo",
+    "subtitle": "Atuo em três frentes complementares que se conectam em cada projeto: inteligência artificial, produtos digitais e infraestrutura.",
+    "aiTitle": "Inteligência Artificial",
+    "aiDesc": "Agentes de IA, pipelines com LLMs, GraphRAG e automação inteligente. Da ideação ao deploy, integrando modelos de linguagem em produtos reais.",
+    "productTitle": "Produtos Digitais",
+    "productDesc": "Aplicações web full stack do zero ao deploy. Frontend React com design system premium, backend Fastify com API REST, banco PostgreSQL e painel admin.",
+    "infraTitle": "Infraestrutura & DevOps",
+    "infraDesc": "Deploy automatizado com Docker, Nginx reverse proxy, CI/CD e observabilidade. Produção estável, escalável e sem fricção."
   },
   "products": {
     "label": "Produtos",
@@ -67,7 +91,7 @@
   "stack": {
     "label": "Stack",
     "title": "Tecnologias & ferramentas",
-    "subtitle": "Um arsenal completo para construir, deployar e manter produtos digitais de altíssima qualidade — do frontend ao DevOps."
+    "subtitle": "Um arsenal completo para construir, deployar e manter produtos digitais de altíssima qualidade, do frontend ao DevOps."
   },
   "experience": {
     "label": "Experiência",
@@ -76,10 +100,44 @@
     "current": "Atual",
     "present": "Presente"
   },
+  "portfolioAbout": {
+    "label": "Engenharia",
+    "title": "Por trás deste portfólio",
+    "subtitle": "O portfolio que você está vendo agora também é um projeto open-source, construído do zero com arquitetura moderna, i18n em 6 idiomas e deploy automatizado.",
+    "projectName": "Portfolio v2",
+    "projectTagline": "Portfolio & plataforma de conteúdo",
+    "projectDescription": "Monorepo com frontend React SPA e backend Fastify API, deploy automatizado via Docker na VPS com Nginx reverse proxy. Tradução automática de conteúdo dinâmico via Google Translate, design system premium dark com motion design cinematográfico, e painel admin para gerenciar produtos, artigos, skills e experiências.",
+    "viewSource": "Ver código no GitHub",
+    "featureI18nTitle": "i18n em 6 idiomas",
+    "featureI18nDesc": "Interface e conteúdo dinâmico traduzidos automaticamente para pt-BR, en, es, de, fr e ja.",
+    "featureMonorepoTitle": "Monorepo Turborepo",
+    "featureMonorepoDesc": "Apps (API + Web) e packages compartilhados (types, shared) com build paralelo via Turborepo.",
+    "featureDeployTitle": "Deploy automatizado",
+    "featureDeployDesc": "Script de deploy com rsync, build Docker na VPS, migrations, nginx config e smoke test, tudo em um comando.",
+    "featureTranslationsTitle": "Tradução on-write",
+    "featureTranslationsDesc": "Conteúdo do banco é traduzido no momento do save pelo admin, com fallback para pt-BR nas reads."
+  },
+  "principles": {
+    "label": "Como penso",
+    "title": "Como eu desenvolvo",
+    "subtitle": "Princípios que guiam cada decisão de engenharia, do commit ao deploy.",
+    "simplicityTitle": "Simplicidade",
+    "simplicityDesc": "A melhor solução é a mais simples que resolve o problema. Menos código, menos complexidade, menos bugs.",
+    "performanceTitle": "Performance",
+    "performanceDesc": "Core Web Vitals obsessivos, bundle otimizado, lazy loading e queries eficientes. Velocidade é feature.",
+    "reliabilityTitle": "Confiabilidade",
+    "reliabilityDesc": "Error handling, graceful degradation e observabilidade. Produção sem surpresas, rollback em segundos.",
+    "automationTitle": "Automação",
+    "automationDesc": "Deploy com um comando, migrations automáticas, smoke test embutido. Se é repetitivo, é automatizado.",
+    "scalabilityTitle": "Escalabilidade",
+    "scalabilityDesc": "Arquitetura que cresce com o produto. Monorepo, packages compartilhados e padrões que suportam evolução.",
+    "productTitle": "Foco em produto",
+    "productDesc": "Tecnologia a serviço do produto. Cada decisão técnica passa pela pergunta: isso ajuda o usuário?"
+  },
   "contact": {
     "label": "Contato",
     "title": "Vamos conversar",
-    "subtitle": "Tem um projeto em mente ou quer saber mais sobre algum produto? Me envie uma mensagem — respondo rapidamente.",
+    "subtitle": "Tem um projeto em mente ou quer saber mais sobre algum produto? Me envie uma mensagem, respondo rapidamente.",
     "linkGithub": "GitHub",
     "linkGithubValue": "@brunomrtns",
     "linkLinkedin": "LinkedIn",

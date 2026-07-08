@@ -18,7 +18,7 @@ export default function ArticlePage(): React.ReactNode {
 
   useEffect(() => {
     if (article) {
-      document.title = `${article.title} — Bruno Integrations`;
+      document.title = `${article.title} | Bruno Integrations`;
     }
   }, [article]);
 

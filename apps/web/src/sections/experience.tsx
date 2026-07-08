@@ -81,8 +81,8 @@ export function Experience(): React.ReactNode {
                             </span>
                           )}
                           <span className="font-mono text-xs text-[var(--color-text-muted)]">
-                            {formatDate(exp.startDate)} —{' '}
-                            {exp.current ? t('experience.present') : exp.endDate ? formatDate(exp.endDate) : '—'}
+                            {formatDate(exp.startDate)} |{' '}
+                            {exp.current ? t('experience.present') : exp.endDate ? formatDate(exp.endDate) : '...'}
                           </span>
                         </div>
 

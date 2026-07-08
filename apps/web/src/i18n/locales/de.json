@@ -10,9 +10,11 @@
     "produtos": "Produkte",
     "stack": "Stapel",
     "experiencia": "Erfahrung",
+    "portfolio": "Portfolio",
     "blog": "Blog",
     "contato": "Kontakt",
-    "github": "GitHub"
+    "github": "GitHub",
+    "solucoes": "Lösungen"
   },
   "hero": {
     "badge": "Verfügbar für Projekte",
@@ -165,5 +167,61 @@
   },
   "language": {
     "switch": "Sprache ändern"
+  },
+  "portfolioAbout": {
+    "label": "Ziel",
+    "title": "Diese Website selbst",
+    "subtitle": "Das Portfolio, das Sie jetzt sehen, ist ebenfalls ein Open-Source-Projekt – von Grund auf mit moderner Architektur, i18n in 6 Sprachen und automatisierter Bereitstellung erstellt.",
+    "projectName": "Portfolio v2",
+    "projectTagline": "Portfolio- und Content-Plattform",
+    "projectDescription": "Monorepo mit React SPA-Frontend und Fastify API-Backend, automatisierte Bereitstellung über Docker auf VPS mit Nginx-Reverse-Proxy. Automatische Übersetzung dynamischer Inhalte über Google Translate, Premium-Dark-Design-System mit filmischem Motion-Design und Admin-Panel zur Verwaltung von Produkten, Artikeln, Fähigkeiten und Erfahrungen.",
+    "viewSource": "Code auf GitHub ansehen",
+    "featureI18nTitle": "i18n in 6 Sprachen",
+    "featureI18nDesc": "Benutzeroberfläche und dynamische Inhalte werden automatisch in die Sprachen pt-BR, en, es, de, fr und ja übersetzt.",
+    "featureMonorepoTitle": "Monorepo Turborepo",
+    "featureMonorepoDesc": "Apps (API + Web) und freigegebene Pakete (Typen, freigegeben) mit parallelem Build über Turborepo.",
+    "featureDeployTitle": "Automatisierte Bereitstellung",
+    "featureDeployDesc": "Stellen Sie Skripte mit rsync, Docker-Build auf VPS, Migrationen, Nginx-Konfiguration und Rauchtest bereit – alles in einem Befehl.",
+    "featureTranslationsTitle": "Übersetzung während des Schreibens",
+    "featureTranslationsDesc": "Der Datenbankinhalt wird zum Zeitpunkt des Speicherns durch den Administrator übersetzt, wobei beim Lesen auf PT-BR zurückgegriffen wird."
+  },
+  "brand": {
+    "label": "Die Initiative",
+    "title": "Bruno-Integrationen",
+    "subtitle": "Die Initiative hinter den Produkten. Wir entwickeln komplette digitale Produkte, die Software-Engineering, Infrastruktur, Automatisierung und künstliche Intelligenz kombinieren.",
+    "pillarProductTitle": "Software-Engineering",
+    "pillarProductDesc": "Full-Stack-Webanwendungen mit skalierbarer Architektur, Designsystem und sauberem Code.",
+    "pillarAiTitle": "Künstliche Intelligenz",
+    "pillarAiDesc": "KI-Agenten, Pipelines mit LLMs und intelligente Automatisierung zur Beschleunigung der Entwicklung.",
+    "pillarInfraTitle": "Infrastruktur und DevOps",
+    "pillarInfraDesc": "Automatisierte Bereitstellung, Docker, CI/CD und Observability für eine reibungslose Produktion."
+  },
+  "solutions": {
+    "label": "Was ich baue",
+    "title": "Lösungen, die ich entwickle",
+    "subtitle": "Ich arbeite an drei komplementären Fronten, die in jedem Projekt miteinander verbunden sind: künstliche Intelligenz, digitale Produkte und Infrastruktur.",
+    "aiTitle": "Künstliche Intelligenz",
+    "aiDesc": "KI-Agenten, Pipelines mit LLMs, GraphRAG und intelligente Automatisierung. Von der Idee bis zur Bereitstellung, Integration von Sprachmodellen in reale Produkte.",
+    "productTitle": "Digitale Produkte",
+    "productDesc": "Full-Stack-Webanwendungen von Grund auf bis zur Bereitstellung. React-Frontend mit Premium-Designsystem, Fastify-Backend mit REST-API, PostgreSQL-Datenbank und Admin-Panel.",
+    "infraTitle": "Infrastruktur und DevOps",
+    "infraDesc": "Automatisierte Bereitstellung mit Docker, Nginx-Reverse-Proxy, CI/CD und Observability. Stabile, skalierbare und reibungslose Produktion."
+  },
+  "principles": {
+    "label": "Wie ich denke",
+    "title": "Wie ich entwickle",
+    "subtitle": "Prinzipien, die jede technische Entscheidung leiten, von der Festschreibung bis zur Bereitstellung.",
+    "simplicityTitle": "Einfachheit",
+    "simplicityDesc": "Die beste Lösung ist die einfachste, die das Problem löst. Weniger Code, weniger Komplexität, weniger Fehler.",
+    "performanceTitle": "Leistung",
+    "performanceDesc": "Obsessive Core Web Vitals, optimiertes Bundle, Lazy Loading und effiziente Abfragen. Geschwindigkeit ist ein Feature.",
+    "reliabilityTitle": "Zuverlässigkeit",
+    "reliabilityDesc": "Fehlerbehandlung, elegante Verschlechterung und Beobachtbarkeit. Produktion ohne Überraschungen, Rollback in Sekunden.",
+    "automationTitle": "Automatisierung",
+    "automationDesc": "Bereitstellung mit einem Befehl, automatische Migrationen, integrierter Rauchtest. Wenn es sich wiederholt, ist es automatisiert.",
+    "scalabilityTitle": "Skalierbarkeit",
+    "scalabilityDesc": "Architektur, die mit dem Produkt wächst. Monorepo, gemeinsame Pakete und Muster, die die Evolution unterstützen.",
+    "productTitle": "Produktfokus",
+    "productDesc": "Technologie im Dienste des Produkts. Bei jeder technischen Entscheidung stellt sich die Frage: Hilft das dem Anwender?"
   }
 }

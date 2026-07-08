@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Globe } from 'lucide-react';
@@ -9,9 +9,11 @@ import { changeLanguage, getCurrentLanguage, AVAILABLE_LANGUAGES } from '@/i18n/
 
 const NAV_LINKS = [
   { labelKey: 'nav.sobre', href: '#sobre' },
+  { labelKey: 'nav.solucoes', href: '#solucoes' },
   { labelKey: 'nav.produtos', href: '#produtos' },
-  { labelKey: 'nav.stack', href: '#stack' },
   { labelKey: 'nav.experiencia', href: '#experiencia' },
+  { labelKey: 'nav.stack', href: '#stack' },
+  { labelKey: 'nav.portfolio', href: '#portfolio' },
   { labelKey: 'nav.blog', href: '/portfolio/blog' },
   { labelKey: 'nav.contato', href: '#contato' },
 ];
@@ -22,6 +24,7 @@ export function Navbar(): React.ReactNode {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [langOpen, setLangOpen] = useState(false);
   const location = useLocation();
+  const langRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 20);
@@ -30,12 +33,24 @@ export function Navbar(): React.ReactNode {
     return () => window.removeEventListener('scroll', handler);
   }, []);
 
+  // Close language dropdown on click outside
+  useEffect(() => {
+    if (!langOpen) return;
+    const handler = (e: MouseEvent) => {
+      if (langRef.current && !langRef.current.contains(e.target as Node)) {
+        setLangOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [langOpen]);
+
   useEffect(() => {
     setMobileOpen(false);
     setLangOpen(false);
   }, [location]);
 
-  const isHome = location.pathname === '/';
+  const isHome = location.pathname === '/' || location.pathname === '/portfolio' || location.pathname === '/portfolio/';
 
   return (
     <>
@@ -88,7 +103,7 @@ export function Navbar(): React.ReactNode {
           {/* CTA + language switcher + mobile toggle */}
           <div className="flex items-center gap-3">
             {/* Language switcher */}
-            <div className="relative hidden sm:block">
+            <div ref={langRef} className="relative hidden sm:block">
               <button
                 onClick={() => setLangOpen((v) => !v)}
                 className="flex items-center gap-1.5 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)]/40 px-3 py-2 text-sm text-[var(--color-text-secondary)] backdrop-blur-md transition-all duration-300 hover:border-[var(--color-border-bright)] hover:text-[var(--color-text)]"
