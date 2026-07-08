@@ -295,7 +295,7 @@ vps "docker run --rm --network portfolio-net \
   -e ADMIN_PASSWORD='$(grep '^ADMIN_PASSWORD=' "$PROJECT_ROOT/.env.prod" | cut -d= -f2-)' \
   -v $VPS_PATH/apps/api/prisma:/app/apps/api/prisma:ro \
   -w /app/apps/api portfolio-api:latest \
-  sh -c 'node \$(find /app/node_modules/.pnpm -path \"*/prisma/build/index.js\" | head -1) migrate deploy && node dist/seeds/index.js' 2>&1"
+  sh -c 'node \$(find /app/node_modules/.pnpm -path \"*/prisma/build/index.js\" | head -1) migrate deploy && node dist/seeds/index.cjs' 2>&1"
 ok "Migrations + seed aplicados"
 
 # ── Step 6: Atualizar nginx do trivestia-nginx ───────────────────────────────
