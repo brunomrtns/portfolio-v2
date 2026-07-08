@@ -115,7 +115,7 @@ build_image() {
   local log_file
   log_file=$(mktemp)
   local exit_code=0
-  vps "cd $VPS_PATH && docker build -f $dockerfile -t $name:latest . 2>&1; echo \"EXIT_CODE=\$?\"" > "$log_file" 2>&1 || exit_code=$?
+  vps "cd $VPS_PATH && docker build --no-cache -f $dockerfile -t $name:latest . 2>&1; echo \"EXIT_CODE=\$?\"" > "$log_file" 2>&1 || exit_code=$?
 
   local remote_exit
   remote_exit=$(grep -oP 'EXIT_CODE=\K[0-9]+' "$log_file" | tail -1)
@@ -124,7 +124,7 @@ build_image() {
   if [[ "$exit_code" -ne 0 || "$remote_exit" != "0" ]]; then
     err "$name FALHOU no build (exit: ${remote_exit:-$exit_code})"
     err "Rode manualmente para ver o log completo:"
-    err "  my-vps \"cd $VPS_PATH && docker build -f $dockerfile -t $name:latest .\""
+    err "  my-vps \"cd $VPS_PATH && docker build --no-cache -f $dockerfile -t $name:latest .\""
     exit 1
   fi
   ok "$name buildada"
@@ -272,7 +272,7 @@ fi
 log "Step 4/8: Subindo stack com docker compose..."
 COMPOSE_LOG=$(mktemp)
 COMPOSE_EXIT=0
-vps "cd $VPS_PATH && docker compose -f docker-compose.yml up -d 2>&1; echo \"EXIT_CODE=\$?\"" > "$COMPOSE_LOG" 2>&1 || COMPOSE_EXIT=$?
+vps "cd $VPS_PATH && docker compose -f docker-compose.yml up -d --force-recreate 2>&1; echo \"EXIT_CODE=\$?\"" > "$COMPOSE_LOG" 2>&1 || COMPOSE_EXIT=$?
 COMPOSE_REMOTE_EXIT=$(grep -oP 'EXIT_CODE=\K[0-9]+' "$COMPOSE_LOG" | tail -1)
 tail -20 "$COMPOSE_LOG"
 rm -f "$COMPOSE_LOG"
