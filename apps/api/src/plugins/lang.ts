@@ -3,6 +3,7 @@
 // Falls back to pt-BR (the source language).
 
 import type { FastifyInstance, FastifyPluginAsync } from 'fastify';
+import fp from 'fastify-plugin';
 
 const DEFAULT_LANG = 'pt-BR';
 const SUPPORTED = ['pt-BR', 'en', 'es', 'fr', 'de', 'ja'];
@@ -56,4 +57,4 @@ const langPlugin: FastifyPluginAsync = async (app: FastifyInstance) => {
   });
 };
 
-export default langPlugin;
+export default fp(langPlugin);
