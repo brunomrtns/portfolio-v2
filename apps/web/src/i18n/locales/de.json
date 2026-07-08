@@ -11,6 +11,7 @@
     "stack": "Stapel",
     "experiencia": "Erfahrung",
     "portfolio": "Portfolio",
+    "principios": "Prinzipien",
     "blog": "Blog",
     "contato": "Kontakt",
     "github": "GitHub",
@@ -222,6 +223,18 @@
     "scalabilityTitle": "Skalierbarkeit",
     "scalabilityDesc": "Architektur, die mit dem Produkt wächst. Monorepo, gemeinsame Pakete und Muster, die die Evolution unterstützen.",
     "productTitle": "Produktfokus",
-    "productDesc": "Technologie im Dienste des Produkts. Bei jeder technischen Entscheidung stellt sich die Frage: Hilft das dem Anwender?"
+    "productDesc": "Technologie im Dienste des Produkts. Bei jeder technischen Entscheidung stellt sich die Frage: Hilft das dem Anwender?",
+    "manifesto": "Es geht nicht darum, die neueste Technologie zu nutzen. Es geht darum, das richtige Tool für das Problem auszuwählen, den Code lesbar zu halten und etwas zu erstellen, das auch in zwei Jahren noch funktioniert – nicht nur heute.",
+    "closing": "Code schreiben ist einfach. Die Pflege des Codes ist schwierig. Deshalb wird beim Schreiben jeder Zeile darüber nachgedacht, wer sie später lesen wird."
+  },
+  "scroll": {
+    "brandToAbout": "Wer steckt dahinter?",
+    "aboutToSolutions": "Was baue ich",
+    "solutionsToProducts": "Projekte in der Produktion",
+    "productsToExperience": "Meine Flugbahn",
+    "experienceToStack": "Technologien, die ich verwende",
+    "stackToPortfolio": "Die Technik dieser Website",
+    "portfolioToPrinciples": "Wie ich denke",
+    "principlesToContact": "Lass uns reden"
   }
 }

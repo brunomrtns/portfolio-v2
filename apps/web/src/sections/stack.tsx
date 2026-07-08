@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { useSkills } from '@/hooks/use-data';
 import { Reveal, Stagger, StaggerItem, MouseSpotlight, SectionTransition } from '@/components/animation/reveal';
+import { ScrollHint } from '@/components/scroll-hint';
 
 export function Stack(): React.ReactNode {
   const { t } = useTranslation();
@@ -79,6 +80,8 @@ export function Stack(): React.ReactNode {
             </Stagger>
           )}
         </div>
+
+        <ScrollHint labelKey="scroll.stackToPortfolio" targetId="portfolio" />
       </div>
     </section>
   );

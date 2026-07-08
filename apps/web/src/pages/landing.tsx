@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Navbar } from '@/components/navbar';
+import { SectionRail } from '@/components/section-rail';
 import { Hero } from '@/sections/hero';
 import { Brand } from '@/sections/brand';
 import { About } from '@/sections/about';
@@ -22,6 +23,7 @@ export default function LandingPage(): React.ReactNode {
   return (
     <>
       <Navbar />
+      <SectionRail />
       <main>
         <Hero />
         <Brand />

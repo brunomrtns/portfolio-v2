@@ -12,6 +12,7 @@
     "stack": "Stack",
     "experiencia": "Experiência",
     "portfolio": "Portfolio",
+    "principios": "Princípios",
     "blog": "Blog",
     "contato": "Contato",
     "github": "GitHub"
@@ -121,6 +122,8 @@
     "label": "Como penso",
     "title": "Como eu desenvolvo",
     "subtitle": "Princípios que guiam cada decisão de engenharia, do commit ao deploy.",
+    "manifesto": "Não é sobre usar a tecnologia mais nova. É sobre escolher a ferramenta certa para o problema, manter o código legível e construir algo que continua funcionando daqui a dois anos — não só hoje.",
+    "closing": "Escrever código é fácil. Manter código é difícil. Por isso, cada linha é escrita pensando em quem vai lê-la depois.",
     "simplicityTitle": "Simplicidade",
     "simplicityDesc": "A melhor solução é a mais simples que resolve o problema. Menos código, menos complexidade, menos bugs.",
     "performanceTitle": "Performance",
@@ -223,5 +226,15 @@
   },
   "language": {
     "switch": "Mudar idioma"
+  },
+  "scroll": {
+    "brandToAbout": "Quem está por trás",
+    "aboutToSolutions": "O que eu construo",
+    "solutionsToProducts": "Projetos em produção",
+    "productsToExperience": "Minha trajetória",
+    "experienceToStack": "Tecnologias que uso",
+    "stackToPortfolio": "A engenharia deste site",
+    "portfolioToPrinciples": "Como eu penso",
+    "principlesToContact": "Vamos conversar"
   }
 }

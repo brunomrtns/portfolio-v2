@@ -1,6 +1,7 @@
 import { ArrowUpRight, Github, Server, Globe, Layers, Database } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Reveal, Stagger, StaggerItem, SectionTransition } from '@/components/animation/reveal';
+import { ScrollHint } from '@/components/scroll-hint';
 
 const REPO_URL = 'https://github.com/brunomrtns/portfolio-v2';
 
@@ -127,6 +128,8 @@ export function PortfolioAbout(): React.ReactNode {
             </div>
           </div>
         </Reveal>
+
+        <ScrollHint labelKey="scroll.portfolioToPrinciples" targetId="principios" />
       </div>
     </section>
   );

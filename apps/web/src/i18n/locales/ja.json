@@ -11,6 +11,7 @@
     "stack": "スタック",
     "experiencia": "経験",
     "portfolio": "ポートフォリオ",
+    "principios": "原則",
     "blog": "ブログ",
     "contato": "お問い合わせ",
     "github": "GitHub",
@@ -222,6 +223,18 @@
     "scalabilityTitle": "スケーラビリティ",
     "scalabilityDesc": "製品とともに成長するアーキテクチャ。モノリポジトリ、進化をサポートする共有パッケージとパターン。",
     "productTitle": "製品の焦点",
-    "productDesc": "製品に役立つテクノロジー。すべての技術的な決定には、「これはユーザーの役に立つか?」という疑問が伴います。"
+    "productDesc": "製品に役立つテクノロジー。すべての技術的な決定には、「これはユーザーの役に立つか?」という疑問が伴います。",
+    "manifesto": "それは最新のテクノロジーを使用することではありません。問題に対して適切なツールを選択し、コードを読みやすい状態に保ち、現在だけでなく 2 年後も機能するものを構築することが重要です。",
+    "closing": "コードを書くのは簡単です。コードの保守は困難です。そのため、一行一行は後で誰が読むのかを考えて書いています。"
+  },
+  "scroll": {
+    "brandToAbout": "後ろにいるのは誰ですか",
+    "aboutToSolutions": "何を構築するか",
+    "solutionsToProducts": "制作中のプロジェクト",
+    "productsToExperience": "私の軌跡",
+    "experienceToStack": "私が使用しているテクノロジー",
+    "stackToPortfolio": "このウェブサイトのエンジニアリング",
+    "portfolioToPrinciples": "私の考え方",
+    "principlesToContact": "話しましょう"
   }
 }

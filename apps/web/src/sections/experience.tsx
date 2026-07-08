@@ -1,5 +1,6 @@
 import { useExperience } from '@/hooks/use-data';
 import { Reveal, Stagger, StaggerItem, SectionTransition } from '@/components/animation/reveal';
+import { ScrollHint } from '@/components/scroll-hint';
 import { cn } from '@/lib/utils';
 import { useTranslation } from 'react-i18next';
 
@@ -132,6 +133,8 @@ export function Experience(): React.ReactNode {
             </div>
           )}
         </div>
+
+        <ScrollHint labelKey="scroll.experienceToStack" targetId="stack" />
       </div>
     </section>
   );

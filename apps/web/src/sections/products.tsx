@@ -2,6 +2,7 @@ import { ArrowUpRight, Sparkles } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useProducts } from '@/hooks/use-data';
 import { Reveal, Stagger, StaggerItem, SectionTransition } from '@/components/animation/reveal';
+import { ScrollHint } from '@/components/scroll-hint';
 import { cn } from '@/lib/utils';
 import type { ProductListItem } from '@portfolio/types';
 
@@ -58,6 +59,8 @@ export function Products(): React.ReactNode {
             </p>
           )}
         </div>
+
+        <ScrollHint labelKey="scroll.productsToExperience" targetId="experiencia" />
       </div>
     </section>
   );

@@ -7,13 +7,10 @@ import { cn } from '@/lib/utils';
 import { ScrollProgress } from '@/components/animation/reveal';
 import { changeLanguage, getCurrentLanguage, AVAILABLE_LANGUAGES } from '@/i18n/i18n';
 
+// Only the most important links belong in the navbar.
+// Section-to-section navigation is handled by the dot rail (SectionDots).
 const NAV_LINKS = [
-  { labelKey: 'nav.sobre', href: '#sobre' },
-  { labelKey: 'nav.solucoes', href: '#solucoes' },
   { labelKey: 'nav.produtos', href: '#produtos' },
-  { labelKey: 'nav.experiencia', href: '#experiencia' },
-  { labelKey: 'nav.stack', href: '#stack' },
-  { labelKey: 'nav.portfolio', href: '#portfolio' },
   { labelKey: 'nav.blog', href: '/portfolio/blog' },
   { labelKey: 'nav.contato', href: '#contato' },
 ];
@@ -33,7 +30,6 @@ export function Navbar(): React.ReactNode {
     return () => window.removeEventListener('scroll', handler);
   }, []);
 
-  // Close language dropdown on click outside
   useEffect(() => {
     if (!langOpen) return;
     const handler = (e: MouseEvent) => {
@@ -68,16 +64,16 @@ export function Navbar(): React.ReactNode {
         )}
       >
         <nav className="container-wide flex h-16 items-center justify-between">
-          {/* Logo — with subtle hover effect */}
-          <Link to="/" className="group flex items-center gap-2">
+          {/* Logo */}
+          <Link to="/" className="group flex items-center gap-2" onClick={() => isHome && window.scrollTo({ top: 0, behavior: 'smooth' })}>
             <span className="font-mono text-sm font-bold tracking-tight text-[var(--color-text)] transition-all duration-300 group-hover:opacity-90">
               bruno<span className="text-[var(--color-accent)] transition-all duration-300 group-hover:[text-shadow:0_0_8px_var(--color-accent-glow)]">.</span>integrations
             </span>
           </Link>
 
-          {/* Desktop nav — with animated underline */}
+          {/* Desktop nav — minimal */}
           {isHome && (
-            <div className="hidden items-center gap-0.5 md:flex">
+            <div className="hidden items-center gap-1 md:flex">
               {NAV_LINKS.map((link) =>
                 link.href.startsWith('#') ? (
                   <a
@@ -100,9 +96,8 @@ export function Navbar(): React.ReactNode {
             </div>
           )}
 
-          {/* CTA + language switcher + mobile toggle */}
+          {/* Right cluster: language + GitHub + mobile toggle */}
           <div className="flex items-center gap-3">
-            {/* Language switcher */}
             <div ref={langRef} className="relative hidden sm:block">
               <button
                 onClick={() => setLangOpen((v) => !v)}

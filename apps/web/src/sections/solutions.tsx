@@ -1,6 +1,7 @@
 import { Brain, AppWindow, Server } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Reveal, Stagger, StaggerItem, SectionTransition } from '@/components/animation/reveal';
+import { ScrollHint } from '@/components/scroll-hint';
 
 export function Solutions(): React.ReactNode {
   const { t } = useTranslation();
@@ -88,6 +89,8 @@ export function Solutions(): React.ReactNode {
             </StaggerItem>
           ))}
         </Stagger>
+
+        <ScrollHint labelKey="scroll.solutionsToProducts" targetId="produtos" />
       </div>
     </section>
   );

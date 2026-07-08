@@ -1,6 +1,7 @@
 import { Layers, Brain, Server } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Reveal, SectionTransition } from '@/components/animation/reveal';
+import { ScrollHint } from '@/components/scroll-hint';
 
 export function Brand(): React.ReactNode {
   const { t } = useTranslation();
@@ -12,7 +13,7 @@ export function Brand(): React.ReactNode {
   ];
 
   return (
-    <section id="marca" className="relative py-28">
+    <section id="marca" className="relative py-24">
       <SectionTransition />
 
       <div className="container-wide">
@@ -54,6 +55,8 @@ export function Brand(): React.ReactNode {
             </div>
           </Reveal>
         </div>
+
+        <ScrollHint labelKey="scroll.brandToAbout" targetId="sobre" />
       </div>
     </section>
   );

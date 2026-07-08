@@ -11,6 +11,7 @@
     "stack": "Pila",
     "experiencia": "Experiencia",
     "portfolio": "Portfolio",
+    "principios": "Principios",
     "blog": "Blog",
     "contato": "Contacto",
     "github": "GitHub",
@@ -222,6 +223,18 @@
     "scalabilityTitle": "Escalabilidad",
     "scalabilityDesc": "Arquitectura que crece con el producto. Monorepo, paquetes y patrones compartidos que apoyan la evolución.",
     "productTitle": "Enfoque del producto",
-    "productDesc": "Tecnología al servicio del producto. Cada decisión técnica implica la pregunta: ¿ayuda esto al usuario?"
+    "productDesc": "Tecnología al servicio del producto. Cada decisión técnica implica la pregunta: ¿ayuda esto al usuario?",
+    "manifesto": "No se trata de utilizar la última tecnología. Se trata de elegir la herramienta adecuada para el problema, mantener el código legible y crear algo que siga funcionando dentro de dos años, no solo hoy.",
+    "closing": "Escribir código es fácil. Mantener el código es difícil. Por eso, cada línea se escribe pensando en quién la leerá después."
+  },
+  "scroll": {
+    "brandToAbout": "quien esta detras",
+    "aboutToSolutions": "¿Qué construyo?",
+    "solutionsToProducts": "Proyectos en producción",
+    "productsToExperience": "mi trayectoria",
+    "experienceToStack": "Tecnologías que uso",
+    "stackToPortfolio": "La ingeniería de este sitio web.",
+    "portfolioToPrinciples": "como pienso",
+    "principlesToContact": "hablemos"
   }
 }

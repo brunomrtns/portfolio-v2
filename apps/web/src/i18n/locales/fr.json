@@ -11,6 +11,7 @@
     "stack": "Empiler",
     "experiencia": "Expérience",
     "portfolio": "Portfolio",
+    "principios": "Principes",
     "blog": "Blogue",
     "contato": "Contact",
     "github": "GitHub",
@@ -222,6 +223,18 @@
     "scalabilityTitle": "Évolutivité",
     "scalabilityDesc": "Une architecture qui évolue avec le produit. Monorepo, packages et modèles partagés qui prennent en charge l'évolution.",
     "productTitle": "Focus produit",
-    "productDesc": "La technologie au service du produit. Chaque décision technique implique la question : est-ce que cela aide l'utilisateur ?"
+    "productDesc": "La technologie au service du produit. Chaque décision technique implique la question : est-ce que cela aide l'utilisateur ?",
+    "manifesto": "Il ne s’agit pas d’utiliser la technologie la plus récente. Il s'agit de choisir le bon outil pour le problème, de garder le code lisible et de créer quelque chose qui fonctionnera encore dans deux ans, pas seulement aujourd'hui.",
+    "closing": "Écrire du code est facile. La maintenance du code est difficile. Par conséquent, chaque ligne est écrite en pensant à qui la lira plus tard."
+  },
+  "scroll": {
+    "brandToAbout": "Qui est derrière",
+    "aboutToSolutions": "Qu'est-ce que je construis",
+    "solutionsToProducts": "Projets en production",
+    "productsToExperience": "Ma trajectoire",
+    "experienceToStack": "Technologies que j'utilise",
+    "stackToPortfolio": "L'ingénierie de ce site",
+    "portfolioToPrinciples": "Comment je pense",
+    "principlesToContact": "Parlons"
   }
 }

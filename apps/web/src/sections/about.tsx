@@ -1,6 +1,7 @@
 import { Code2, Brain, Server, Layers, Zap, Shield } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Reveal, Stagger, StaggerItem, MouseSpotlight, SectionTransition } from '@/components/animation/reveal';
+import { ScrollHint } from '@/components/scroll-hint';
 
 export function About(): React.ReactNode {
   const { t } = useTranslation();
@@ -15,7 +16,7 @@ export function About(): React.ReactNode {
   ];
 
   return (
-    <section id="sobre" className="relative py-36">
+    <section id="sobre" className="relative py-32">
       <SectionTransition />
       <div className="mesh-bg pointer-events-none" />
 
@@ -75,6 +76,8 @@ export function About(): React.ReactNode {
             </StaggerItem>
           ))}
         </Stagger>
+
+        <ScrollHint labelKey="scroll.aboutToSolutions" targetId="solucoes" />
       </div>
     </section>
   );

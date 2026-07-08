@@ -11,6 +11,7 @@
     "stack": "Stack",
     "experiencia": "Experience",
     "portfolio": "Portfolio",
+    "principios": "Principles",
     "blog": "Blog",
     "contato": "Contact",
     "github": "GitHub",
@@ -222,6 +223,18 @@
     "scalabilityTitle": "Scalability",
     "scalabilityDesc": "Architecture that grows with the product. Monorepo, shared packages and patterns that support evolution.",
     "productTitle": "Product focus",
-    "productDesc": "Technology at the service of the product. Every technical decision involves the question: does this help the user?"
+    "productDesc": "Technology at the service of the product. Every technical decision involves the question: does this help the user?",
+    "manifesto": "It's not about using the newest technology. It's about choosing the right tool for the problem, keeping the code readable, and building something that still works two years from now — not just today.",
+    "closing": "Writing code is easy. Maintaining code is difficult. Therefore, each line is written thinking about who will read it later."
+  },
+  "scroll": {
+    "brandToAbout": "Who is behind",
+    "aboutToSolutions": "What do I build",
+    "solutionsToProducts": "Projects in production",
+    "productsToExperience": "My trajectory",
+    "experienceToStack": "Technologies I use",
+    "stackToPortfolio": "The engineering of this website",
+    "portfolioToPrinciples": "How I think",
+    "principlesToContact": "Let's talk"
   }
 }
