@@ -111,8 +111,6 @@ bump_version() {
   echo "${major}.${minor}.${patch}"
 }
 
-# ── Helper: buildar imagem e abortar se falhar ────────────────────────────────
-
 # ── Mode: --tag-only (cria tag sem deploy) ────────────────────────────────────
 if [[ "$TAG_ONLY" -eq 1 ]]; then
   log "Modo tag-only: criando tag sem deploy..."
@@ -143,27 +141,6 @@ if [[ "$TAG_ONLY" -eq 1 ]]; then
   ok "Tag v$CURRENT_VERSION → v$NEW_VERSION criada (sem deploy)"
   exit 0
 fi
-
-build_image() {
-  local name="$1" dockerfile="$2"
-  log "  Buildando $name..."
-  local log_file
-  log_file=$(mktemp)
-  local exit_code=0
-  vps "cd $VPS_PATH && docker build --no-cache -f $dockerfile -t $name:latest . 2>&1; echo \"EXIT_CODE=\$?\"" > "$log_file" 2>&1 || exit_code=$?
-
-  local remote_exit
-  remote_exit=$(grep -oP 'EXIT_CODE=\K[0-9]+' "$log_file" | tail -1)
-  rm -f "$log_file"
-
-  if [[ "$exit_code" -ne 0 || "$remote_exit" != "0" ]]; then
-    err "$name FALHOU no build (exit: ${remote_exit:-$exit_code})"
-    err "Rode manualmente para ver o log completo:"
-    err "  my-vps \"cd $VPS_PATH && docker build --no-cache -f $dockerfile -t $name:latest .\""
-    exit 1
-  fi
-  ok "$name buildada"
-}
 
 # ── Step 0: Verificar working tree ───────────────────────────────────────────
 log "Verificando pré-requisitos..."
@@ -290,10 +267,21 @@ ok "Config sincronizada"
 
 # ── Step 3: Build das imagens ────────────────────────────────────────────────
 if [[ "$NO_BUILD" -eq 0 ]]; then
-  log "Step 3/8: Buildando imagens Docker na VPS..."
+  log "Step 3/8: Buildando imagens Docker na VPS (docker compose build --no-cache)..."
 
-  build_image "portfolio-api" "apps/api/Dockerfile"
-  build_image "portfolio-web" "apps/web/Dockerfile"
+  BUILD_LOG=$(mktemp)
+  BUILD_EXIT=0
+  vps "cd $VPS_PATH && docker compose -f docker-compose.yml build --no-cache 2>&1; echo \"EXIT_CODE=\$?\"" > "$BUILD_LOG" 2>&1 || BUILD_EXIT=$?
+  BUILD_REMOTE_EXIT=$(grep -oP 'EXIT_CODE=\K[0-9]+' "$BUILD_LOG" | tail -1)
+  tail -20 "$BUILD_LOG"
+  rm -f "$BUILD_LOG"
+  if [[ "$BUILD_EXIT" -ne 0 || "$BUILD_REMOTE_EXIT" != "0" ]]; then
+    err "docker compose build FALHOU (exit: ${BUILD_REMOTE_EXIT:-$BUILD_EXIT})"
+    err "Rode manualmente para ver o log completo:"
+    err "  my-vps \"cd $VPS_PATH && docker compose -f docker-compose.yml build --no-cache\""
+    exit 1
+  fi
+  ok "Imagens buildadas (portfolio-api:latest, portfolio-web:latest)"
 else
   log "Step 3/8: Build pulado (--no-build)"
 fi
