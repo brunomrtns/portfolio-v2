@@ -65,5 +65,7 @@ volumes:
 networks:
   portfolio-net:
     driver: bridge
+    name: portfolio-net
   trivestia-net:
     external: true
+    name: trivestia-net
