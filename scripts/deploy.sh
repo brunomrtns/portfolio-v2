@@ -19,7 +19,8 @@ set -euo pipefail
 
 # ── Config ───────────────────────────────────────────────────────────────────
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-cd "$SCRIPT_DIR"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+cd "$PROJECT_ROOT"
 VPS_PATH="/opt/portfolio"
 
 # ── Verificar my-vps ─────────────────────────────────────────────────────────
@@ -161,12 +162,12 @@ if git rev-parse --git-dir &>/dev/null; then
   git tag "$DEPLOY_TAG" 2>/dev/null && ok "Tag de rollback criada: $DEPLOY_TAG" || true
 fi
 
-if [[ ! -f "$SCRIPT_DIR/.env.prod" ]]; then
+if [[ ! -f "$PROJECT_ROOT/.env.prod" ]]; then
   err ".env.prod não encontrado em $SCRIPT_DIR"
   exit 1
 fi
 
-if [[ ! -f "$SCRIPT_DIR/docker/docker-compose.yml" ]]; then
+if [[ ! -f "$PROJECT_ROOT/docker/docker-compose.yml" ]]; then
   err "docker-compose.yml não encontrado em docker/"
   exit 1
 fi
@@ -181,9 +182,9 @@ ok "Conexão com VPS OK (via my-vps)"
 # ── Migrate only ─────────────────────────────────────────────────────────────
 if [[ "$MIGRATE_ONLY" -eq 1 ]]; then
   log "Modo: migrations apenas"
-  POSTGRES_USER=$(grep '^POSTGRES_USER=' "$SCRIPT_DIR/.env.prod" | cut -d= -f2-)
-  POSTGRES_PASSWORD=$(grep '^POSTGRES_PASSWORD=' "$SCRIPT_DIR/.env.prod" | cut -d= -f2-)
-  POSTGRES_DB=$(grep '^POSTGRES_DB=' "$SCRIPT_DIR/.env.prod" | cut -d= -f2-)
+  POSTGRES_USER=$(grep '^POSTGRES_USER=' "$PROJECT_ROOT/.env.prod" | cut -d= -f2-)
+  POSTGRES_PASSWORD=$(grep '^POSTGRES_PASSWORD=' "$PROJECT_ROOT/.env.prod" | cut -d= -f2-)
+  POSTGRES_DB=$(grep '^POSTGRES_DB=' "$PROJECT_ROOT/.env.prod" | cut -d= -f2-)
   vps "docker run --rm --network portfolio-net \
     -e DATABASE_URL='postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@portfolio-postgres:5432/${POSTGRES_DB}?schema=public' \
     -v $VPS_PATH/apps/api/prisma:/app/apps/api/prisma:ro \
@@ -201,14 +202,14 @@ vps "mkdir -p $VPS_PATH/{apps/api/prisma,apps/web/src,packages,docker}"
 RSYNC_EXCLUDES="--exclude=.git --exclude=node_modules --exclude=**/node_modules --exclude=**/dist --exclude=**/.turbo --exclude=**/coverage --exclude=**/__pycache__ --exclude='**/*.tsbuildinfo' --exclude=.env --exclude=.env.local --exclude=.env.prod --exclude=.turbo --exclude=PLAN.md --exclude='*.log' --exclude=deploy.sh --exclude=test-results"
 
 if command -v rsync &>/dev/null; then
-  my-vps --no-lock --rsync "$SCRIPT_DIR/" "$VPS_PATH/" --rsync-args "$RSYNC_EXCLUDES --delete" 2>&1 || {
+  my-vps --no-lock --rsync "$PROJECT_ROOT/" "$VPS_PATH/" --rsync-args "$RSYNC_EXCLUDES --delete" 2>&1 || {
     log "rsync falhou — usando tar"
     tar czf - --exclude='.git' --exclude='node_modules' --exclude='**/node_modules' \
       --exclude='**/dist' --exclude='**/.turbo' --exclude='**/*.tsbuildinfo' \
       --exclude='.env' --exclude='.env.local' --exclude='.env.prod' \
       --exclude='PLAN.md' --exclude='*.log' \
       --exclude='deploy.sh' \
-      -C "$SCRIPT_DIR" . | my-vps --no-lock "tar xzf - -C $VPS_PATH"
+      -C "$PROJECT_ROOT" . | my-vps --no-lock "tar xzf - -C $VPS_PATH"
   }
   ok "Código sincronizado via rsync"
 else
@@ -217,14 +218,14 @@ else
     --exclude='.env' --exclude='.env.local' --exclude='.env.prod' \
     --exclude='PLAN.md' --exclude='*.log' \
     --exclude='deploy.sh' \
-    -C "$SCRIPT_DIR" . | my-vps --no-lock "tar xzf - -C $VPS_PATH"
+    -C "$PROJECT_ROOT" . | my-vps --no-lock "tar xzf - -C $VPS_PATH"
   ok "Código sincronizado via tar"
 fi
 
 # ── Step 2: Sincronizar .env + docker-compose ────────────────────────────────
 log "Step 2/5: Sincronizando .env e docker-compose..."
-vps_cp "$SCRIPT_DIR/.env.prod" "$VPS_PATH/.env"
-vps_cp "$SCRIPT_DIR/docker/docker-compose.yml" "$VPS_PATH/docker-compose.yml"
+vps_cp "$PROJECT_ROOT/.env.prod" "$VPS_PATH/.env"
+vps_cp "$PROJECT_ROOT/docker/docker-compose.yml" "$VPS_PATH/docker-compose.yml"
 ok "Config sincronizada"
 
 # ── Step 3: Build das imagens ────────────────────────────────────────────────
@@ -259,9 +260,9 @@ ok "Stack iniciada"
 # ── Step 5: Migrations + Smoke test ──────────────────────────────────────────
 log "Step 5/5: Migrations + Smoke test..."
 
-POSTGRES_USER=$(grep '^POSTGRES_USER=' "$SCRIPT_DIR/.env.prod" | cut -d= -f2-)
-POSTGRES_PASSWORD=$(grep '^POSTGRES_PASSWORD=' "$SCRIPT_DIR/.env.prod" | cut -d= -f2-)
-POSTGRES_DB=$(grep '^POSTGRES_DB=' "$SCRIPT_DIR/.env.prod" | cut -d= -f2-)
+POSTGRES_USER=$(grep '^POSTGRES_USER=' "$PROJECT_ROOT/.env.prod" | cut -d= -f2-)
+POSTGRES_PASSWORD=$(grep '^POSTGRES_PASSWORD=' "$PROJECT_ROOT/.env.prod" | cut -d= -f2-)
+POSTGRES_DB=$(grep '^POSTGRES_DB=' "$PROJECT_ROOT/.env.prod" | cut -d= -f2-)
 
 vps "docker run --rm --network portfolio-net \
   -e DATABASE_URL='postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@portfolio-postgres:5432/${POSTGRES_DB}?schema=public' \
