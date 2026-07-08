@@ -40,6 +40,11 @@ RUN pnpm --filter @portfolio/api exec prisma generate
 # Build API
 RUN pnpm --filter @portfolio/api build
 
+# Bundle seed file with esbuild (for production seed via `node`)
+RUN cd apps/api && pnpm exec esbuild prisma/seeds/index.ts --bundle --platform=node --format=cjs --outfile=dist/seeds/index.js --external=@prisma/client --external=@portfolio/shared 2>&1 || \
+    pnpm exec esbuild prisma/seeds/index.ts --bundle --platform=node --format=cjs --outfile=dist/seeds/index.js --external:@prisma/client 2>&1
+RUN ls -la apps/api/dist/seeds/index.js
+
 # ── Stage 2: Runtime ──────────────────────────────────────────────────────────
 FROM node:22-alpine AS runtime
 
