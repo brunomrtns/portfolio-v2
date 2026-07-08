@@ -1,0 +1,525 @@
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { toast } from 'sonner';
+import { Loader2, Lock, Mail, LogOut, FileText, Package, Inbox, Plus, Edit, Trash2 } from 'lucide-react';
+import { useAuthStore } from '@/stores/auth-store';
+import { api } from '@/lib/api-client';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { cn } from '@/lib/utils';
+import type { Article, Product, ContactMessage } from '@portfolio/types';
+
+const loginSchema = z.object({
+  email: z.string().email('Email inválido'),
+  password: z.string().min(1, 'Senha obrigatória'),
+});
+
+type LoginValues = z.infer<typeof loginSchema>;
+
+export default function AdminPage(): React.ReactNode {
+  const { user, isAuthenticated, isLoading, init, login, logout } = useAuthStore();
+
+  useEffect(() => {
+    init();
+  }, [init]);
+
+  useEffect(() => {
+    document.title = 'Admin — Bruno Integrations';
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-[var(--color-bg)]">
+        <Loader2 className="h-8 w-8 animate-spin text-[var(--color-accent)]" />
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return <LoginView onLogin={login} />;
+  }
+
+  return <Dashboard user={user} onLogout={logout} />;
+}
+
+// ── Login View ────────────────────────────────────────────────────────────────
+
+function LoginView({ onLogin }: { onLogin: (email: string, password: string) => Promise<void> }): React.ReactNode {
+  const [submitting, setSubmitting] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginValues>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: { email: '', password: '' },
+  });
+
+  const onSubmit = async (values: LoginValues): Promise<void> => {
+    setSubmitting(true);
+    try {
+      await onLogin(values.email, values.password);
+      toast.success('Login realizado!');
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Erro ao fazer login.';
+      toast.error(message);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[var(--color-bg)]">
+      <div className="mesh-bg-dense" />
+      <div className="noise" />
+
+      <div className="relative w-full max-w-md px-6">
+        <div className="glass-strong rounded-2xl p-8">
+          <div className="mb-8 text-center">
+            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--color-accent-glow)]">
+              <Lock className="h-6 w-6 text-[var(--color-accent)]" />
+            </div>
+            <h1 className="font-serif text-2xl font-bold text-[var(--color-text)]">
+              Admin Dashboard
+            </h1>
+            <p className="mt-2 text-sm text-[var(--color-text-muted)]">
+              Acesso restrito
+            </p>
+          </div>
+
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+            <div className="space-y-2">
+              <Label htmlFor="admin-email">Email</Label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--color-text-muted)]" />
+                <Input
+                  id="admin-email"
+                  type="email"
+                  placeholder="seu@email.com"
+                  className="pl-10"
+                  {...register('email')}
+                />
+              </div>
+              {errors.email && <p className="text-xs text-red-400">{errors.email.message}</p>}
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="admin-password">Senha</Label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--color-text-muted)]" />
+                <Input
+                  id="admin-password"
+                  type="password"
+                  placeholder="••••••••"
+                  className="pl-10"
+                  {...register('password')}
+                />
+              </div>
+              {errors.password && <p className="text-xs text-red-400">{errors.password.message}</p>}
+            </div>
+
+            <Button type="submit" variant="primary" size="lg" disabled={submitting} className="w-full">
+              {submitting ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Entrando...
+                </>
+              ) : (
+                'Entrar'
+              )}
+            </Button>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Dashboard ─────────────────────────────────────────────────────────────────
+
+type Tab = 'articles' | 'products' | 'messages';
+
+function Dashboard({ user, onLogout }: { user: { email: string } | null; onLogout: () => void }): React.ReactNode {
+  const [tab, setTab] = useState<Tab>('articles');
+
+  return (
+    <div className="min-h-screen bg-[var(--color-bg)]">
+      {/* Header */}
+      <header className="sticky top-0 z-10 glass-strong border-b border-[var(--color-border)]">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
+          <div className="flex items-center gap-3">
+            <span className="font-mono text-sm font-bold text-[var(--color-text)]">
+              admin<span className="text-[var(--color-accent)]">.</span>panel
+            </span>
+            <span className="text-xs text-[var(--color-text-muted)]">|</span>
+            <span className="text-sm text-[var(--color-text-secondary)]">{user?.email}</span>
+          </div>
+          <Button variant="ghost" size="sm" onClick={onLogout}>
+            <LogOut className="h-4 w-4" />
+            Sair
+          </Button>
+        </div>
+      </header>
+
+      {/* Tabs */}
+      <div className="mx-auto max-w-7xl px-6 py-8">
+        <div className="mb-8 flex gap-2">
+          {([
+            { id: 'articles', label: 'Artigos', icon: FileText },
+            { id: 'products', label: 'Produtos', icon: Package },
+            { id: 'messages', label: 'Mensagens', icon: Inbox },
+          ] as const).map((t) => (
+            <button
+              key={t.id}
+              onClick={() => setTab(t.id)}
+              className={cn(
+                'inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all duration-300',
+                tab === t.id
+                  ? 'bg-[var(--color-surface-elevated)] text-[var(--color-text)] border border-[var(--color-border-bright)]'
+                  : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]',
+              )}
+            >
+              <t.icon className="h-4 w-4" />
+              {t.label}
+            </button>
+          ))}
+        </div>
+
+        {tab === 'articles' && <ArticlesTab />}
+        {tab === 'products' && <ProductsTab />}
+        {tab === 'messages' && <MessagesTab />}
+      </div>
+    </div>
+  );
+}
+
+// ── Articles Tab ──────────────────────────────────────────────────────────────
+
+function ArticlesTab(): React.ReactNode {
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [editing, setEditing] = useState<Article | null>(null);
+  const [creating, setCreating] = useState(false);
+
+  const load = async () => {
+    setLoading(true);
+    try {
+      const data = await api.admin.articles.list();
+      setArticles(data);
+    } catch {
+      toast.error('Erro ao carregar artigos');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    load();
+  }, []);
+
+  if (creating || editing) {
+    return (
+      <ArticleEditor
+        article={editing}
+        onClose={() => {
+          setCreating(false);
+          setEditing(null);
+          load();
+        }}
+      />
+    );
+  }
+
+  return (
+    <div>
+      <div className="mb-4 flex items-center justify-between">
+        <h2 className="text-lg font-semibold text-[var(--color-text)]">Artigos</h2>
+        <Button variant="primary" size="sm" onClick={() => setCreating(true)}>
+          <Plus className="h-4 w-4" />
+          Novo artigo
+        </Button>
+      </div>
+
+      {loading ? (
+        <div className="space-y-2">
+          {[0, 1, 2].map((i) => (
+            <div key={i} className="h-16 animate-pulse rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)]" />
+          ))}
+        </div>
+      ) : (
+        <div className="space-y-2">
+          {articles.map((article) => (
+            <div
+              key={article.id}
+              className="flex items-center justify-between rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] p-4"
+            >
+              <div>
+                <p className="font-medium text-[var(--color-text)]">{article.title}</p>
+                <p className="text-xs text-[var(--color-text-muted)]">
+                  {article.status === 'PUBLISHED' ? 'Publicado' : 'Rascunho'} ·{' '}
+                  {new Date(article.createdAt).toLocaleDateString('pt-BR')}
+                </p>
+              </div>
+              <div className="flex gap-2">
+                <Button variant="ghost" size="icon" onClick={() => setEditing(article)}>
+                  <Edit className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={async () => {
+                    if (!confirm('Deletar este artigo?')) return;
+                    try {
+                      await api.admin.articles.delete(article.id);
+                      toast.success('Artigo deletado');
+                      load();
+                    } catch {
+                      toast.error('Erro ao deletar');
+                    }
+                  }}
+                >
+                  <Trash2 className="h-4 w-4 text-red-400" />
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ArticleEditor({ article, onClose }: { article: Article | null; onClose: () => void }): React.ReactNode {
+  const [title, setTitle] = useState(article?.title ?? '');
+  const [excerpt, setExcerpt] = useState(article?.excerpt ?? '');
+  const [content, setContent] = useState(article?.content ?? '');
+  const [status, setStatus] = useState<'DRAFT' | 'PUBLISHED'>(article?.status ?? 'DRAFT');
+  const [saving, setSaving] = useState(false);
+
+  const handleSave = async () => {
+    setSaving(true);
+    try {
+      const data = { title, excerpt, content, status };
+      if (article) {
+        await api.admin.articles.update(article.id, data);
+        toast.success('Artigo atualizado');
+      } else {
+        await api.admin.articles.create(data);
+        toast.success('Artigo criado');
+      }
+      onClose();
+    } catch {
+      toast.error('Erro ao salvar');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div className="space-y-5">
+      <div className="flex items-center justify-between">
+        <h2 className="text-lg font-semibold text-[var(--color-text)]">
+          {article ? 'Editar artigo' : 'Novo artigo'}
+        </h2>
+        <Button variant="ghost" size="sm" onClick={onClose}>Cancelar</Button>
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="article-title">Título</Label>
+        <Input id="article-title" value={title} onChange={(e) => setTitle(e.target.value)} />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="article-excerpt">Resumo</Label>
+        <Input id="article-excerpt" value={excerpt} onChange={(e) => setExcerpt(e.target.value)} />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="article-content">Conteúdo (Markdown)</Label>
+        <Textarea
+          id="article-content"
+          rows={16}
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          className="font-mono text-sm"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <Label htmlFor="article-status">Status</Label>
+        <select
+          id="article-status"
+          value={status}
+          onChange={(e) => setStatus(e.target.value as 'DRAFT' | 'PUBLISHED')}
+          className="flex h-10 w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-4 text-sm text-[var(--color-text)]"
+        >
+          <option value="DRAFT">Rascunho</option>
+          <option value="PUBLISHED">Publicado</option>
+        </select>
+      </div>
+
+      <Button variant="primary" size="lg" disabled={saving} onClick={handleSave}>
+        {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Salvar'}
+      </Button>
+    </div>
+  );
+}
+
+// ── Products Tab ──────────────────────────────────────────────────────────────
+
+function ProductsTab(): React.ReactNode {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const data = await api.admin.products.list();
+        setProducts(data);
+      } catch {
+        toast.error('Erro ao carregar produtos');
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, []);
+
+  return (
+    <div>
+      <div className="mb-4 flex items-center justify-between">
+        <h2 className="text-lg font-semibold text-[var(--color-text)]">Produtos</h2>
+        <Button variant="primary" size="sm">
+          <Plus className="h-4 w-4" />
+          Novo produto
+        </Button>
+      </div>
+
+      {loading ? (
+        <div className="space-y-2">
+          {[0, 1].map((i) => (
+            <div key={i} className="h-16 animate-pulse rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)]" />
+          ))}
+        </div>
+      ) : (
+        <div className="space-y-2">
+          {products.map((product) => (
+            <div
+              key={product.id}
+              className="flex items-center justify-between rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] p-4"
+            >
+              <div>
+                <p className="font-medium text-[var(--color-text)]">{product.name}</p>
+                <p className="text-xs text-[var(--color-text-muted)]">
+                  {product.tagline} · {product.status}
+                </p>
+              </div>
+              <div className="flex gap-2">
+                <Button variant="ghost" size="icon">
+                  <Edit className="h-4 w-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={async () => {
+                    if (!confirm('Deletar este produto?')) return;
+                    try {
+                      await api.admin.products.delete(product.id);
+                      toast.success('Produto deletado');
+                      setProducts(products.filter((p) => p.id !== product.id));
+                    } catch {
+                      toast.error('Erro ao deletar');
+                    }
+                  }}
+                >
+                  <Trash2 className="h-4 w-4 text-red-400" />
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── Messages Tab ──────────────────────────────────────────────────────────────
+
+function MessagesTab(): React.ReactNode {
+  const [messages, setMessages] = useState<ContactMessage[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const data = await api.admin.messages.list();
+        setMessages(data);
+      } catch {
+        toast.error('Erro ao carregar mensagens');
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, []);
+
+  return (
+    <div>
+      <h2 className="mb-4 text-lg font-semibold text-[var(--color-text)]">Mensagens de contato</h2>
+
+      {loading ? (
+        <div className="space-y-2">
+          {[0, 1, 2].map((i) => (
+            <div key={i} className="h-20 animate-pulse rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)]" />
+          ))}
+        </div>
+      ) : messages.length === 0 ? (
+        <p className="text-sm text-[var(--color-text-muted)]">Nenhuma mensagem recebida.</p>
+      ) : (
+        <div className="space-y-3">
+          {messages.map((msg) => (
+            <div
+              key={msg.id}
+              className={cn(
+                'rounded-lg border bg-[var(--color-surface)] p-4',
+                msg.read ? 'border-[var(--color-border)]' : 'border-[var(--color-accent)]',
+              )}
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="font-medium text-[var(--color-text)]">{msg.name}</p>
+                  <p className="text-xs text-[var(--color-text-muted)]">{msg.email}</p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="font-mono text-xs text-[var(--color-text-muted)]">
+                    {new Date(msg.createdAt).toLocaleDateString('pt-BR')}
+                  </span>
+                  {!msg.read && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={async () => {
+                        try {
+                          await api.admin.messages.markRead(msg.id);
+                          setMessages(messages.map((m) => (m.id === msg.id ? { ...m, read: true } : m)));
+                        } catch {
+                          toast.error('Erro ao marcar como lida');
+                        }
+                      }}
+                    >
+                      Marcar lida
+                    </Button>
+                  )}
+                </div>
+              </div>
+              <p className="mt-3 text-sm text-[var(--color-text-secondary)]">{msg.message}</p>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}

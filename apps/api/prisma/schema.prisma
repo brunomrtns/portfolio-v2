@@ -1,0 +1,134 @@
+// ── Portfolio v2 — Prisma schema ──────────────────────────────────────────────
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ── User ──────────────────────────────────────────────────────────────────────
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  role         String   @default("ADMIN")
+  createdAt    DateTime @default(now())
+
+  @@map("users")
+}
+
+// ── Product ───────────────────────────────────────────────────────────────────
+
+model Product {
+  id             String   @id @default(cuid())
+  name           String
+  tagline        String
+  description    String
+  longDescription String?
+  slug           String   @unique
+  url            String
+  repoUrl        String?
+  imageUrl       String?
+  logoUrl        String?
+  tech           String[]
+  features       String[]
+  status         String   @default("ACTIVE")
+  featured       Boolean  @default(false)
+  order          Int      @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@map("products")
+}
+
+// ── Article ───────────────────────────────────────────────────────────────────
+
+model Article {
+  id          String           @id @default(cuid())
+  title       String
+  slug        String           @unique
+  excerpt     String
+  content     String
+  coverUrl    String?
+  status      String           @default("DRAFT")
+  publishedAt DateTime?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  categories  ArticleCategory[]
+
+  @@map("articles")
+}
+
+// ── Category ──────────────────────────────────────────────────────────────────
+
+model Category {
+  id        String           @id @default(cuid())
+  name      String
+  slug      String           @unique
+  color     String           @default("#71717a")
+  createdAt DateTime         @default(now())
+  articles  ArticleCategory[]
+
+  @@map("categories")
+}
+
+// ── ArticleCategory (join) ────────────────────────────────────────────────────
+
+model ArticleCategory {
+  articleId   String
+  categoryId  String
+  article     Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  category    Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  assignedAt  DateTime @default(now())
+
+  @@id([articleId, categoryId])
+  @@map("article_categories")
+}
+
+// ── ContactMessage ────────────────────────────────────────────────────────────
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@map("contact_messages")
+}
+
+// ── Skill ─────────────────────────────────────────────────────────────────────
+
+model Skill {
+  id        String   @id @default(cuid())
+  name      String
+  category  String
+  icon      String?
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+
+  @@map("skills")
+}
+
+// ── Experience ────────────────────────────────────────────────────────────────
+
+model Experience {
+  id          String    @id @default(cuid())
+  role        String
+  company     String
+  location    String?
+  startDate   DateTime
+  endDate     DateTime?
+  current     Boolean   @default(false)
+  description String?
+  achievements String[]
+  order       Int       @default(0)
+  createdAt   DateTime  @default(now())
+
+  @@map("experiences")
+}
