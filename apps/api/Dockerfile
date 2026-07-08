@@ -43,7 +43,7 @@ RUN pnpm --filter @portfolio/api build
 # ── Stage 2: Runtime ──────────────────────────────────────────────────────────
 FROM node:22-alpine AS runtime
 
-RUN apk add --no-cache libc6-compat
+RUN apk add --no-cache libc6-compat openssl wget
 
 WORKDIR /app
 
