@@ -9,11 +9,10 @@ import type {
   LoginResponse,
   MeResponse,
 } from '@portfolio/types';
-import { contactSchema, type contactSchema as _ } from '@portfolio/shared';
 
 // ── Config ────────────────────────────────────────────────────────────────────
 
-const API_BASE = import.meta.env.VITE_API_URL ?? '/api';
+const API_BASE = import.meta.env.VITE_API_URL ?? '/portfolio/api';
 
 // ── Token management ──────────────────────────────────────────────────────────
 

@@ -16,7 +16,7 @@ export default function App(): React.ReactNode {
           <Route path="/" element={<LandingPage />} />
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/blog/:slug" element={<ArticlePage />} />
-          <Route path="/admin" element={<AdminPage />} />
+          <Route path="/panel" element={<AdminPage />} />
           <Route path="*" element={<LandingPage />} />
         </Routes>
       </Suspense>
