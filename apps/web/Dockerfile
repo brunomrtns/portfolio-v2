@@ -39,13 +39,28 @@ RUN printf 'server {\n\
     root /usr/share/nginx/html;\n\
     index index.html;\n\
 \n\
-    location / {\n\
-        try_files $uri $uri/ /index.html;\n\
+    # Assets with long cache (Vite content-hash filenames)\n\
+    location /assets/ {\n\
+        expires 1y;\n\
+        add_header Cache-Control "public, immutable";\n\
+        access_log off;\n\
     }\n\
 \n\
+    # Static files with cache\n\
     location ~* \\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {\n\
         expires 1y;\n\
         add_header Cache-Control "public, immutable";\n\
+        access_log off;\n\
+    }\n\
+\n\
+    # index.html — no cache (always serve latest for SPA route changes)\n\
+    location = /index.html {\n\
+        add_header Cache-Control "no-store, no-cache, must-revalidate" always;\n\
+    }\n\
+\n\
+    # SPA fallback — serve index.html for all routes\n\
+    location / {\n\
+        try_files $uri $uri/ /index.html;\n\
     }\n\
 }\n' > /etc/nginx/conf.d/spa.conf
 

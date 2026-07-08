@@ -13,10 +13,14 @@ export default function App(): React.ReactNode {
     <SmoothScroll>
       <Suspense fallback={<PageLoader />}>
         <Routes>
+          {/* Landing page — served at root */}
           <Route path="/" element={<LandingPage />} />
-          <Route path="/blog" element={<BlogPage />} />
-          <Route path="/blog/:slug" element={<ArticlePage />} />
-          <Route path="/panel" element={<AdminPage />} />
+          {/* Portfolio pages — under /portfolio/ prefix */}
+          <Route path="/portfolio" element={<LandingPage />} />
+          <Route path="/portfolio/blog" element={<BlogPage />} />
+          <Route path="/portfolio/blog/:slug" element={<ArticlePage />} />
+          <Route path="/portfolio/panel" element={<AdminPage />} />
+          {/* Fallback */}
           <Route path="*" element={<LandingPage />} />
         </Routes>
       </Suspense>

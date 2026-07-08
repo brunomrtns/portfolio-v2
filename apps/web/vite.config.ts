@@ -1,9 +1,11 @@
 import path from 'node:path';
 import react from '@vitejs/plugin-react';
+import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), tailwindcss()],
+  base: '/portfolio/',
   resolve: {
     alias: {
       '@': path.resolve(import.meta.dirname, './src'),
@@ -13,9 +15,10 @@ export default defineConfig({
     port: 3103,
     host: true,
     proxy: {
-      '/api': {
+      '/portfolio/api': {
         target: 'http://localhost:3104',
         changeOrigin: true,
+        rewrite: (p) => p.replace(/^\/portfolio\/api/, '/api'),
       },
     },
   },

@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Navbar } from '@/components/navbar';
 import { Hero } from '@/sections/hero';
 import { About } from '@/sections/about';
@@ -9,9 +10,10 @@ import { Contact } from '@/sections/contact';
 import { Footer } from '@/sections/footer';
 
 export default function LandingPage(): React.ReactNode {
+  const { t } = useTranslation();
   useEffect(() => {
-    document.title = 'Bruno Integrations — Engenharia de software com precisão e propósito';
-  }, []);
+    document.title = t('meta.title');
+  }, [t]);
 
   return (
     <>

@@ -1,7 +1,9 @@
+import { useTranslation } from 'react-i18next';
 import { useSkills } from '@/hooks/use-data';
-import { Reveal, Stagger, StaggerItem } from '@/components/animation/reveal';
+import { Reveal, Stagger, StaggerItem, MouseSpotlight, SectionTransition } from '@/components/animation/reveal';
 
 export function Stack(): React.ReactNode {
+  const { t } = useTranslation();
   const { data: skills, isLoading } = useSkills();
 
   // Group skills by category
@@ -13,58 +15,65 @@ export function Stack(): React.ReactNode {
   const categories = Object.entries(grouped).sort(([a], [b]) => a.localeCompare(b));
 
   return (
-    <section id="stack" className="relative py-32">
-      <div className="section-divider absolute top-0 left-0 right-0" />
+    <section id="stack" className="relative py-36">
+      <SectionTransition />
 
-      <div className="mx-auto max-w-7xl px-6">
+      <div className="container-wide">
         {/* Section label */}
         <Reveal>
           <div className="mb-16 flex items-center gap-3">
             <span className="font-mono text-xs text-[var(--color-accent)]">03</span>
             <div className="h-px w-12 bg-[var(--color-border)]" />
-            <span className="font-mono text-xs uppercase tracking-widest text-[var(--color-text-muted)]">
-              Stack
+            <span className="font-mono text-xs uppercase tracking-[0.15em] text-[var(--color-text-muted)]">
+              {t('stack.label')}
             </span>
           </div>
         </Reveal>
 
         {/* Heading */}
-        <Reveal delay={0.1}>
-          <h2 className="font-serif text-4xl font-bold leading-tight text-[var(--color-text)] sm:text-5xl md:text-6xl">
-            Tecnologias & <span className="text-[var(--color-text-muted)]">ferramentas</span>
-          </h2>
-        </Reveal>
+        <div className="grid gap-8 lg:grid-cols-[1fr_1fr] lg:items-end">
+          <Reveal>
+            <h2 className="font-serif text-4xl font-bold leading-[1.1] tracking-[-0.02em] text-balance text-[var(--color-text)] sm:text-5xl lg:text-6xl">
+              {t('stack.title')}
+            </h2>
+          </Reveal>
+          <Reveal delay={0.15}>
+            <p className="text-lg leading-[1.7] text-pretty text-[var(--color-text-secondary)]">
+              {t('stack.subtitle')}
+            </p>
+          </Reveal>
+        </div>
 
-        {/* Grid */}
+        {/* Grid — 4 columns on desktop */}
         <div className="mt-16">
           {isLoading ? (
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {[0, 1, 2, 3, 4, 5].map((i) => (
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
                 <div
                   key={i}
-                  className="h-40 animate-pulse rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)]"
+                  className="h-44 animate-pulse rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)]"
                 />
               ))}
             </div>
           ) : (
-            <Stagger stagger={0.1} className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <Stagger stagger={0.06} className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {categories.map(([category, items]) => (
-                <StaggerItem key={category}>
-                  <div className="group rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 transition-all duration-500 hover:border-[var(--color-border-bright)] elevation-1 hover:elevation-3">
-                    <h3 className="mb-4 font-mono text-xs uppercase tracking-widest text-[var(--color-accent)]">
+                <StaggerItem key={category} y={28}>
+                  <MouseSpotlight className="h-full p-6">
+                    <h3 className="mb-4 font-mono text-xs uppercase tracking-[0.15em] text-[var(--color-accent)]">
                       {category}
                     </h3>
                     <div className="flex flex-wrap gap-2">
                       {items!.map((skill) => (
                         <span
                           key={skill.id}
-                          className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-elevated)] px-3 py-1.5 text-sm text-[var(--color-text-secondary)] transition-all duration-300 hover:border-[var(--color-accent)] hover:text-[var(--color-text)]"
+                          className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface-elevated)] px-3 py-1.5 text-sm text-[var(--color-text-secondary)] transition-all duration-300 hover:border-[var(--color-accent)] hover:text-[var(--color-text)] hover:shadow-[0_0_16px_-4px_var(--color-accent-glow)]"
                         >
                           {skill.name}
                         </span>
                       ))}
                     </div>
-                  </div>
+                  </MouseSpotlight>
                 </StaggerItem>
               ))}
             </Stagger>

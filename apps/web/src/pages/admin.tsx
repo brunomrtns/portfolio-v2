@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -13,14 +14,10 @@ import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 import type { Article, Product, ContactMessage } from '@portfolio/types';
 
-const loginSchema = z.object({
-  email: z.string().email('Email inválido'),
-  password: z.string().min(1, 'Senha obrigatória'),
-});
-
-type LoginValues = z.infer<typeof loginSchema>;
+interface LoginValues { email: string; password: string; }
 
 export default function AdminPage(): React.ReactNode {
+  const { t } = useTranslation();
   const { user, isAuthenticated, isLoading, init, login, logout } = useAuthStore();
 
   useEffect(() => {
@@ -28,8 +25,8 @@ export default function AdminPage(): React.ReactNode {
   }, [init]);
 
   useEffect(() => {
-    document.title = 'Admin — Bruno Integrations';
-  }, []);
+    document.title = t('meta.adminTitle');
+  }, [t]);
 
   if (isLoading) {
     return (
@@ -49,7 +46,13 @@ export default function AdminPage(): React.ReactNode {
 // ── Login View ────────────────────────────────────────────────────────────────
 
 function LoginView({ onLogin }: { onLogin: (email: string, password: string) => Promise<void> }): React.ReactNode {
+  const { t } = useTranslation();
   const [submitting, setSubmitting] = useState(false);
+
+  const loginSchema = z.object({
+    email: z.string().email(t('admin.validationEmailInvalid')),
+    password: z.string().min(1, t('admin.validationPasswordRequired')),
+  });
 
   const {
     register,
@@ -64,9 +67,9 @@ function LoginView({ onLogin }: { onLogin: (email: string, password: string) => 
     setSubmitting(true);
     try {
       await onLogin(values.email, values.password);
-      toast.success('Login realizado!');
+      toast.success(t('admin.loginSuccess'));
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Erro ao fazer login.';
+      const message = err instanceof Error ? err.message : t('admin.loginError');
       toast.error(message);
     } finally {
       setSubmitting(false);
@@ -85,16 +88,16 @@ function LoginView({ onLogin }: { onLogin: (email: string, password: string) => 
               <Lock className="h-6 w-6 text-[var(--color-accent)]" />
             </div>
             <h1 className="font-serif text-2xl font-bold text-[var(--color-text)]">
-              Admin Dashboard
+              {t('admin.title')}
             </h1>
             <p className="mt-2 text-sm text-[var(--color-text-muted)]">
-              Acesso restrito
+              {t('admin.subtitle')}
             </p>
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             <div className="space-y-2">
-              <Label htmlFor="admin-email">Email</Label>
+              <Label htmlFor="admin-email">{t('admin.email')}</Label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--color-text-muted)]" />
                 <Input
@@ -109,7 +112,7 @@ function LoginView({ onLogin }: { onLogin: (email: string, password: string) => 
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="admin-password">Senha</Label>
+              <Label htmlFor="admin-password">{t('admin.password')}</Label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--color-text-muted)]" />
                 <Input
@@ -125,12 +128,9 @@ function LoginView({ onLogin }: { onLogin: (email: string, password: string) => 
 
             <Button type="submit" variant="primary" size="lg" disabled={submitting} className="w-full">
               {submitting ? (
-                <>
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  Entrando...
-                </>
+                <Loader2 className="h-4 w-4 animate-spin" />
               ) : (
-                'Entrar'
+                t('admin.login')
               )}
             </Button>
           </form>
@@ -145,6 +145,7 @@ function LoginView({ onLogin }: { onLogin: (email: string, password: string) => 
 type Tab = 'articles' | 'products' | 'messages';
 
 function Dashboard({ user, onLogout }: { user: { email: string } | null; onLogout: () => void }): React.ReactNode {
+  const { t } = useTranslation();
   const [tab, setTab] = useState<Tab>('articles');
 
   return (
@@ -161,7 +162,7 @@ function Dashboard({ user, onLogout }: { user: { email: string } | null; onLogou
           </div>
           <Button variant="ghost" size="sm" onClick={onLogout}>
             <LogOut className="h-4 w-4" />
-            Sair
+            {t('admin.logout')}
           </Button>
         </div>
       </header>
@@ -170,22 +171,22 @@ function Dashboard({ user, onLogout }: { user: { email: string } | null; onLogou
       <div className="mx-auto max-w-7xl px-6 py-8">
         <div className="mb-8 flex gap-2">
           {([
-            { id: 'articles', label: 'Artigos', icon: FileText },
-            { id: 'products', label: 'Produtos', icon: Package },
-            { id: 'messages', label: 'Mensagens', icon: Inbox },
-          ] as const).map((t) => (
+            { id: 'articles', label: t('admin.tabsArticles'), icon: FileText },
+            { id: 'products', label: t('admin.tabsProducts'), icon: Package },
+            { id: 'messages', label: t('admin.tabsMessages'), icon: Inbox },
+          ] as const).map((tabItem) => (
             <button
-              key={t.id}
-              onClick={() => setTab(t.id)}
+              key={tabItem.id}
+              onClick={() => setTab(tabItem.id)}
               className={cn(
                 'inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all duration-300',
-                tab === t.id
+                tab === tabItem.id
                   ? 'bg-[var(--color-surface-elevated)] text-[var(--color-text)] border border-[var(--color-border-bright)]'
                   : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]',
               )}
             >
-              <t.icon className="h-4 w-4" />
-              {t.label}
+              <tabItem.icon className="h-4 w-4" />
+              {tabItem.label}
             </button>
           ))}
         </div>
@@ -201,6 +202,7 @@ function Dashboard({ user, onLogout }: { user: { email: string } | null; onLogou
 // ── Articles Tab ──────────────────────────────────────────────────────────────
 
 function ArticlesTab(): React.ReactNode {
+  const { t, i18n } = useTranslation();
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState<Article | null>(null);
@@ -212,7 +214,7 @@ function ArticlesTab(): React.ReactNode {
       const data = await api.admin.articles.list();
       setArticles(data);
     } catch {
-      toast.error('Erro ao carregar artigos');
+      toast.error(t('admin.articlesLoadError'));
     } finally {
       setLoading(false);
     }
@@ -238,10 +240,10 @@ function ArticlesTab(): React.ReactNode {
   return (
     <div>
       <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-[var(--color-text)]">Artigos</h2>
+        <h2 className="text-lg font-semibold text-[var(--color-text)]">{t('admin.articlesTitle')}</h2>
         <Button variant="primary" size="sm" onClick={() => setCreating(true)}>
           <Plus className="h-4 w-4" />
-          Novo artigo
+          {t('admin.newArticle')}
         </Button>
       </div>
 
@@ -261,8 +263,8 @@ function ArticlesTab(): React.ReactNode {
               <div>
                 <p className="font-medium text-[var(--color-text)]">{article.title}</p>
                 <p className="text-xs text-[var(--color-text-muted)]">
-                  {article.status === 'PUBLISHED' ? 'Publicado' : 'Rascunho'} ·{' '}
-                  {new Date(article.createdAt).toLocaleDateString('pt-BR')}
+                  {article.status === 'PUBLISHED' ? t('admin.statusPublished') : t('admin.statusDraft')} ·{' '}
+                  {new Date(article.createdAt).toLocaleDateString(i18n.language === 'pt-BR' ? 'pt-BR' : i18n.language)}
                 </p>
               </div>
               <div className="flex gap-2">
@@ -273,13 +275,13 @@ function ArticlesTab(): React.ReactNode {
                   variant="ghost"
                   size="icon"
                   onClick={async () => {
-                    if (!confirm('Deletar este artigo?')) return;
+                    if (!confirm(t('admin.deleteConfirmArticle'))) return;
                     try {
                       await api.admin.articles.delete(article.id);
-                      toast.success('Artigo deletado');
+                      toast.success(t('admin.articleDeleted'));
                       load();
                     } catch {
-                      toast.error('Erro ao deletar');
+                      toast.error(t('admin.articleDeleteError'));
                     }
                   }}
                 >
@@ -295,6 +297,7 @@ function ArticlesTab(): React.ReactNode {
 }
 
 function ArticleEditor({ article, onClose }: { article: Article | null; onClose: () => void }): React.ReactNode {
+  const { t } = useTranslation();
   const [title, setTitle] = useState(article?.title ?? '');
   const [excerpt, setExcerpt] = useState(article?.excerpt ?? '');
   const [content, setContent] = useState(article?.content ?? '');
@@ -307,14 +310,14 @@ function ArticleEditor({ article, onClose }: { article: Article | null; onClose:
       const data = { title, excerpt, content, status };
       if (article) {
         await api.admin.articles.update(article.id, data);
-        toast.success('Artigo atualizado');
+        toast.success(t('admin.articleUpdated'));
       } else {
         await api.admin.articles.create(data);
-        toast.success('Artigo criado');
+        toast.success(t('admin.articleCreated'));
       }
       onClose();
     } catch {
-      toast.error('Erro ao salvar');
+      toast.error(t('admin.articleSaveError'));
     } finally {
       setSaving(false);
     }
@@ -324,23 +327,23 @@ function ArticleEditor({ article, onClose }: { article: Article | null; onClose:
     <div className="space-y-5">
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-semibold text-[var(--color-text)]">
-          {article ? 'Editar artigo' : 'Novo artigo'}
+          {article ? t('admin.editArticle') : t('admin.newArticle')}
         </h2>
-        <Button variant="ghost" size="sm" onClick={onClose}>Cancelar</Button>
+        <Button variant="ghost" size="sm" onClick={onClose}>{t('admin.cancel')}</Button>
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="article-title">Título</Label>
+        <Label htmlFor="article-title">{t('admin.articleTitle')}</Label>
         <Input id="article-title" value={title} onChange={(e) => setTitle(e.target.value)} />
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="article-excerpt">Resumo</Label>
+        <Label htmlFor="article-excerpt">{t('admin.articleExcerpt')}</Label>
         <Input id="article-excerpt" value={excerpt} onChange={(e) => setExcerpt(e.target.value)} />
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="article-content">Conteúdo (Markdown)</Label>
+        <Label htmlFor="article-content">{t('admin.articleContent')}</Label>
         <Textarea
           id="article-content"
           rows={16}
@@ -351,20 +354,20 @@ function ArticleEditor({ article, onClose }: { article: Article | null; onClose:
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="article-status">Status</Label>
+        <Label htmlFor="article-status">{t('admin.articleStatus')}</Label>
         <select
           id="article-status"
           value={status}
           onChange={(e) => setStatus(e.target.value as 'DRAFT' | 'PUBLISHED')}
           className="flex h-10 w-full rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-4 text-sm text-[var(--color-text)]"
         >
-          <option value="DRAFT">Rascunho</option>
-          <option value="PUBLISHED">Publicado</option>
+          <option value="DRAFT">{t('admin.statusDraft')}</option>
+          <option value="PUBLISHED">{t('admin.statusPublished')}</option>
         </select>
       </div>
 
       <Button variant="primary" size="lg" disabled={saving} onClick={handleSave}>
-        {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Salvar'}
+        {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : t('admin.save')}
       </Button>
     </div>
   );
@@ -373,6 +376,7 @@ function ArticleEditor({ article, onClose }: { article: Article | null; onClose:
 // ── Products Tab ──────────────────────────────────────────────────────────────
 
 function ProductsTab(): React.ReactNode {
+  const { t } = useTranslation();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -382,7 +386,7 @@ function ProductsTab(): React.ReactNode {
         const data = await api.admin.products.list();
         setProducts(data);
       } catch {
-        toast.error('Erro ao carregar produtos');
+        toast.error(t('admin.productsLoadError'));
       } finally {
         setLoading(false);
       }
@@ -392,7 +396,7 @@ function ProductsTab(): React.ReactNode {
   return (
     <div>
       <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-[var(--color-text)]">Produtos</h2>
+        <h2 className="text-lg font-semibold text-[var(--color-text)]">{t('admin.productsTitle')}</h2>
         <Button variant="primary" size="sm">
           <Plus className="h-4 w-4" />
           Novo produto
@@ -426,13 +430,13 @@ function ProductsTab(): React.ReactNode {
                   variant="ghost"
                   size="icon"
                   onClick={async () => {
-                    if (!confirm('Deletar este produto?')) return;
+                    if (!confirm(t('admin.deleteConfirmProduct'))) return;
                     try {
                       await api.admin.products.delete(product.id);
-                      toast.success('Produto deletado');
+                      toast.success(t('admin.productDeleted'));
                       setProducts(products.filter((p) => p.id !== product.id));
                     } catch {
-                      toast.error('Erro ao deletar');
+                      toast.error(t('admin.productDeleteError'));
                     }
                   }}
                 >
@@ -450,6 +454,7 @@ function ProductsTab(): React.ReactNode {
 // ── Messages Tab ──────────────────────────────────────────────────────────────
 
 function MessagesTab(): React.ReactNode {
+  const { t, i18n } = useTranslation();
   const [messages, setMessages] = useState<ContactMessage[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -459,7 +464,7 @@ function MessagesTab(): React.ReactNode {
         const data = await api.admin.messages.list();
         setMessages(data);
       } catch {
-        toast.error('Erro ao carregar mensagens');
+        toast.error(t('admin.messagesLoadError'));
       } finally {
         setLoading(false);
       }
@@ -468,7 +473,7 @@ function MessagesTab(): React.ReactNode {
 
   return (
     <div>
-      <h2 className="mb-4 text-lg font-semibold text-[var(--color-text)]">Mensagens de contato</h2>
+      <h2 className="mb-4 text-lg font-semibold text-[var(--color-text)]">{t('admin.messagesTitle')}</h2>
 
       {loading ? (
         <div className="space-y-2">
@@ -477,7 +482,7 @@ function MessagesTab(): React.ReactNode {
           ))}
         </div>
       ) : messages.length === 0 ? (
-        <p className="text-sm text-[var(--color-text-muted)]">Nenhuma mensagem recebida.</p>
+        <p className="text-sm text-[var(--color-text-muted)]">{t('admin.messagesEmpty')}</p>
       ) : (
         <div className="space-y-3">
           {messages.map((msg) => (
@@ -495,7 +500,7 @@ function MessagesTab(): React.ReactNode {
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="font-mono text-xs text-[var(--color-text-muted)]">
-                    {new Date(msg.createdAt).toLocaleDateString('pt-BR')}
+                    {new Date(msg.createdAt).toLocaleDateString(i18n.language === 'pt-BR' ? 'pt-BR' : i18n.language)}
                   </span>
                   {!msg.read && (
                     <Button

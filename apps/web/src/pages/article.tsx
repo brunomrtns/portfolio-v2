@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Calendar, Tag } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Navbar } from '@/components/navbar';
@@ -10,8 +11,10 @@ import { Reveal } from '@/components/animation/reveal';
 import { PageLoader } from '@/components/ui/page-loader';
 
 export default function ArticlePage(): React.ReactNode {
+  const { t, i18n } = useTranslation();
   const { slug } = useParams<{ slug: string }>();
   const { data: article, isLoading } = useArticle(slug ?? '');
+  const locale = i18n.language === 'pt-BR' ? 'pt-BR' : i18n.language;
 
   useEffect(() => {
     if (article) {
@@ -35,14 +38,14 @@ export default function ArticlePage(): React.ReactNode {
         <main className="flex min-h-screen items-center justify-center">
           <div className="text-center">
             <h1 className="font-serif text-4xl font-bold text-[var(--color-text)]">
-              Artigo não encontrado
+              {t('article.notFound')}
             </h1>
             <Link
-              to="/blog"
+              to="/portfolio/blog"
               className="mt-4 inline-flex items-center gap-2 text-[var(--color-accent)] hover:underline"
             >
               <ArrowLeft className="h-4 w-4" />
-              Voltar ao blog
+              {t('article.backToBlog')}
             </Link>
           </div>
         </main>
@@ -54,14 +57,14 @@ export default function ArticlePage(): React.ReactNode {
     <>
       <Navbar />
       <main className="min-h-screen pt-32">
-        <article className="mx-auto max-w-3xl px-6">
+        <article className="container-wide">
           {/* Back link */}
           <Link
             to="/blog"
             className="inline-flex items-center gap-2 text-sm text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-accent)]"
           >
             <ArrowLeft className="h-4 w-4" />
-            Voltar ao blog
+            {t('article.backToBlog')}
           </Link>
 
           {/* Header */}
@@ -80,7 +83,7 @@ export default function ArticlePage(): React.ReactNode {
               {article.publishedAt && (
                 <span className="flex items-center gap-1 font-mono text-xs text-[var(--color-text-muted)]">
                   <Calendar className="h-3 w-3" />
-                  {new Date(article.publishedAt).toLocaleDateString('pt-BR', {
+                  {new Date(article.publishedAt).toLocaleDateString(locale, {
                     day: '2-digit',
                     month: 'long',
                     year: 'numeric',

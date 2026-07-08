@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Calendar, Tag } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Navbar } from '@/components/navbar';
 import { Footer } from '@/sections/footer';
 import { useArticles, useCategories } from '@/hooks/use-data';
@@ -11,35 +12,38 @@ import { cn } from '@/lib/utils';
 const EASE_EXPO = [0.16, 1, 0.3, 1] as const;
 
 export default function BlogPage(): React.ReactNode {
+  const { t, i18n } = useTranslation();
   const [selectedCategory, setSelectedCategory] = useState<string | undefined>();
   const { data: categories } = useCategories();
   const { data, isLoading } = useArticles({ page: 1, limit: 50, categoryId: selectedCategory });
 
   useEffect(() => {
-    document.title = 'Blog — Bruno Integrations';
-  }, []);
+    document.title = t('meta.blogTitle');
+  }, [t]);
+
+  const locale = i18n.language === 'pt-BR' ? 'pt-BR' : i18n.language;
 
   return (
     <>
       <Navbar />
       <main className="min-h-screen pt-32">
-        <div className="mx-auto max-w-4xl px-6">
+        <div className="container-wide">
           {/* Back link */}
           <Link
             to="/"
             className="inline-flex items-center gap-2 text-sm text-[var(--color-text-muted)] transition-colors hover:text-[var(--color-accent)]"
           >
             <ArrowLeft className="h-4 w-4" />
-            Voltar ao início
+            {t('blog.backHome')}
           </Link>
 
           {/* Header */}
           <Reveal>
             <h1 className="mt-8 font-serif text-5xl font-bold text-[var(--color-text)]">
-              Blog
+              {t('blog.title')}
             </h1>
             <p className="mt-4 text-lg text-[var(--color-text-secondary)]">
-              Artigos sobre engenharia de software, IA e desenvolvimento.
+              {t('blog.subtitle')}
             </p>
           </Reveal>
 
@@ -56,7 +60,7 @@ export default function BlogPage(): React.ReactNode {
                       : 'border border-[var(--color-border)] text-[var(--color-text-secondary)] hover:border-[var(--color-border-bright)]',
                   )}
                 >
-                  Todos
+                  {t('blog.allCategories')}
                 </button>
                 {categories.map((cat) => (
                   <button
@@ -92,7 +96,7 @@ export default function BlogPage(): React.ReactNode {
                 {data.items.map((article) => (
                   <StaggerItem key={article.id}>
                     <Link
-                      to={`/blog/${article.slug}`}
+                      to={`/portfolio/blog/${article.slug}`}
                       className="group block rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 transition-all duration-500 hover:border-[var(--color-border-bright)] hover:elevation-3"
                     >
                       <div className="flex items-center gap-4">
@@ -116,7 +120,7 @@ export default function BlogPage(): React.ReactNode {
                         {article.publishedAt && (
                           <span className="flex items-center gap-1 font-mono text-xs text-[var(--color-text-muted)]">
                             <Calendar className="h-3 w-3" />
-                            {new Date(article.publishedAt).toLocaleDateString('pt-BR', {
+                            {new Date(article.publishedAt).toLocaleDateString(locale, {
                               day: '2-digit',
                               month: 'short',
                               year: 'numeric',
@@ -137,10 +141,10 @@ export default function BlogPage(): React.ReactNode {
             ) : (
               <div className="py-20 text-center">
                 <p className="text-lg text-[var(--color-text-muted)]">
-                  Nenhum artigo publicado ainda.
+                  {t('blog.empty')}
                 </p>
                 <p className="mt-2 text-sm text-[var(--color-text-muted)]">
-                  Volte em breve para novos conteúdos.
+                  {t('blog.emptyHint')}
                 </p>
               </div>
             )}
