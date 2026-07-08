@@ -15,6 +15,7 @@ import {
   ConflictError,
 } from '@portfolio/shared';
 import { requireAuth } from '../plugins/auth.js';
+import { generateAllTranslations } from '../services/translate.js';
 
 // ── Admin routes (all require auth) ───────────────────────────────────────────
 
@@ -41,8 +42,18 @@ const adminRoutes: FastifyPluginAsync = async (app: FastifyInstance) => {
       throw new ConflictError(`Product with slug "${slug}" already exists`);
     }
 
+    // Generate translations for all supported languages (pt-BR is source)
+    const translations = await generateAllTranslations(
+      {
+        tagline: data.tagline,
+        description: data.description,
+        longDescription: data.longDescription ?? null,
+      },
+      { features: data.features },
+    );
+
     const product = await app.prisma.product.create({
-      data: { ...data, slug },
+      data: { ...data, slug, translations },
     });
 
     return reply.status(201).send(product);
@@ -81,9 +92,24 @@ const adminRoutes: FastifyPluginAsync = async (app: FastifyInstance) => {
       }
     }
 
+    // Regenerate translations if translatable fields changed
+    const newTagline = data.tagline ?? existing.tagline;
+    const newDescription = data.description ?? existing.description;
+    const newLongDescription = data.longDescription ?? existing.longDescription ?? null;
+    const newFeatures = data.features ?? existing.features;
+
+    const translations = await generateAllTranslations(
+      {
+        tagline: newTagline,
+        description: newDescription,
+        longDescription: newLongDescription,
+      },
+      { features: newFeatures },
+    );
+
     return app.prisma.product.update({
       where: { id: request.params.id },
-      data: { ...data, ...(slug ? { slug } : {}) },
+      data: { ...data, ...(slug ? { slug } : {}), translations },
     });
   });
 
@@ -129,6 +155,13 @@ const adminRoutes: FastifyPluginAsync = async (app: FastifyInstance) => {
           ? new Date()
           : null;
 
+    // Generate translations
+    const translations = await generateAllTranslations({
+      title: articleData.title,
+      excerpt: articleData.excerpt,
+      content: articleData.content,
+    });
+
     const article = await app.prisma.article.create({
       data: {
         title: articleData.title,
@@ -138,6 +171,7 @@ const adminRoutes: FastifyPluginAsync = async (app: FastifyInstance) => {
         coverUrl: articleData.coverUrl ?? null,
         status: articleData.status,
         publishedAt,
+        translations,
         ...(categoryIds && categoryIds.length > 0
           ? {
               categories: {
@@ -214,6 +248,16 @@ const adminRoutes: FastifyPluginAsync = async (app: FastifyInstance) => {
       }
     }
 
+    // Regenerate translations if translatable fields changed
+    const newTitle = articleData.title ?? existing.title;
+    const newExcerpt = articleData.excerpt ?? existing.excerpt;
+    const newContent = articleData.content ?? existing.content;
+    const translations = await generateAllTranslations({
+      title: newTitle,
+      excerpt: newExcerpt,
+      content: newContent,
+    });
+
     return app.prisma.article.update({
       where: { id: request.params.id },
       data: {
@@ -224,6 +268,7 @@ const adminRoutes: FastifyPluginAsync = async (app: FastifyInstance) => {
         ...(articleData.coverUrl !== undefined ? { coverUrl: articleData.coverUrl ?? null } : {}),
         ...(articleData.status !== undefined ? { status: articleData.status } : {}),
         ...(publishedAt !== undefined ? { publishedAt } : {}),
+        translations,
       },
       include: { categories: { include: { category: true } } },
     });
@@ -262,8 +307,10 @@ const adminRoutes: FastifyPluginAsync = async (app: FastifyInstance) => {
       throw new ConflictError(`Category with slug "${slug}" already exists`);
     }
 
+    const translations = await generateAllTranslations({ name: data.name });
+
     const category = await app.prisma.category.create({
-      data: { name: data.name, slug, color: data.color },
+      data: { name: data.name, slug, color: data.color, translations },
     });
 
     return reply.status(201).send(category);
@@ -301,12 +348,16 @@ const adminRoutes: FastifyPluginAsync = async (app: FastifyInstance) => {
       }
     }
 
+    const newName = data.name ?? existing.name;
+    const translations = await generateAllTranslations({ name: newName });
+
     return app.prisma.category.update({
       where: { id: request.params.id },
       data: {
         ...(data.name !== undefined ? { name: data.name } : {}),
         ...(slug ? { slug } : {}),
         ...(data.color !== undefined ? { color: data.color } : {}),
+        translations,
       },
     });
   });
@@ -336,7 +387,9 @@ const adminRoutes: FastifyPluginAsync = async (app: FastifyInstance) => {
   app.post('/skills', async (request, reply) => {
     const data = createSkillSchema.parse(request.body);
 
-    const skill = await app.prisma.skill.create({ data });
+    const translations = await generateAllTranslations({ name: data.name });
+
+    const skill = await app.prisma.skill.create({ data: { ...data, translations } });
     return reply.status(201).send(skill);
   });
 
@@ -360,9 +413,12 @@ const adminRoutes: FastifyPluginAsync = async (app: FastifyInstance) => {
       throw new NotFoundError('Skill', request.params.id);
     }
 
+    const newName = data.name ?? existing.name;
+    const translations = await generateAllTranslations({ name: newName });
+
     return app.prisma.skill.update({
       where: { id: request.params.id },
-      data,
+      data: { ...data, translations },
     });
   });
 
@@ -391,6 +447,15 @@ const adminRoutes: FastifyPluginAsync = async (app: FastifyInstance) => {
   app.post('/experience', async (request, reply) => {
     const data = createExperienceSchema.parse(request.body);
 
+    const translations = await generateAllTranslations(
+      {
+        role: data.role,
+        company: data.company,
+        description: data.description ?? null,
+      },
+      { achievements: data.achievements },
+    );
+
     const experience = await app.prisma.experience.create({
       data: {
         role: data.role,
@@ -402,6 +467,7 @@ const adminRoutes: FastifyPluginAsync = async (app: FastifyInstance) => {
         description: data.description ?? null,
         achievements: data.achievements,
         order: data.order,
+        translations,
       },
     });
 
@@ -428,6 +494,20 @@ const adminRoutes: FastifyPluginAsync = async (app: FastifyInstance) => {
       throw new NotFoundError('Experience', request.params.id);
     }
 
+    const newRole = data.role ?? existing.role;
+    const newCompany = data.company ?? existing.company;
+    const newDescription = data.description ?? existing.description ?? null;
+    const newAchievements = data.achievements ?? existing.achievements;
+
+    const translations = await generateAllTranslations(
+      {
+        role: newRole,
+        company: newCompany,
+        description: newDescription,
+      },
+      { achievements: newAchievements },
+    );
+
     return app.prisma.experience.update({
       where: { id: request.params.id },
       data: {
@@ -440,6 +520,7 @@ const adminRoutes: FastifyPluginAsync = async (app: FastifyInstance) => {
         ...(data.description !== undefined ? { description: data.description ?? null } : {}),
         ...(data.achievements !== undefined ? { achievements: data.achievements } : {}),
         ...(data.order !== undefined ? { order: data.order } : {}),
+        translations,
       },
     });
   });

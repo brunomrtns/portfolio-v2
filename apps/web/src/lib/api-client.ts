@@ -9,10 +9,17 @@ import type {
   LoginResponse,
   MeResponse,
 } from '@portfolio/types';
+import i18n from '@/i18n/i18n';
 
 // ── Config ────────────────────────────────────────────────────────────────────
 
 const API_BASE = import.meta.env.VITE_API_URL ?? '/portfolio/api';
+
+// ── Current language helper ───────────────────────────────────────────────────
+
+function getCurrentLang(): string {
+  return i18n.language ?? 'pt-BR';
+}
 
 // ── Token management ──────────────────────────────────────────────────────────
 
@@ -71,6 +78,7 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
 
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
+    'Accept-Language': getCurrentLang(),
   };
 
   if (auth) {

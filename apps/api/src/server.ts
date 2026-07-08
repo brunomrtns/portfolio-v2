@@ -4,6 +4,7 @@ import cookie from '@fastify/cookie';
 import prismaPlugin from './plugins/prisma.js';
 import errorHandlerPlugin from './plugins/error-handler.js';
 import authPlugin from './plugins/auth.js';
+import langPlugin from './plugins/lang.js';
 import publicRoutes from './routes/public.js';
 import authRoutes from './routes/auth.js';
 import adminRoutes from './routes/admin.js';
@@ -33,6 +34,7 @@ async function buildServer() {
   await app.register(prismaPlugin);
   await app.register(errorHandlerPlugin);
   await app.register(authPlugin);
+  await app.register(langPlugin);
 
   // ── Routes ───────────────────────────────────────────────────────────────
   await app.register(publicRoutes, { prefix: '/api' });

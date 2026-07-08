@@ -3,6 +3,67 @@ import { hashPassword } from '@portfolio/shared';
 
 const prisma = new PrismaClient();
 
+// ── Inline translation helper (seed runs as CJS bundle, can't import ESM services) ──
+
+const SUPPORTED_LANGUAGES = ['en', 'es', 'fr', 'de', 'ja'];
+const GOOGLE_URL = 'https://translate.googleapis.com/translate_a/single';
+
+async function translateText(text: string, targetLang: string): Promise<string> {
+  if (!text || text.trim().length === 0) return text;
+  const target = targetLang === 'pt-BR' ? 'pt' : targetLang;
+  const params = new URLSearchParams({ client: 'gtx', sl: 'pt', tl: target, dt: 't', q: text });
+  try {
+    const res = await fetch(`${GOOGLE_URL}?${params}`, {
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; PortfolioBot/1.0)' },
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    if (Array.isArray(data) && Array.isArray(data[0])) {
+      return data[0].map((s: unknown[]) => (s[0] as string) ?? '').join('');
+    }
+    return text;
+  } catch {
+    return text;
+  }
+}
+
+async function translateFields(
+  fields: Record<string, string | null | undefined>,
+  targetLang: string,
+): Promise<Record<string, string>> {
+  const results: Record<string, string> = {};
+  for (const [key, value] of Object.entries(fields)) {
+    results[key] = value ? await translateText(value, targetLang) : '';
+  }
+  return results;
+}
+
+async function translateArray(arr: string[], targetLang: string): Promise<string[]> {
+  const results: string[] = [];
+  for (const item of arr) {
+    results.push(await translateText(item, targetLang));
+  }
+  return results;
+}
+
+async function generateAllTranslations(
+  fields: Record<string, string | null | undefined>,
+  arrayFields?: Record<string, string[]>,
+): Promise<Record<string, Record<string, string | string[]>>> {
+  const translations: Record<string, Record<string, string | string[]>> = {};
+  for (const lang of SUPPORTED_LANGUAGES) {
+    const stringT = await translateFields(fields, lang);
+    const arrayT: Record<string, string[]> = {};
+    if (arrayFields) {
+      for (const [key, arr] of Object.entries(arrayFields)) {
+        arrayT[key] = await translateArray(arr, lang);
+      }
+    }
+    translations[lang] = { ...stringT, ...arrayT };
+  }
+  return translations;
+}
+
 async function main(): Promise<void> {
   console.log('🌱 Seeding database...');
 
@@ -75,7 +136,16 @@ async function main(): Promise<void> {
       where: { slug: product.slug },
     });
     if (!existing) {
-      await prisma.product.create({ data: product });
+      console.log(`  → Translating ${product.name}...`);
+      const translations = await generateAllTranslations(
+        {
+          tagline: product.tagline,
+          description: product.description,
+          longDescription: product.longDescription ?? null,
+        },
+        { features: product.features },
+      );
+      await prisma.product.create({ data: { ...product, translations } });
       console.log(`  ✓ Product created: ${product.name}`);
     } else {
       console.log(`  → Product already exists: ${product.name}`);
@@ -122,7 +192,8 @@ async function main(): Promise<void> {
       where: { name: skill.name, category: skill.category },
     });
     if (!existing) {
-      await prisma.skill.create({ data: skill });
+      const translations = await generateAllTranslations({ name: skill.name });
+      await prisma.skill.create({ data: { ...skill, translations } });
     }
   }
   console.log(`  ✓ Skills created (${skills.length})`);
@@ -169,7 +240,15 @@ async function main(): Promise<void> {
       where: { role: exp.role, company: exp.company, startDate: exp.startDate },
     });
     if (!existing) {
-      await prisma.experience.create({ data: exp });
+      const translations = await generateAllTranslations(
+        {
+          role: exp.role,
+          company: exp.company,
+          description: exp.description ?? null,
+        },
+        { achievements: exp.achievements },
+      );
+      await prisma.experience.create({ data: { ...exp, translations } });
     }
   }
   console.log(`  ✓ Experience created (${experiences.length})`);
@@ -187,7 +266,8 @@ async function main(): Promise<void> {
       where: { slug: cat.slug },
     });
     if (!existing) {
-      await prisma.category.create({ data: cat });
+      const translations = await generateAllTranslations({ name: cat.name });
+      await prisma.category.create({ data: { ...cat, translations } });
     }
   }
   console.log(`  ✓ Categories created (${categories.length})`);

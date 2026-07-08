@@ -39,6 +39,8 @@ model Product {
   status         String   @default("ACTIVE")
   featured       Boolean  @default(false)
   order          Int      @default(0)
+  // i18n: { "en": { "tagline": "...", "description": "...", "longDescription": "..." }, ... }
+  translations   Json?
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
@@ -56,6 +58,8 @@ model Article {
   coverUrl    String?
   status      String           @default("DRAFT")
   publishedAt DateTime?
+  // i18n: { "en": { "title": "...", "excerpt": "...", "content": "..." }, ... }
+  translations Json?
   createdAt   DateTime         @default(now())
   updatedAt   DateTime         @updatedAt
   categories  ArticleCategory[]
@@ -70,6 +74,8 @@ model Category {
   name      String
   slug      String           @unique
   color     String           @default("#71717a")
+  // i18n: { "en": { "name": "..." }, ... }
+  translations Json?
   createdAt DateTime         @default(now())
   articles  ArticleCategory[]
 
@@ -110,6 +116,8 @@ model Skill {
   category  String
   icon      String?
   order     Int      @default(0)
+  // i18n: { "en": { "name": "..." }, ... }
+  translations Json?
   createdAt DateTime @default(now())
 
   @@map("skills")
@@ -128,6 +136,8 @@ model Experience {
   description String?
   achievements String[]
   order       Int       @default(0)
+  // i18n: { "en": { "role": "...", "company": "...", "description": "...", "achievements": ["..."] }, ... }
+  translations Json?
   createdAt   DateTime  @default(now())
 
   @@map("experiences")

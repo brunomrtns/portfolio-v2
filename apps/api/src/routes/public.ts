@@ -10,6 +10,7 @@ import type {
   Experience,
   ContactMessage,
 } from '@portfolio/types';
+import { applyTranslations } from '../services/translate.js';
 
 // ── Public routes ─────────────────────────────────────────────────────────────
 
@@ -21,7 +22,7 @@ const publicRoutes: FastifyPluginAsync = async (app: FastifyInstance) => {
 
   // ── Products ────────────────────────────────────────────────────────────────
 
-  app.get('/products', async (): Promise<ProductListItem[]> => {
+  app.get('/products', async (request): Promise<ProductListItem[]> => {
     const products = await app.prisma.product.findMany({
       orderBy: [
         { featured: 'desc' },
@@ -30,19 +31,22 @@ const publicRoutes: FastifyPluginAsync = async (app: FastifyInstance) => {
       ],
     });
 
-    return products.map((p) => ({
-      id: p.id,
-      name: p.name,
-      tagline: p.tagline,
-      description: p.description,
-      slug: p.slug,
-      url: p.url,
-      imageUrl: p.imageUrl,
-      logoUrl: p.logoUrl,
-      tech: p.tech,
-      status: p.status as ProductListItem['status'],
-      featured: p.featured,
-    }));
+    return products.map((p) => {
+      const base = {
+        id: p.id,
+        name: p.name,
+        tagline: p.tagline,
+        description: p.description,
+        slug: p.slug,
+        url: p.url,
+        imageUrl: p.imageUrl,
+        logoUrl: p.logoUrl,
+        tech: p.tech,
+        status: p.status as ProductListItem['status'],
+        featured: p.featured,
+      };
+      return applyTranslations(base, p.translations, request.lang, ['tagline', 'description']);
+    });
   });
 
   app.get<{ Params: { slug: string } }>(
@@ -58,7 +62,7 @@ const publicRoutes: FastifyPluginAsync = async (app: FastifyInstance) => {
         throw new NotFoundError('Product', slug);
       }
 
-      return reply.send({
+      const base = {
         id: product.id,
         name: product.name,
         tagline: product.tagline,
@@ -76,7 +80,17 @@ const publicRoutes: FastifyPluginAsync = async (app: FastifyInstance) => {
         order: product.order,
         createdAt: product.createdAt.toISOString(),
         updatedAt: product.updatedAt.toISOString(),
-      });
+      };
+
+      const translated = applyTranslations(
+        base,
+        product.translations,
+        request.lang,
+        ['tagline', 'description', 'longDescription'],
+        ['features'],
+      );
+
+      return reply.send(translated);
     },
   );
 
@@ -116,22 +130,28 @@ const publicRoutes: FastifyPluginAsync = async (app: FastifyInstance) => {
       ]);
 
       return {
-        items: articles.map((a) => ({
-          id: a.id,
-          title: a.title,
-          slug: a.slug,
-          excerpt: a.excerpt,
-          coverUrl: a.coverUrl,
-          status: a.status as ArticleListItem['status'],
-          publishedAt: a.publishedAt?.toISOString() ?? null,
-          createdAt: a.createdAt.toISOString(),
-          categories: a.categories.map((ac) => ({
-            id: ac.category.id,
-            name: ac.category.name,
-            slug: ac.category.slug,
-            color: ac.category.color,
-          })),
-        })),
+        items: articles.map((a) => {
+          const base = {
+            id: a.id,
+            title: a.title,
+            slug: a.slug,
+            excerpt: a.excerpt,
+            coverUrl: a.coverUrl,
+            status: a.status as ArticleListItem['status'],
+            publishedAt: a.publishedAt?.toISOString() ?? null,
+            createdAt: a.createdAt.toISOString(),
+            categories: a.categories.map((ac) => {
+              const catBase = {
+                id: ac.category.id,
+                name: ac.category.name,
+                slug: ac.category.slug,
+                color: ac.category.color,
+              };
+              return applyTranslations(catBase, ac.category.translations, request.lang, ['name']);
+            }),
+          };
+          return applyTranslations(base, a.translations, request.lang, ['title', 'excerpt']);
+        }),
         total,
         page,
         limit,
@@ -156,7 +176,7 @@ const publicRoutes: FastifyPluginAsync = async (app: FastifyInstance) => {
         throw new NotFoundError('Article', slug);
       }
 
-      return reply.send({
+      const base = {
         id: article.id,
         title: article.title,
         slug: article.slug,
@@ -167,19 +187,31 @@ const publicRoutes: FastifyPluginAsync = async (app: FastifyInstance) => {
         publishedAt: article.publishedAt?.toISOString() ?? null,
         createdAt: article.createdAt.toISOString(),
         updatedAt: article.updatedAt.toISOString(),
-        categories: article.categories.map((ac) => ({
-          id: ac.category.id,
-          name: ac.category.name,
-          slug: ac.category.slug,
-          color: ac.category.color,
-        })),
-      });
+        categories: article.categories.map((ac) => {
+          const catBase = {
+            id: ac.category.id,
+            name: ac.category.name,
+            slug: ac.category.slug,
+            color: ac.category.color,
+          };
+          return applyTranslations(catBase, ac.category.translations, request.lang, ['name']);
+        }),
+      };
+
+      const translated = applyTranslations(
+        base,
+        article.translations,
+        request.lang,
+        ['title', 'excerpt', 'content'],
+      );
+
+      return reply.send(translated);
     },
   );
 
   // ── Categories ───────────────────────────────────────────────────────────────
 
-  app.get('/categories', async (): Promise<(Category & { articleCount: number })[]> => {
+  app.get('/categories', async (request): Promise<(Category & { articleCount: number })[]> => {
     const categories = await app.prisma.category.findMany({
       include: {
         _count: { select: { articles: true } },
@@ -187,50 +219,65 @@ const publicRoutes: FastifyPluginAsync = async (app: FastifyInstance) => {
       orderBy: { name: 'asc' },
     });
 
-    return categories.map((c) => ({
-      id: c.id,
-      name: c.name,
-      slug: c.slug,
-      color: c.color,
-      articleCount: c._count.articles,
-    }));
+    return categories.map((c) => {
+      const base = {
+        id: c.id,
+        name: c.name,
+        slug: c.slug,
+        color: c.color,
+        articleCount: c._count.articles,
+      };
+      return applyTranslations(base, c.translations, request.lang, ['name']);
+    });
   });
 
   // ── Skills ──────────────────────────────────────────────────────────────────
 
-  app.get('/skills', async (): Promise<Skill[]> => {
+  app.get('/skills', async (request): Promise<Skill[]> => {
     const skills = await app.prisma.skill.findMany({
       orderBy: [{ category: 'asc' }, { order: 'asc' }],
     });
 
-    return skills.map((s) => ({
-      id: s.id,
-      name: s.name,
-      category: s.category,
-      icon: s.icon,
-      order: s.order,
-    }));
+    return skills.map((s) => {
+      const base = {
+        id: s.id,
+        name: s.name,
+        category: s.category,
+        icon: s.icon,
+        order: s.order,
+      };
+      return applyTranslations(base, s.translations, request.lang, ['name']);
+    });
   });
 
   // ── Experience ───────────────────────────────────────────────────────────────
 
-  app.get('/experience', async (): Promise<Experience[]> => {
+  app.get('/experience', async (request): Promise<Experience[]> => {
     const experiences = await app.prisma.experience.findMany({
       orderBy: { order: 'asc' },
     });
 
-    return experiences.map((e) => ({
-      id: e.id,
-      role: e.role,
-      company: e.company,
-      location: e.location,
-      startDate: e.startDate.toISOString(),
-      endDate: e.endDate?.toISOString() ?? null,
-      current: e.current,
-      description: e.description,
-      achievements: e.achievements,
-      order: e.order,
-    }));
+    return experiences.map((e) => {
+      const base = {
+        id: e.id,
+        role: e.role,
+        company: e.company,
+        location: e.location,
+        startDate: e.startDate.toISOString(),
+        endDate: e.endDate?.toISOString() ?? null,
+        current: e.current,
+        description: e.description,
+        achievements: e.achievements,
+        order: e.order,
+      };
+      return applyTranslations(
+        base,
+        e.translations,
+        request.lang,
+        ['role', 'company', 'description'],
+        ['achievements'],
+      );
+    });
   });
 
   // ── Contact ──────────────────────────────────────────────────────────────────
