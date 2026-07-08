@@ -20,6 +20,22 @@ export function SectionRail(): React.ReactNode {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [railHovered, setRailHovered] = useState(false);
   const railRef = useRef<HTMLDivElement>(null);
+  const hideTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const cancelHide = () => {
+    if (hideTimerRef.current) {
+      clearTimeout(hideTimerRef.current);
+      hideTimerRef.current = null;
+    }
+  };
+
+  const scheduleHide = () => {
+    cancelHide();
+    hideTimerRef.current = setTimeout(() => {
+      setRailHovered(false);
+      setHoveredId(null);
+    }, 200);
+  };
 
   // Track active section via IntersectionObserver
   useEffect(() => {
@@ -42,7 +58,10 @@ export function SectionRail(): React.ReactNode {
       observers.push(observer);
     });
 
-    return () => observers.forEach((o) => o.disconnect());
+    return () => {
+      observers.forEach((o) => o.disconnect());
+      cancelHide();
+    };
   }, []);
 
   const handleClick = (id: string) => {
@@ -63,8 +82,8 @@ export function SectionRail(): React.ReactNode {
       <div
         ref={railRef}
         className="relative flex flex-col items-end gap-0 py-2"
-        onMouseEnter={() => setRailHovered(true)}
-        onMouseLeave={() => setRailHovered(false)}
+        onMouseEnter={() => { cancelHide(); setRailHovered(true); }}
+        onMouseLeave={() => scheduleHide()}
       >
         {/* Track — full background line */}
         <div className="absolute right-[19px] top-5 bottom-5 w-px bg-[var(--color-border)]" />
@@ -86,12 +105,15 @@ export function SectionRail(): React.ReactNode {
             <button
               key={id}
               onClick={() => handleClick(id)}
-              onMouseEnter={() => setHoveredId(id)}
+              onMouseEnter={() => { cancelHide(); setHoveredId(id); }}
               onMouseLeave={() => setHoveredId(null)}
               className="group relative flex h-10 w-10 items-center justify-center"
               aria-label={t(labelKey)}
               aria-current={isActive ? 'true' : undefined}
             >
+              {/* Invisible bridge — extends hover/click area to cover tooltip gap */}
+              <div className="absolute right-0 top-0 h-full w-12" />
+
               {/* Tooltip — glass pill, slides in from right */}
               <AnimatePresence>
                 {(isHovered || railHovered) && (
@@ -100,8 +122,9 @@ export function SectionRail(): React.ReactNode {
                     animate={{ opacity: 1, x: 0, scale: 1 }}
                     exit={{ opacity: 0, x: 6, scale: 0.95 }}
                     transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1], delay: isHovered ? 0 : index * 0.03 }}
+                    onMouseEnter={() => cancelHide()}
                     className={cn(
-                      'pointer-events-none absolute right-12 whitespace-nowrap rounded-lg border border-[var(--color-border-glow)] bg-[var(--color-surface-glass)] px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.14em] backdrop-blur-xl elevation-2 transition-colors',
+                      'absolute right-12 whitespace-nowrap rounded-lg border border-[var(--color-border-glow)] bg-[var(--color-surface-glass)] px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.14em] backdrop-blur-xl elevation-2 transition-all cursor-pointer hover:border-[var(--color-accent)]/40 hover:bg-[var(--color-surface)]',
                       isHovered
                         ? 'text-[var(--color-text)]'
                         : 'text-[var(--color-text-muted)]',

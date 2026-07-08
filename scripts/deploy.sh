@@ -184,6 +184,17 @@ fi
 CURRENT_VERSION=$(get_version)
 log "Versão atual: v$CURRENT_VERSION"
 
+# ── Step 0.5: Rodar testes ───────────────────────────────────────────────────
+if [[ "$MIGRATE_ONLY" -eq 0 ]]; then
+  log "Rodando testes automatizados..."
+  if ! pnpm test 2>&1; then
+    err "Testes falharam — deploy abortado"
+    err "Rode 'pnpm test' localmente para investigar"
+    exit 1
+  fi
+  ok "Todos os testes passaram"
+fi
+
 # Criar tag de rollback
 DEPLOY_TAG="pre-deploy-$(date +%Y%m%d-%H%M%S)"
 if git rev-parse --git-dir &>/dev/null; then
