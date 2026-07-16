@@ -21,16 +21,6 @@
   <rect width="1200" height="627" fill="url(#glow-teal)"/>
   <rect width="1200" height="627" fill="url(#glow-amber)"/>
 
-  <!-- Subtle grid pattern (very faint) -->
-  <g opacity="0.03">
-    <line x1="0" y1="157" x2="1200" y2="157" stroke="#f5f5f7" stroke-width="1"/>
-    <line x1="0" y1="314" x2="1200" y2="314" stroke="#f5f5f7" stroke-width="1"/>
-    <line x1="0" y1="471" x2="1200" y2="471" stroke="#f5f5f7" stroke-width="1"/>
-    <line x1="300" y1="0" x2="300" y2="627" stroke="#f5f5f7" stroke-width="1"/>
-    <line x1="600" y1="0" x2="600" y2="627" stroke="#f5f5f7" stroke-width="1"/>
-    <line x1="900" y1="0" x2="900" y2="627" stroke="#f5f5f7" stroke-width="1"/>
-  </g>
-
   <!-- Top accent line -->
   <rect x="80" y="60" width="40" height="3" rx="1.5" fill="hsl(172, 72%, 44%)"/>
 

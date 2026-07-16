@@ -15,7 +15,8 @@
     "blog": "ブログ",
     "contato": "お問い合わせ",
     "github": "GitHub",
-    "solucoes": "ソリューション"
+    "solucoes": "ソリューション",
+    "educacao": "トレーニング"
   },
   "hero": {
     "badge": "プロジェクトで利用可能",
@@ -235,6 +236,18 @@
     "experienceToStack": "私が使用しているテクノロジー",
     "stackToPortfolio": "このウェブサイトのエンジニアリング",
     "portfolioToPrinciples": "私の考え方",
-    "principlesToContact": "話しましょう"
+    "principlesToContact": "話しましょう",
+    "experienceToEducation": "学歴",
+    "educationToStack": "私が使用しているテクノロジー"
+  },
+  "education": {
+    "label": "トレーニング",
+    "title": "教育と認定",
+    "subtitle": "ソフトウェア エンジニアリング、AI、インフラストラクチャにおける私の技術基盤をサポートする学術トレーニングと専門資格。",
+    "degreeBadge": "学士号",
+    "completed": "完了",
+    "degreeDesc": "ソフトウェア開発、データベース、システム分析、ネットワーク、IT プロジェクト管理に関する完全なトレーニング。",
+    "viewDiploma": "卒業証書を見る",
+    "certificationsTitle": "認定資格とコース"
   }
 }

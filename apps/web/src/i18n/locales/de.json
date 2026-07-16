@@ -15,7 +15,8 @@
     "blog": "Blog",
     "contato": "Kontakt",
     "github": "GitHub",
-    "solucoes": "Lösungen"
+    "solucoes": "Lösungen",
+    "educacao": "Ausbildung"
   },
   "hero": {
     "badge": "Verfügbar für Projekte",
@@ -235,6 +236,18 @@
     "experienceToStack": "Technologien, die ich verwende",
     "stackToPortfolio": "Die Technik dieser Website",
     "portfolioToPrinciples": "Wie ich denke",
-    "principlesToContact": "Lass uns reden"
+    "principlesToContact": "Lass uns reden",
+    "experienceToEducation": "Akademischer Hintergrund",
+    "educationToStack": "Technologien, die ich verwende"
+  },
+  "education": {
+    "label": "Ausbildung",
+    "title": "Ausbildung und Zertifizierungen",
+    "subtitle": "Akademische Ausbildung und professionelle Zertifizierungen, die meine technische Basis in den Bereichen Softwareentwicklung, KI und Infrastruktur unterstützen.",
+    "degreeBadge": "Bachelor-Abschluss",
+    "completed": "Vollendet",
+    "degreeDesc": "Komplette Ausbildung in Softwareentwicklung, Datenbanken, Systemanalyse, Netzwerken und IT-Projektmanagement.",
+    "viewDiploma": "Diplom ansehen",
+    "certificationsTitle": "Zertifizierungen und Kurse"
   }
 }

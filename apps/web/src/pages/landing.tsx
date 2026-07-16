@@ -8,6 +8,7 @@ import { About } from '@/sections/about';
 import { Solutions } from '@/sections/solutions';
 import { Products } from '@/sections/products';
 import { Experience } from '@/sections/experience';
+import { Education } from '@/sections/education';
 import { Stack } from '@/sections/stack';
 import { PortfolioAbout } from '@/sections/portfolio-about';
 import { Principles } from '@/sections/principles';
@@ -31,6 +32,7 @@ export default function LandingPage(): React.ReactNode {
         <Solutions />
         <Products />
         <Experience />
+        <Education />
         <Stack />
         <PortfolioAbout />
         <Principles />

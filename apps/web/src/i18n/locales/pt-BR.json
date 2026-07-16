@@ -11,6 +11,7 @@
     "produtos": "Produtos",
     "stack": "Stack",
     "experiencia": "Experiência",
+    "educacao": "Formação",
     "portfolio": "Portfolio",
     "principios": "Princípios",
     "blog": "Blog",
@@ -100,6 +101,16 @@
     "subtitle": "Experiência prática em empresas reais, construindo sistemas críticos com tecnologias modernas e times multidisciplinares.",
     "current": "Atual",
     "present": "Presente"
+  },
+  "education": {
+    "label": "Formação",
+    "title": "Educação & Certificações",
+    "subtitle": "Formação acadêmica e certificações profissionais que sustentam minha base técnica em engenharia de software, IA e infraestrutura.",
+    "degreeBadge": "Bacharelado",
+    "completed": "Concluído",
+    "degreeDesc": "Formação completa em desenvolvimento de software, banco de dados, análise de sistemas, redes e gestão de projetos de TI.",
+    "viewDiploma": "Ver diploma",
+    "certificationsTitle": "Certificações & Cursos"
   },
   "portfolioAbout": {
     "label": "Engenharia",
@@ -232,7 +243,8 @@
     "aboutToSolutions": "O que eu construo",
     "solutionsToProducts": "Projetos em produção",
     "productsToExperience": "Minha trajetória",
-    "experienceToStack": "Tecnologias que uso",
+    "experienceToEducation": "Formação acadêmica",
+    "educationToStack": "Tecnologias que uso",
     "stackToPortfolio": "A engenharia deste site",
     "portfolioToPrinciples": "Como eu penso",
     "principlesToContact": "Vamos conversar"

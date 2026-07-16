@@ -15,7 +15,8 @@
     "blog": "Blog",
     "contato": "Contact",
     "github": "GitHub",
-    "solucoes": "Solutions"
+    "solucoes": "Solutions",
+    "educacao": "Training"
   },
   "hero": {
     "badge": "Available for projects",
@@ -235,6 +236,18 @@
     "experienceToStack": "Technologies I use",
     "stackToPortfolio": "The engineering of this website",
     "portfolioToPrinciples": "How I think",
-    "principlesToContact": "Let's talk"
+    "principlesToContact": "Let's talk",
+    "experienceToEducation": "Academic background",
+    "educationToStack": "Technologies I use"
+  },
+  "education": {
+    "label": "Training",
+    "title": "Education & Certifications",
+    "subtitle": "Academic training and professional certifications that support my technical base in software engineering, AI and infrastructure.",
+    "degreeBadge": "Bachelor's degree",
+    "completed": "Completed",
+    "degreeDesc": "Complete training in software development, databases, systems analysis, networks and IT project management.",
+    "viewDiploma": "View diploma",
+    "certificationsTitle": "Certifications & Courses"
   }
 }

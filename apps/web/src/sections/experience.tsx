@@ -134,7 +134,7 @@ export function Experience(): React.ReactNode {
           )}
         </div>
 
-        <ScrollHint labelKey="scroll.experienceToStack" targetId="stack" />
+        <ScrollHint labelKey="scroll.experienceToEducation" targetId="educacao" />
       </div>
     </section>
   );
