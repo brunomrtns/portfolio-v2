@@ -10,8 +10,8 @@ const DEGREE = {
   institution: 'Universidade do Sul de Santa Catarina',
   institutionShort: 'UNISUL',
   period: 'fev 2020 — dez 2023',
-  diplomaPdf: '/certificates/diploma-unisul.pdf',
-  diplomaImg: '/certificates/diploma-unisul.png',
+  diplomaPdf: '/portfolio/certificates/diploma-unisul.pdf',
+  diplomaImg: '/portfolio/certificates/diploma-unisul.png',
 };
 
 type Certification = {
@@ -36,7 +36,7 @@ const CERTIFICATIONS: Certification[] = [
     title: 'IA na Prática: Criação de Prompts',
     institution: 'SENAI',
     date: '2025',
-    href: '/certificates/senai-ia-criacao-prompts.pdf',
+    href: '/portfolio/certificates/senai-ia-criacao-prompts.pdf',
     icon: Brain,
     external: false,
   },
@@ -44,7 +44,7 @@ const CERTIFICATIONS: Certification[] = [
     title: 'IA na Prática: Fundamentos da Inteligência Artificial',
     institution: 'SENAI',
     date: '2025',
-    href: '/certificates/senai-ia-fundamentos.pdf',
+    href: '/portfolio/certificates/senai-ia-fundamentos.pdf',
     icon: Brain,
     external: false,
   },
