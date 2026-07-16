@@ -36,6 +36,7 @@ vi.mock('react-i18next', () => ({
         'nav.solucoes': 'Soluções',
         'nav.produtos': 'Produtos',
         'nav.experiencia': 'Experiência',
+        'nav.educacao': 'Formação',
         'nav.stack': 'Stack',
         'nav.portfolio': 'Portfolio',
         'nav.principios': 'Princípios',
@@ -65,7 +66,7 @@ describe('SectionRail', () => {
   it('renders a button for each section', () => {
     render(<SectionRail />);
     const buttons = screen.getAllByRole('button');
-    expect(buttons).toHaveLength(8);
+    expect(buttons).toHaveLength(9);
   });
 
   it('shows section labels as aria-label', () => {
@@ -76,7 +77,7 @@ describe('SectionRail', () => {
 
   it('scrolls to section on click', async () => {
     // Create mock elements with ids that match SECTIONS
-    const sections = ['sobre', 'solucoes', 'produtos', 'experiencia', 'stack', 'portfolio', 'principios', 'contato'];
+    const sections = ['sobre', 'solucoes', 'produtos', 'experiencia', 'educacao', 'stack', 'portfolio', 'principios', 'contato'];
     sections.forEach((id) => {
       const el = document.createElement('div');
       el.id = id;
