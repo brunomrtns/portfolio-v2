@@ -23,7 +23,7 @@ export function Stack(): React.ReactNode {
         {/* Section label */}
         <Reveal>
           <div className="mb-16 flex items-center gap-3">
-            <span className="font-mono text-xs text-[var(--color-accent)]">05</span>
+            <span className="font-mono text-xs text-[var(--color-accent)]">06</span>
             <div className="h-px w-12 bg-[var(--color-border)]" />
             <span className="font-mono text-xs uppercase tracking-[0.15em] text-[var(--color-text-muted)]">
               {t('stack.label')}

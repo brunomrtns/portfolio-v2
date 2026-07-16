@@ -15,7 +15,8 @@
     "blog": "Blogue",
     "contato": "Contact",
     "github": "GitHub",
-    "solucoes": "Solutions"
+    "solucoes": "Solutions",
+    "educacao": "Entraînement"
   },
   "hero": {
     "badge": "Disponible pour les projets",
@@ -235,6 +236,18 @@
     "experienceToStack": "Technologies que j'utilise",
     "stackToPortfolio": "L'ingénierie de ce site",
     "portfolioToPrinciples": "Comment je pense",
-    "principlesToContact": "Parlons"
+    "principlesToContact": "Parlons",
+    "experienceToEducation": "Formation académique",
+    "educationToStack": "Technologies que j'utilise"
+  },
+  "education": {
+    "label": "Entraînement",
+    "title": "Formation et certifications",
+    "subtitle": "Formation académique et certifications professionnelles qui soutiennent ma base technique en génie logiciel, IA et infrastructure.",
+    "degreeBadge": "licence",
+    "completed": "Complété",
+    "degreeDesc": "Formation complète en développement de logiciels, bases de données, analyse de systèmes, réseaux et gestion de projets informatiques.",
+    "viewDiploma": "Voir le diplôme",
+    "certificationsTitle": "Certifications et cours"
   }
 }

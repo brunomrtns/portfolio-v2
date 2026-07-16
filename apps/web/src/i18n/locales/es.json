@@ -15,7 +15,8 @@
     "blog": "Blog",
     "contato": "Contacto",
     "github": "GitHub",
-    "solucoes": "Soluciones"
+    "solucoes": "Soluciones",
+    "educacao": "Capacitación"
   },
   "hero": {
     "badge": "Disponible para proyectos",
@@ -235,6 +236,18 @@
     "experienceToStack": "Tecnologías que uso",
     "stackToPortfolio": "La ingeniería de este sitio web.",
     "portfolioToPrinciples": "como pienso",
-    "principlesToContact": "hablemos"
+    "principlesToContact": "hablemos",
+    "experienceToEducation": "Antecedentes academicos",
+    "educationToStack": "Tecnologías que uso"
+  },
+  "education": {
+    "label": "Capacitación",
+    "title": "Educación y certificaciones",
+    "subtitle": "Formación académica y certificaciones profesionales que respaldan mi base técnica en ingeniería de software, IA e infraestructura.",
+    "degreeBadge": "licenciatura",
+    "completed": "Terminado",
+    "degreeDesc": "Formación completa en desarrollo de software, bases de datos, análisis de sistemas, redes y gestión de proyectos TI.",
+    "viewDiploma": "Ver diploma",
+    "certificationsTitle": "Certificaciones y cursos"
   }
 }

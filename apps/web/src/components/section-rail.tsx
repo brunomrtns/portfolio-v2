@@ -8,6 +8,7 @@ const SECTIONS = [
   { id: 'solucoes', labelKey: 'nav.solucoes' },
   { id: 'produtos', labelKey: 'nav.produtos' },
   { id: 'experiencia', labelKey: 'nav.experiencia' },
+  { id: 'educacao', labelKey: 'nav.educacao' },
   { id: 'stack', labelKey: 'nav.stack' },
   { id: 'portfolio', labelKey: 'nav.portfolio' },
   { id: 'principios', labelKey: 'nav.principios' },

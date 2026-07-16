@@ -116,7 +116,7 @@ portfolio-v2/
 
 #### Páginas
 
-- `/` — Landing page (Hero, Sobre, Produtos, Stack, Experiência, Contato)
+- `/` — Landing page (Hero, Sobre, Produtos, Stack, Experiência, Formação, Contato)
 - `/portfolio/blog` — Lista de artigos
 - `/portfolio/blog/:slug` — Artigo individual (markdown render)
 - `/portfolio/panel` — Painel admin (login + CRUD)
