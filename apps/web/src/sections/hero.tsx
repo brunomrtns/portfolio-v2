@@ -155,7 +155,7 @@ export function Hero(): React.ReactNode {
               <Magnetic strength={0.25}>
                 <a
                   href="#produtos"
-                  className="group relative inline-flex h-12 items-center gap-2 overflow-hidden rounded-xl bg-[var(--color-accent)] px-8 font-semibold text-white shadow-[0_0_24px_-4px_var(--color-accent-glow)] transition-all duration-500 hover:shadow-[0_0_40px_-4px_var(--color-accent-glow)] hover:bg-[var(--color-accent-hover)] active:scale-[0.97]"
+                  className="group relative inline-flex h-12 items-center gap-2 overflow-hidden rounded-xl bg-[var(--color-accent)] px-8 font-semibold text-white shadow-[0_0_24px_-4px_var(--color-accent-glow)] transition-all duration-500 hover:shadow-[0_0_40px_-4px_var(--color-accent-glow)] hover:bg-[var(--color-accent-hover)] max-sm:active:scale-[0.97]"
                 >
                   {/* Shimmer sweep on hover */}
                   <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/15 to-transparent transition-transform duration-700 group-hover:translate-x-full" />

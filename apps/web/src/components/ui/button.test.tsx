@@ -1,7 +1,8 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Button } from './button';
+import { simulateMobileViewport, simulateDesktopViewport } from '@/__tests__/helpers/viewport';
 
 describe('Button', () => {
   it('renders children', () => {
@@ -81,5 +82,77 @@ describe('Button', () => {
     const ref = { current: null as HTMLButtonElement | null };
     render(<Button ref={ref}>Ref</Button>);
     expect(ref.current).toBeInstanceOf(HTMLButtonElement);
+  });
+});
+
+// ── Mobile-specific: touch targets ≥ 44px via max-sm: classes ───────────────
+describe('Button mobile touch targets', () => {
+  beforeEach(() => {
+    simulateMobileViewport();
+  });
+
+  it('default size has mobile touch target (h-11) on top of desktop h-10', () => {
+    render(<Button>Default</Button>);
+    const btn = screen.getByRole('button');
+    // Both classes are present in the cva output; max-sm:h-11 only applies on mobile
+    expect(btn.className).toContain('h-10');
+    expect(btn.className).toContain('max-sm:h-11');
+  });
+
+  it('sm size has mobile touch target (h-9) on top of desktop h-8', () => {
+    render(<Button size="sm">Small</Button>);
+    const btn = screen.getByRole('button');
+    expect(btn.className).toContain('h-8');
+    expect(btn.className).toContain('max-sm:h-9');
+  });
+
+  it('icon size has mobile touch target (h-11 w-11) on top of desktop h-10 w-10', () => {
+    render(<Button size="icon">X</Button>);
+    const btn = screen.getByRole('button');
+    expect(btn.className).toContain('h-10');
+    expect(btn.className).toContain('w-10');
+    expect(btn.className).toContain('max-sm:h-11');
+    expect(btn.className).toContain('max-sm:w-11');
+  });
+
+  it('lg size is unchanged (no mobile variant needed)', () => {
+    render(<Button size="lg">Large</Button>);
+    const btn = screen.getByRole('button');
+    expect(btn.className).toContain('h-12');
+    expect(btn.className).not.toContain('max-sm:h-12');
+  });
+
+  it('has active:scale feedback only on mobile (max-sm:active:scale)', () => {
+    render(<Button>Click</Button>);
+    const btn = screen.getByRole('button');
+    expect(btn.className).toContain('max-sm:active:scale-[0.97]');
+    // Should NOT have a bare active:scale that would affect desktop
+    expect(btn.className).not.toMatch(/(?<!max-sm:)active:scale/);
+  });
+});
+
+// ── Desktop regression: ensure desktop classes are untouched ────────────────
+describe('Button desktop regression', () => {
+  beforeEach(() => {
+    simulateDesktopViewport();
+  });
+
+  it('default size keeps h-10 (desktop baseline)', () => {
+    render(<Button>Default</Button>);
+    const btn = screen.getByRole('button');
+    expect(btn.className).toContain('h-10');
+  });
+
+  it('sm size keeps h-8 (desktop baseline)', () => {
+    render(<Button size="sm">Small</Button>);
+    const btn = screen.getByRole('button');
+    expect(btn.className).toContain('h-8');
+  });
+
+  it('icon size keeps h-10 w-10 (desktop baseline)', () => {
+    render(<Button size="icon">X</Button>);
+    const btn = screen.getByRole('button');
+    expect(btn.className).toContain('h-10');
+    expect(btn.className).toContain('w-10');
   });
 });

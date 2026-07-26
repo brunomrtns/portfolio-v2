@@ -169,7 +169,7 @@ function Dashboard({ user, onLogout }: { user: { email: string } | null; onLogou
 
       {/* Tabs */}
       <div className="mx-auto max-w-7xl px-6 py-8">
-        <div className="mb-8 flex gap-2 overflow-x-auto pb-1">
+        <div className="mb-8 flex gap-2 max-sm:overflow-x-auto max-sm:pb-1">
           {([
             { id: 'articles', label: t('admin.tabsArticles'), icon: FileText },
             { id: 'products', label: t('admin.tabsProducts'), icon: Package },
@@ -346,7 +346,7 @@ function ArticleEditor({ article, onClose }: { article: Article | null; onClose:
         <Label htmlFor="article-content">{t('admin.articleContent')}</Label>
         <Textarea
           id="article-content"
-          rows={10}
+          rows={16}
           value={content}
           onChange={(e) => setContent(e.target.value)}
           className="font-mono text-sm"
