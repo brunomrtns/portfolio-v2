@@ -13,11 +13,11 @@ export function Brand(): React.ReactNode {
   ];
 
   return (
-    <section id="marca" className="relative py-24">
+    <section id="marca" className="relative py-16 sm:py-24">
       <SectionTransition />
 
       <div className="container-wide">
-        <div className="grid gap-12 lg:grid-cols-[1fr_1.4fr] lg:items-center lg:gap-20">
+        <div className="grid gap-8 sm:gap-12 lg:grid-cols-[1fr_1.4fr] lg:items-center lg:gap-20">
           {/* Left — brand identity */}
           <Reveal>
             <div>

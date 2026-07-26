@@ -9,14 +9,14 @@ export function Experience(): React.ReactNode {
   const { data: experiences, isLoading } = useExperience();
 
   return (
-    <section id="experiencia" className="relative py-36">
+    <section id="experiencia" className="relative py-24 sm:py-36">
       <SectionTransition />
       <div className="mesh-bg pointer-events-none" />
 
       <div className="container-wide relative">
         {/* Section label */}
         <Reveal>
-          <div className="mb-16 flex items-center gap-3">
+          <div className="mb-8 sm:mb-16 flex items-center gap-3">
             <span className="font-mono text-xs text-[var(--color-accent)]">04</span>
             <div className="h-px w-12 bg-[var(--color-border)]" />
             <span className="font-mono text-xs uppercase tracking-[0.15em] text-[var(--color-text-muted)]">

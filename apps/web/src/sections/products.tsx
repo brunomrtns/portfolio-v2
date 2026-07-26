@@ -11,14 +11,14 @@ export function Products(): React.ReactNode {
   const { data: products, isLoading } = useProducts();
 
   return (
-    <section id="produtos" className="relative py-32">
+    <section id="produtos" className="relative py-20 sm:py-32">
       <SectionTransition />
       <div className="mesh-bg pointer-events-none" />
 
       <div className="container-wide relative">
         {/* Section label */}
         <Reveal>
-          <div className="mb-16 flex items-center gap-3">
+          <div className="mb-8 sm:mb-16 flex items-center gap-3">
             <span className="font-mono text-xs text-[var(--color-accent)]">03</span>
             <div className="h-px w-12 bg-[var(--color-border)]" />
             <span className="font-mono text-xs uppercase tracking-[0.15em] text-[var(--color-text-muted)]">
@@ -42,7 +42,7 @@ export function Products(): React.ReactNode {
         </div>
 
         {/* Products — large alternating cards */}
-        <div className="mt-16 space-y-6">
+        <div className="mt-10 sm:mt-16 space-y-6">
           {isLoading ? (
             <ProductSkeleton />
           ) : products && products.length > 0 ? (
@@ -116,10 +116,10 @@ function ProductCard({
     >
       {/* Featured glow — intensifies on hover */}
       {isFeatured && (
-        <div className="pointer-events-none absolute -right-40 -top-40 h-80 w-80 rounded-full bg-[var(--color-accent-glow)] opacity-30 blur-3xl transition-opacity duration-700 group-hover:opacity-60" />
+        <div className="pointer-events-none absolute -right-40 -top-40 h-40 w-40 rounded-full bg-[var(--color-accent-glow)] opacity-30 blur-3xl transition-opacity duration-700 group-hover:opacity-60 sm:h-80 sm:w-80" />
       )}
 
-      <div className="relative grid gap-8 p-8 lg:grid-cols-[1.3fr_1fr] lg:gap-12 lg:p-12">
+      <div className="relative grid gap-8 p-6 sm:p-8 lg:grid-cols-[1.3fr_1fr] lg:gap-12 lg:p-12">
         {/* Left — content */}
         <div className={cn(isReversed && 'lg:order-2')}>
           {/* Badges */}
@@ -173,12 +173,12 @@ function ProductCard({
           >
             {/* Animated glow that follows hover */}
             <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-              <div className="absolute -right-20 -top-20 h-40 w-40 rounded-full bg-[var(--color-accent-glow)] blur-3xl" />
+              <div className="absolute -right-20 -top-20 h-24 w-24 rounded-full bg-[var(--color-accent-glow)] blur-3xl sm:h-40 sm:w-40" />
             </div>
 
             <div className="relative">
               {/* Product initial — large, serif, as a visual identity element */}
-              <p className="font-serif text-7xl font-bold leading-none text-[var(--color-text)]/10 transition-all duration-500 group-hover:text-[var(--color-text)]/15 group-hover:scale-105">
+              <p className="font-serif text-5xl font-bold leading-none text-[var(--color-text)]/10 transition-all duration-500 group-hover:text-[var(--color-text)]/15 group-hover:scale-105 sm:text-7xl">
                 {product.name.charAt(0)}
               </p>
 

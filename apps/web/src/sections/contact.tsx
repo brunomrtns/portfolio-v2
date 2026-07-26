@@ -84,14 +84,14 @@ export function Contact(): React.ReactNode {
   };
 
   return (
-    <section id="contato" className="relative py-36">
+    <section id="contato" className="relative py-24 sm:py-36">
       <SectionTransition />
       <div className="mesh-bg pointer-events-none" />
 
       <div className="container-wide relative">
         {/* Section label */}
         <Reveal>
-          <div className="mb-16 flex items-center gap-3">
+          <div className="mb-8 sm:mb-16 flex items-center gap-3">
             <span className="font-mono text-xs text-[var(--color-accent)]">09</span>
             <div className="h-px w-12 bg-[var(--color-border)]" />
             <span className="font-mono text-xs uppercase tracking-[0.15em] text-[var(--color-text-muted)]">
@@ -113,7 +113,7 @@ export function Contact(): React.ReactNode {
         </Reveal>
 
         {/* Content grid */}
-        <div className="mt-16 grid gap-6 lg:grid-cols-[1fr_1.5fr] lg:gap-8">
+        <div className="mt-10 sm:mt-16 grid gap-6 lg:grid-cols-[1fr_1.5fr] lg:gap-8">
           {/* Left — contact links */}
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
             {CONTACT_LINKS.map((link, i) => (
@@ -145,10 +145,10 @@ export function Contact(): React.ReactNode {
           <Reveal delay={0.3}>
             <form
               onSubmit={handleSubmit(onSubmit)}
-              className="relative overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-8 elevation-2 lg:p-10"
+              className="relative overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 elevation-2 sm:p-8 lg:p-10"
             >
               {/* Subtle inner glow */}
-              <div className="pointer-events-none absolute -right-20 -top-20 h-40 w-40 rounded-full bg-[var(--color-accent-glow)] opacity-20 blur-3xl" />
+              <div className="pointer-events-none absolute -right-20 -top-20 h-24 w-24 rounded-full bg-[var(--color-accent-glow)] opacity-20 blur-3xl sm:h-40 sm:w-40" />
 
               <div className="relative">
                 <div className="mb-8 flex items-center gap-2.5">

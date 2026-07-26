@@ -35,7 +35,7 @@ export default function ArticlePage(): React.ReactNode {
     return (
       <>
         <Navbar />
-        <main className="flex min-h-screen items-center justify-center">
+        <main className="flex min-h-dvh items-center justify-center">
           <div className="text-center">
             <h1 className="font-serif text-4xl font-bold text-[var(--color-text)]">
               {t('article.notFound')}
@@ -56,7 +56,7 @@ export default function ArticlePage(): React.ReactNode {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen pt-32">
+      <main className="min-h-dvh pt-32">
         <article className="container-wide">
           {/* Back link */}
           <Link

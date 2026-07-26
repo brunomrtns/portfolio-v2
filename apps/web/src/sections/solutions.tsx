@@ -28,14 +28,14 @@ export function Solutions(): React.ReactNode {
   ];
 
   return (
-    <section id="solucoes" className="relative py-32">
+    <section id="solucoes" className="relative py-20 sm:py-32">
       <SectionTransition />
       <div className="mesh-bg pointer-events-none" />
 
       <div className="container-wide relative">
         {/* Section label */}
         <Reveal>
-          <div className="mb-16 flex items-center gap-3">
+          <div className="mb-8 sm:mb-16 flex items-center gap-3">
             <span className="font-mono text-xs text-[var(--color-accent)]">03</span>
             <div className="h-px w-12 bg-[var(--color-border)]" />
             <span className="font-mono text-xs uppercase tracking-[0.15em] text-[var(--color-text-muted)]">
@@ -59,11 +59,11 @@ export function Solutions(): React.ReactNode {
         </div>
 
         {/* Three areas */}
-        <Stagger stagger={0.12} className="mt-16 grid gap-6 lg:grid-cols-3">
+        <Stagger stagger={0.12} className="mt-10 sm:mt-16 grid gap-6 lg:grid-cols-3">
           {AREAS.map((area) => (
             <StaggerItem key={area.title} y={32}>
               <div className="card-premium group h-full p-8 elevation-2">
-                <div className="pointer-events-none absolute -right-16 -top-16 h-32 w-32 rounded-full bg-[var(--color-accent-glow)] opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100" />
+                <div className="pointer-events-none absolute -right-16 -top-16 h-24 w-24 rounded-full bg-[var(--color-accent-glow)] opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100 sm:h-32 sm:w-32" />
 
                 <div className="relative">
                   <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--color-surface-elevated)] text-[var(--color-accent)] transition-all duration-500 group-hover:bg-[var(--color-accent)] group-hover:text-white group-hover:shadow-[0_0_20px_-4px_var(--color-accent-glow)]">

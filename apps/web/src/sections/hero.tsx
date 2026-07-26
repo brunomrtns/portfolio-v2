@@ -33,7 +33,7 @@ export function Hero(): React.ReactNode {
   return (
     <section
       ref={containerRef}
-      className="relative flex min-h-screen items-center overflow-hidden"
+      className="relative flex min-h-dvh items-center overflow-hidden"
     >
       {/* ── Layer 1: Deep background mesh ─────────────────────────────────────── */}
       <motion.div style={{ y: meshY }} className="mesh-bg-dense" />
@@ -50,7 +50,7 @@ export function Hero(): React.ReactNode {
       {/* ── Layer 5: Floating aurora orbs (organic movement) ──────────────────── */}
       <motion.div style={{ y: orbsY }} className="pointer-events-none absolute inset-0">
         <motion.div
-          className="absolute left-[8%] top-[12%] h-72 w-72 rounded-full bg-[var(--color-accent-glow)] blur-[100px]"
+          className="absolute left-[8%] top-[12%] h-40 w-40 rounded-full bg-[var(--color-accent-glow)] blur-[80px] sm:h-72 sm:w-72 sm:blur-[100px]"
           animate={{
             y: [0, -30, 0],
             x: [0, 20, 0],
@@ -59,7 +59,7 @@ export function Hero(): React.ReactNode {
           transition={{ duration: 14, repeat: Infinity, ease: 'easeInOut' }}
         />
         <motion.div
-          className="absolute right-[8%] bottom-[18%] h-96 w-96 rounded-full bg-[var(--color-accent-warm-glow)] blur-[120px]"
+          className="absolute right-[8%] bottom-[18%] h-48 w-48 rounded-full bg-[var(--color-accent-warm-glow)] blur-[90px] sm:h-96 sm:w-96 sm:blur-[120px]"
           animate={{
             y: [0, 30, 0],
             x: [0, -20, 0],
@@ -68,7 +68,7 @@ export function Hero(): React.ReactNode {
           transition={{ duration: 16, repeat: Infinity, ease: 'easeInOut' }}
         />
         <motion.div
-          className="absolute left-[45%] top-[60%] h-64 w-64 rounded-full bg-[var(--color-accent-glow)] blur-[110px]"
+          className="absolute left-[45%] top-[60%] h-36 w-36 rounded-full bg-[var(--color-accent-glow)] blur-[85px] sm:h-64 sm:w-64 sm:blur-[110px]"
           animate={{
             y: [0, -20, 0],
             x: [0, 15, 0],
@@ -78,7 +78,7 @@ export function Hero(): React.ReactNode {
         />
         {/* Small accent orb — adds detail */}
         <motion.div
-          className="absolute right-[30%] top-[25%] h-32 w-32 rounded-full bg-[var(--color-accent-glow)] blur-[80px]"
+          className="absolute right-[30%] top-[25%] h-20 w-20 rounded-full bg-[var(--color-accent-glow)] blur-[60px] sm:h-32 sm:w-32 sm:blur-[80px]"
           animate={{
             y: [0, 15, 0],
             x: [0, -10, 0],
@@ -94,9 +94,9 @@ export function Hero(): React.ReactNode {
       {/* ── Content ───────────────────────────────────────────────────────────── */}
       <motion.div
         style={{ y: contentY, opacity: contentOpacity, scale: contentScale }}
-        className="container-wide relative z-10 py-20"
+        className="container-wide relative z-10 pt-12 pb-28 sm:py-20"
       >
-        <div className="grid items-center gap-16 lg:grid-cols-[1.2fr_0.8fr]">
+        <div className="grid items-center gap-10 sm:gap-16 lg:grid-cols-[1.2fr_0.8fr]">
           {/* Left — headline + CTAs */}
           <div>
             {/* Badge — availability indicator */}
@@ -116,7 +116,7 @@ export function Hero(): React.ReactNode {
             </motion.div>
 
             {/* Headline — word-by-word cinematic reveal */}
-            <h1 className="font-serif text-5xl font-bold leading-[1.05] tracking-[-0.03em] text-[var(--color-text)] sm:text-6xl lg:text-7xl xl:text-[5.5rem]">
+            <h1 className="font-serif text-4xl font-bold leading-[1.05] tracking-[-0.03em] text-[var(--color-text)] sm:text-6xl lg:text-7xl xl:text-[5.5rem]">
               <motion.span
                 className="block"
                 initial={{ opacity: 0, y: 30, filter: 'blur(12px)' }}
@@ -155,7 +155,7 @@ export function Hero(): React.ReactNode {
               <Magnetic strength={0.25}>
                 <a
                   href="#produtos"
-                  className="group relative inline-flex h-12 items-center gap-2 overflow-hidden rounded-xl bg-[var(--color-accent)] px-8 font-semibold text-white shadow-[0_0_24px_-4px_var(--color-accent-glow)] transition-all duration-500 hover:shadow-[0_0_40px_-4px_var(--color-accent-glow)] hover:bg-[var(--color-accent-hover)]"
+                  className="group relative inline-flex h-12 items-center gap-2 overflow-hidden rounded-xl bg-[var(--color-accent)] px-8 font-semibold text-white shadow-[0_0_24px_-4px_var(--color-accent-glow)] transition-all duration-500 hover:shadow-[0_0_40px_-4px_var(--color-accent-glow)] hover:bg-[var(--color-accent-hover)] active:scale-[0.97]"
                 >
                   {/* Shimmer sweep on hover */}
                   <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/15 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
@@ -247,6 +247,56 @@ export function Hero(): React.ReactNode {
                     {t('hero.location')}
                   </p>
                 </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Mobile stats — compact 2x2 grid, shown only on < lg */}
+          <motion.div
+            initial={{ opacity: 0, y: 20, filter: 'blur(8px)' }}
+            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+            transition={{ duration: 0.8, delay: 0.7, ease: EASE_EXPO }}
+            className="mt-10 lg:hidden"
+          >
+            <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)]/60 p-5 backdrop-blur-md">
+              <div className="mb-4 flex items-center gap-2">
+                <Sparkles className="h-3.5 w-3.5 text-[var(--color-accent)]" />
+                <span className="font-mono text-[10px] uppercase tracking-[0.15em] text-[var(--color-text-muted)]">
+                  {t('hero.statsHeader')}
+                </span>
+              </div>
+              <div className="grid grid-cols-2 gap-x-4 gap-y-5">
+                {STATS.map((stat, i) => (
+                  <motion.div
+                    key={stat.label}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.9 + i * 0.1, ease: EASE_EXPO }}
+                  >
+                    <p className="font-serif text-2xl font-bold tracking-tight text-[var(--color-text)]">
+                      {stat.value === '∞' ? (
+                        <motion.span
+                          initial={{ opacity: 0, scale: 0.5 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ duration: 0.6, delay: 1.3, ease: EASE_EXPO }}
+                        >
+                          ∞
+                        </motion.span>
+                      ) : (
+                        <Counter value={stat.value} delay={0.9 + i * 0.1} />
+                      )}
+                    </p>
+                    <p className="mt-0.5 text-xs text-[var(--color-text-muted)]">
+                      {stat.label}
+                    </p>
+                  </motion.div>
+                ))}
+              </div>
+              <div className="mt-4 flex items-center gap-2 border-t border-[var(--color-border)] pt-3">
+                <span className="h-1.5 w-1.5 rounded-full bg-[var(--color-accent)] animate-pulse-glow" />
+                <p className="font-mono text-[10px] text-[var(--color-text-muted)]">
+                  {t('hero.location')}
+                </p>
               </div>
             </div>
           </motion.div>

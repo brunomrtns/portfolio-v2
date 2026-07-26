@@ -187,7 +187,20 @@ export function MouseSpotlight({
   children,
   className,
 }: MouseSpotlightProps): ReactNode {
+  // Skip the mouse-tracking spotlight on touch devices — it's a hover-only
+  // effect and adds a no-op listener on mobile.
+  const [isTouch, setIsTouch] = useState(false);
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const mq = window.matchMedia('(hover: none), (pointer: coarse)');
+    setIsTouch(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsTouch(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+
   const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+    if (isTouch) return;
     const rect = e.currentTarget.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width) * 100;
     const y = ((e.clientY - rect.top) / rect.height) * 100;
@@ -239,8 +252,20 @@ export function Magnetic({
   const xSpring = useSpring(x, { stiffness: 150, damping: 15, restDelta: 0.001 });
   const ySpring = useSpring(y, { stiffness: 150, damping: 15, restDelta: 0.001 });
 
+  // Skip the magnetic effect on touch / coarse pointers — it doesn't work
+  // without a hover state and adds unnecessary motion listeners on mobile.
+  const [isTouch, setIsTouch] = useState(false);
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const mq = window.matchMedia('(hover: none), (pointer: coarse)');
+    setIsTouch(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsTouch(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+
   const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
-    if (!ref.current) return;
+    if (isTouch || !ref.current) return;
     const rect = ref.current.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
@@ -258,7 +283,7 @@ export function Magnetic({
   return (
     <motion.div
       ref={ref}
-      style={{ x: xSpring, y: ySpring }}
+      style={isTouch ? undefined : { x: xSpring, y: ySpring }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       className={className}

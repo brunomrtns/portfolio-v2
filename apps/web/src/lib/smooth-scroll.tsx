@@ -20,7 +20,9 @@ export function SmoothScroll({ children }: SmoothScrollProps): ReactNode {
       duration: 1.2,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
-      touchMultiplier: 2,
+      // Lower on touch — 2 was too sensitive on mobile, causing the scroll
+      // to feel "floaty". 1.5 keeps the smoothing without overshooting.
+      touchMultiplier: 1.5,
     });
     lenisRef.current = lenis;
 

@@ -16,13 +16,13 @@ export function Stack(): React.ReactNode {
   const categories = Object.entries(grouped).sort(([a], [b]) => a.localeCompare(b));
 
   return (
-    <section id="stack" className="relative py-36">
+    <section id="stack" className="relative py-24 sm:py-36">
       <SectionTransition />
 
       <div className="container-wide">
         {/* Section label */}
         <Reveal>
-          <div className="mb-16 flex items-center gap-3">
+          <div className="mb-8 sm:mb-16 flex items-center gap-3">
             <span className="font-mono text-xs text-[var(--color-accent)]">06</span>
             <div className="h-px w-12 bg-[var(--color-border)]" />
             <span className="font-mono text-xs uppercase tracking-[0.15em] text-[var(--color-text-muted)]">

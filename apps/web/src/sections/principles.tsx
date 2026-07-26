@@ -16,14 +16,14 @@ export function Principles(): React.ReactNode {
   ];
 
   return (
-    <section id="principios" className="relative py-32">
+    <section id="principios" className="relative py-20 sm:py-32">
       <SectionTransition />
       <div className="mesh-bg pointer-events-none" />
 
       <div className="container-wide relative">
         {/* Section label */}
         <Reveal>
-          <div className="mb-16 flex items-center gap-3">
+          <div className="mb-8 sm:mb-16 flex items-center gap-3">
             <span className="font-mono text-xs text-[var(--color-accent)]">08</span>
             <div className="h-px w-12 bg-[var(--color-border)]" />
             <span className="font-mono text-xs uppercase tracking-[0.15em] text-[var(--color-text-muted)]">
@@ -52,11 +52,11 @@ export function Principles(): React.ReactNode {
         </div>
 
         {/* Principles grid — richer cards with metric */}
-        <Stagger stagger={0.08} className="mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <Stagger stagger={0.08} className="mt-10 sm:mt-16 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {PRINCIPLES.map((principle) => (
             <StaggerItem key={principle.title}>
               <div className="group relative h-full overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)]/30 p-7 backdrop-blur-md transition-all duration-500 hover:border-[var(--color-border-bright)] hover:bg-[var(--color-surface)]/50">
-                <div className="pointer-events-none absolute -right-16 -top-16 h-32 w-32 rounded-full bg-[var(--color-accent-glow)] opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100" />
+                <div className="pointer-events-none absolute -right-16 -top-16 h-24 w-24 rounded-full bg-[var(--color-accent-glow)] opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-100 sm:h-32 sm:w-32" />
 
                 <div className="relative">
                   <div className="flex items-center justify-between">
@@ -81,7 +81,7 @@ export function Principles(): React.ReactNode {
 
         {/* Closing statement */}
         <Reveal delay={0.2}>
-          <div className="mt-16 flex flex-col items-center text-center">
+          <div className="mt-10 sm:mt-16 flex flex-col items-center text-center">
             <div className="h-px w-16 bg-gradient-to-r from-transparent via-[var(--color-accent)] to-transparent" />
             <p className="mt-6 max-w-2xl font-serif text-xl italic leading-[1.6] text-pretty text-[var(--color-text-secondary)] sm:text-2xl">
               {t('principles.closing')}

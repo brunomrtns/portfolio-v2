@@ -170,6 +170,17 @@ body {
   width: 100%;
 }
 
+/* ── Dynamic viewport height — fixes the mobile address-bar 100vh problem.
+   Falls back to 100vh on browsers without dvh support. ─────────────────── */
+.min-h-dvh {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+.h-dvh {
+  height: 100vh;
+  height: 100dvh;
+}
+
 /* ── Text wrapping — modern typography ───────────────────────────────────────── */
 .text-balance {
   text-wrap: balance;
@@ -201,6 +212,25 @@ body {
   backdrop-filter: blur(20px) saturate(150%);
   -webkit-backdrop-filter: blur(20px) saturate(150%);
   border: 1px solid var(--color-border-glow);
+}
+
+/* ── Mobile fallback: when backdrop-filter is unstable or unsupported,
+   use a more opaque background so the "ofuscação" still reads as a
+   solid surface. iOS Safari and some Android browsers drop backdrop-filter
+   during scroll or when an ancestor has a transform. ─────────────────── */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass { background: rgba(13, 13, 17, 0.92); }
+  .glass-strong { background: rgba(7, 7, 10, 0.96); }
+  .glass-card { background: rgba(13, 13, 17, 0.92); }
+}
+
+/* On small screens, bump the base opacity slightly so the surface is
+   readable even when the browser throttles backdrop-filter mid-scroll.
+   Desktop is untouched (min-width: 1024px keeps the original values). */
+@media (max-width: 1023px) {
+  .glass-strong { background: rgba(7, 7, 10, 0.9); }
+  .glass { background: rgba(13, 13, 17, 0.78); }
+  .glass-card { background: rgba(13, 13, 17, 0.78); }
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════════

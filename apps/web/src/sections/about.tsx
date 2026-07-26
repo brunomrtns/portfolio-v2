@@ -16,13 +16,13 @@ export function About(): React.ReactNode {
   ];
 
   return (
-    <section id="sobre" className="relative py-32">
+    <section id="sobre" className="relative py-20 sm:py-32">
       <SectionTransition />
       <div className="mesh-bg pointer-events-none" />
 
       <div className="container-wide relative">
         <Reveal>
-          <div className="mb-16 flex items-center gap-3">
+          <div className="mb-8 sm:mb-16 flex items-center gap-3">
             <span className="font-mono text-xs text-[var(--color-accent)]">01</span>
             <div className="h-px w-12 bg-[var(--color-border)]" />
             <span className="font-mono text-xs uppercase tracking-[0.15em] text-[var(--color-text-muted)]">
@@ -31,7 +31,7 @@ export function About(): React.ReactNode {
           </div>
         </Reveal>
 
-        <div className="grid gap-12 lg:grid-cols-[1fr_1.5fr] lg:gap-20">
+        <div className="grid gap-8 sm:gap-12 lg:grid-cols-[1fr_1.5fr] lg:gap-20">
           <Reveal>
             <h2 className="font-serif text-4xl font-bold leading-[1.1] tracking-[-0.02em] text-balance text-[var(--color-text)] sm:text-5xl lg:text-6xl">
               {t('about.titleLine1')}
@@ -54,11 +54,11 @@ export function About(): React.ReactNode {
           </Reveal>
         </div>
 
-        <Stagger stagger={0.08} className="mt-20 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <Stagger stagger={0.08} className="mt-12 sm:mt-20 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {PILLARS.map((pillar) => (
             <StaggerItem key={pillar.title}>
               <MouseSpotlight className="h-full p-7">
-                <div className="pointer-events-none absolute -right-16 -top-16 h-32 w-32 rounded-full bg-[var(--color-accent-glow)] opacity-0 blur-3xl transition-opacity duration-500 hover:opacity-100" />
+                <div className="pointer-events-none absolute -right-16 -top-16 h-24 w-24 rounded-full bg-[var(--color-accent-glow)] opacity-0 blur-3xl transition-opacity duration-500 hover:opacity-100 sm:h-32 sm:w-32" />
                 <div className="relative flex items-start gap-4">
                   <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[var(--color-surface-elevated)] text-[var(--color-accent)] transition-all duration-500 hover:bg-[var(--color-accent)] hover:text-white hover:shadow-[0_0_20px_-4px_var(--color-accent-glow)]">
                     <pillar.icon className="h-5 w-5" />

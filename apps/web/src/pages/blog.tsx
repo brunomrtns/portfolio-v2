@@ -26,7 +26,7 @@ export default function BlogPage(): React.ReactNode {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen pt-32">
+      <main className="min-h-dvh pt-32">
         <div className="container-wide">
           {/* Back link */}
           <Link
@@ -39,7 +39,7 @@ export default function BlogPage(): React.ReactNode {
 
           {/* Header */}
           <Reveal>
-            <h1 className="mt-8 font-serif text-5xl font-bold text-[var(--color-text)]">
+            <h1 className="mt-8 font-serif text-4xl font-bold text-[var(--color-text)] sm:text-5xl">
               {t('blog.title')}
             </h1>
             <p className="mt-4 text-lg text-[var(--color-text-secondary)]">

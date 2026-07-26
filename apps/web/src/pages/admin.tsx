@@ -30,7 +30,7 @@ export default function AdminPage(): React.ReactNode {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[var(--color-bg)]">
+      <div className="flex min-h-dvh items-center justify-center bg-[var(--color-bg)]">
         <Loader2 className="h-8 w-8 animate-spin text-[var(--color-accent)]" />
       </div>
     );
@@ -77,7 +77,7 @@ function LoginView({ onLogin }: { onLogin: (email: string, password: string) => 
   };
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[var(--color-bg)]">
+    <div className="relative flex min-h-dvh items-center justify-center overflow-hidden bg-[var(--color-bg)]">
       <div className="mesh-bg-dense" />
       <div className="noise" />
 
@@ -149,7 +149,7 @@ function Dashboard({ user, onLogout }: { user: { email: string } | null; onLogou
   const [tab, setTab] = useState<Tab>('articles');
 
   return (
-    <div className="min-h-screen bg-[var(--color-bg)]">
+    <div className="min-h-dvh bg-[var(--color-bg)]">
       {/* Header */}
       <header className="sticky top-0 z-10 glass-strong border-b border-[var(--color-border)]">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
@@ -169,7 +169,7 @@ function Dashboard({ user, onLogout }: { user: { email: string } | null; onLogou
 
       {/* Tabs */}
       <div className="mx-auto max-w-7xl px-6 py-8">
-        <div className="mb-8 flex gap-2">
+        <div className="mb-8 flex gap-2 overflow-x-auto pb-1">
           {([
             { id: 'articles', label: t('admin.tabsArticles'), icon: FileText },
             { id: 'products', label: t('admin.tabsProducts'), icon: Package },
@@ -258,7 +258,7 @@ function ArticlesTab(): React.ReactNode {
           {articles.map((article) => (
             <div
               key={article.id}
-              className="flex items-center justify-between rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] p-4"
+              className="flex flex-col gap-3 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] p-4 sm:flex-row sm:items-center sm:justify-between"
             >
               <div>
                 <p className="font-medium text-[var(--color-text)]">{article.title}</p>
@@ -267,7 +267,7 @@ function ArticlesTab(): React.ReactNode {
                   {new Date(article.createdAt).toLocaleDateString(i18n.language === 'pt-BR' ? 'pt-BR' : i18n.language)}
                 </p>
               </div>
-              <div className="flex gap-2">
+              <div className="flex gap-2 self-end sm:self-auto">
                 <Button variant="ghost" size="icon" onClick={() => setEditing(article)}>
                   <Edit className="h-4 w-4" />
                 </Button>
@@ -346,7 +346,7 @@ function ArticleEditor({ article, onClose }: { article: Article | null; onClose:
         <Label htmlFor="article-content">{t('admin.articleContent')}</Label>
         <Textarea
           id="article-content"
-          rows={16}
+          rows={10}
           value={content}
           onChange={(e) => setContent(e.target.value)}
           className="font-mono text-sm"
@@ -414,7 +414,7 @@ function ProductsTab(): React.ReactNode {
           {products.map((product) => (
             <div
               key={product.id}
-              className="flex items-center justify-between rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] p-4"
+              className="flex flex-col gap-3 rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] p-4 sm:flex-row sm:items-center sm:justify-between"
             >
               <div>
                 <p className="font-medium text-[var(--color-text)]">{product.name}</p>
@@ -422,7 +422,7 @@ function ProductsTab(): React.ReactNode {
                   {product.tagline} · {product.status}
                 </p>
               </div>
-              <div className="flex gap-2">
+              <div className="flex gap-2 self-end sm:self-auto">
                 <Button variant="ghost" size="icon">
                   <Edit className="h-4 w-4" />
                 </Button>
@@ -493,7 +493,7 @@ function MessagesTab(): React.ReactNode {
                 msg.read ? 'border-[var(--color-border)]' : 'border-[var(--color-accent)]',
               )}
             >
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <p className="font-medium text-[var(--color-text)]">{msg.name}</p>
                   <p className="text-xs text-[var(--color-text-muted)]">{msg.email}</p>

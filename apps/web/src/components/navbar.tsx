@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Globe } from 'lucide-react';
+import { Menu, X, Globe, Github } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import { ScrollProgress } from '@/components/animation/reveal';
@@ -57,7 +57,7 @@ export function Navbar(): React.ReactNode {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
         className={cn(
-          'fixed top-0 left-0 right-0 z-50 transition-all duration-500',
+          'fixed top-0 left-0 right-0 z-50 transition-colors duration-500',
           scrolled
             ? 'glass-strong'
             : 'bg-transparent border-transparent',
@@ -152,7 +152,7 @@ export function Navbar(): React.ReactNode {
               {t('nav.github')}
             </a>
             <button
-              className="rounded-lg p-2 text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-text)] md:hidden"
+              className="rounded-lg p-2.5 text-[var(--color-text-secondary)] transition-colors hover:text-[var(--color-text)] md:hidden"
               onClick={() => setMobileOpen((v) => !v)}
               aria-label="Toggle menu"
             >
@@ -187,12 +187,55 @@ export function Navbar(): React.ReactNode {
                   <Link
                     key={link.href}
                     to={link.href}
+                    onClick={() => setMobileOpen(false)}
                     className="rounded-xl px-4 py-3 text-sm text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-surface-elevated)] hover:text-[var(--color-text)]"
                   >
                     {t(link.labelKey)}
                   </Link>
                 ),
               )}
+
+              {/* Divider */}
+              <div className="my-2 h-px bg-[var(--color-border)]" />
+
+              {/* GitHub — only in mobile menu (hidden in navbar on mobile) */}
+              <a
+                href="https://github.com/brunomrtns"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setMobileOpen(false)}
+                className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-surface-elevated)] hover:text-[var(--color-text)]"
+              >
+                <Github className="h-4 w-4" />
+                {t('nav.github')}
+              </a>
+
+              {/* Language selector — only in mobile menu (hidden in navbar on mobile) */}
+              <div className="px-4 py-2">
+                <p className="mb-2 font-mono text-xs uppercase tracking-[0.15em] text-[var(--color-text-muted)]">
+                  {t('language.switch')}
+                </p>
+                <div className="grid grid-cols-3 gap-2">
+                  {AVAILABLE_LANGUAGES.map((lang) => (
+                    <button
+                      key={lang.code}
+                      onClick={() => {
+                        changeLanguage(lang.code);
+                        setMobileOpen(false);
+                      }}
+                      className={cn(
+                        'flex items-center justify-center gap-1.5 rounded-lg px-2 py-2 text-xs transition-colors',
+                        getCurrentLanguage() === lang.code
+                          ? 'bg-[var(--color-surface-elevated)] text-[var(--color-text)]'
+                          : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-surface-elevated)] hover:text-[var(--color-text)]',
+                      )}
+                    >
+                      <span className="text-sm">{lang.flag}</span>
+                      <span className="font-mono">{lang.code}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
           </motion.div>
         )}

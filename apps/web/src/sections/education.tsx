@@ -86,14 +86,14 @@ export function Education(): React.ReactNode {
   const { t } = useTranslation();
 
   return (
-    <section id="educacao" className="relative py-36">
+    <section id="educacao" className="relative py-24 sm:py-36">
       <SectionTransition />
       <div className="mesh-bg pointer-events-none" />
 
       <div className="container-wide relative">
         {/* Section label */}
         <Reveal>
-          <div className="mb-16 flex items-center gap-3">
+          <div className="mb-8 sm:mb-16 flex items-center gap-3">
             <span className="font-mono text-xs text-[var(--color-accent)]">05</span>
             <div className="h-px w-12 bg-[var(--color-border)]" />
             <span className="font-mono text-xs uppercase tracking-[0.15em] text-[var(--color-text-muted)]">
@@ -118,11 +118,11 @@ export function Education(): React.ReactNode {
 
         {/* ── Degree — featured card with diploma image ─────────────────────── */}
         <Reveal delay={0.2}>
-          <div className="card-premium group relative mt-12 elevation-3 gradient-border-active">
+          <div className="card-premium group relative mt-8 sm:mt-12 elevation-3 gradient-border-active">
             {/* Ambient glow */}
-            <div className="pointer-events-none absolute -right-40 -top-40 h-80 w-80 rounded-full bg-[var(--color-accent-glow)] opacity-30 blur-3xl transition-opacity duration-700 group-hover:opacity-60" />
+            <div className="pointer-events-none absolute -right-40 -top-40 h-40 w-40 rounded-full bg-[var(--color-accent-glow)] opacity-30 blur-3xl transition-opacity duration-700 group-hover:opacity-60 sm:h-80 sm:w-80" />
 
-            <div className="relative grid gap-8 p-8 lg:grid-cols-[1fr_1.1fr] lg:gap-12 lg:p-12">
+            <div className="relative grid gap-8 p-6 sm:p-8 lg:grid-cols-[1fr_1.1fr] lg:gap-12 lg:p-12">
               {/* Left — degree info */}
               <div className="flex flex-col justify-center">
                 {/* Badge */}

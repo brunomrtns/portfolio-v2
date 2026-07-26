@@ -35,14 +35,14 @@ export function PortfolioAbout(): React.ReactNode {
   const { t } = useTranslation();
 
   return (
-    <section id="portfolio" className="relative py-32">
+    <section id="portfolio" className="relative py-20 sm:py-32">
       <SectionTransition />
       <div className="mesh-bg pointer-events-none" />
 
       <div className="container-wide relative">
         {/* Section label */}
         <Reveal>
-          <div className="mb-16 flex items-center gap-3">
+          <div className="mb-8 sm:mb-16 flex items-center gap-3">
             <span className="font-mono text-xs text-[var(--color-accent)]">07</span>
             <div className="h-px w-12 bg-[var(--color-border)]" />
             <span className="font-mono text-xs uppercase tracking-[0.15em] text-[var(--color-text-muted)]">
@@ -67,10 +67,10 @@ export function PortfolioAbout(): React.ReactNode {
 
         {/* Main card — project info + repo link */}
         <Reveal delay={0.2}>
-          <div className="card-premium group relative mt-12 elevation-2">
-            <div className="pointer-events-none absolute -right-40 -top-40 h-80 w-80 rounded-full bg-[var(--color-accent-glow)] opacity-20 blur-3xl transition-opacity duration-700 group-hover:opacity-40" />
+          <div className="card-premium group relative mt-8 sm:mt-12 elevation-2">
+            <div className="pointer-events-none absolute -right-40 -top-40 h-40 w-40 rounded-full bg-[var(--color-accent-glow)] opacity-20 blur-3xl transition-opacity duration-700 group-hover:opacity-40 sm:h-80 sm:w-80" />
 
-            <div className="relative grid gap-8 p-8 lg:grid-cols-[1.3fr_1fr] lg:gap-12 lg:p-12">
+            <div className="relative grid gap-8 p-6 sm:p-8 lg:grid-cols-[1.3fr_1fr] lg:gap-12 lg:p-12">
               {/* Left — description */}
               <div>
                 <h3 className="font-serif text-3xl font-bold tracking-[-0.03em] text-[var(--color-text)] sm:text-4xl text-balance">
