@@ -90,6 +90,27 @@ async function main(): Promise<void> {
   // ── Products ────────────────────────────────────────────────────────────────
   const products = [
     {
+      name: 'BI Identity',
+      tagline: 'Serviço central de identidade e SSO',
+      description:
+        'Serviço de identidade central da Brunointegrations. Gerencia usuários, organizações, sistemas, permissões e fornece Single Sign-On (SSO) via cookies para todos os produtos.',
+      longDescription:
+        'O BI Identity é o serviço de identidade central da Brunointegrations. Ele centraliza autenticação, autorização e gestão de usuários para todos os produtos da empresa. Implementa SSO via cookies de domínio, JWT access/refresh tokens, RBAC com sistemas e organizações, auditoria de ações, e convites por email.',
+      slug: 'bi-identity',
+      url: 'https://brunointegrations.com/id',
+      repoUrl: 'https://github.com/brunomrtns/bi-cadpessoas',
+      tech: ['React', 'Fastify', 'Prisma', 'PostgreSQL', 'JWT', 'Docker', 'nginx'],
+      features: [
+        'Single Sign-On (SSO) via cookies de domínio',
+        'RBAC com sistemas, organizações e permissões',
+        'Auditoria de ações e gestão de sessões',
+        'Convites por email e gestão de usuários',
+      ],
+      status: 'ACTIVE',
+      featured: true,
+      order: 0,
+    },
+    {
       name: 'Trivestia',
       tagline: 'Plataforma de estudos financeiros',
       description:
@@ -98,6 +119,7 @@ async function main(): Promise<void> {
         'Trivestia é uma plataforma de estudos financeiros desenvolvida para ajudar usuários a compreender e gerenciar suas finanças de forma prática. Inclui dashboards, relatórios e ferramentas de análise para apoiar decisões financeiras.',
       slug: 'trivestia',
       url: 'https://brunointegrations.com/trivestia',
+      repoUrl: 'https://github.com/brunomrtns/trivestia',
       tech: ['React', 'Node.js', 'PostgreSQL', 'Docker', 'nginx'],
       features: [
         'Dashboard de estudos financeiros',
@@ -106,7 +128,7 @@ async function main(): Promise<void> {
       ],
       status: 'ACTIVE',
       featured: true,
-      order: 0,
+      order: 1,
     },
     {
       name: 'Avesia',
@@ -117,6 +139,7 @@ async function main(): Promise<void> {
         'Avesia é uma plataforma de auxílio médico clínico que utiliza IA para fornecer suporte na tomada de decisões. Combina busca semântica com pgvector, agentes de IA e pipelines assíncronos para processar e analisar dados clínicos.',
       slug: 'avesia',
       url: 'https://brunointegrations.com/avesia',
+      repoUrl: 'https://github.com/brunomrtns/avesia',
       tech: ['React', 'Fastify', 'Prisma', 'PostgreSQL', 'Python', 'Celery', 'pgvector', 'AI'],
       features: [
         'Busca semântica com pgvector',
@@ -125,7 +148,91 @@ async function main(): Promise<void> {
       ],
       status: 'ACTIVE',
       featured: true,
-      order: 1,
+      order: 2,
+    },
+    {
+      name: 'GPCG',
+      tagline: 'Gerador de conteúdo de gameplay automatizado',
+      description:
+        'Plataforma multi-usuário para geração automatizada de vídeos de gameplay para YouTube. Combina análise de gameplay com IA, planejamento editorial, roteiros criativos e renderização de vídeos.',
+      longDescription:
+        'O Gameplay Content Generator (GPCG) é uma plataforma automatizada para criação de conteúdo de gameplay no YouTube. Analisa gravações de gameplay com IA (VLM + ASR), constrói um índice semântico de eventos, planeja pautas editoriais, escreve roteiros com motor criativo (Qwen3), e renderiza vídeos com narração TTS, legendas e transições. Inclui pipeline editorial com crítico de roteiros, motor criativo com 8 estilos, e upload automático para YouTube.',
+      slug: 'gpcg',
+      url: 'https://brunointegrations.com/gpcg',
+      repoUrl: 'https://github.com/brunomrtns/gameplay-content-generator',
+      tech: ['Python', 'FastAPI', 'React', 'Vite', 'SQLite', 'Ollama', 'FFmpeg', 'Docker'],
+      features: [
+        'Análise de gameplay com VLM + ASR (índice semântico)',
+        'Pipeline editorial com crítico de roteiros',
+        'Motor criativo com 8 estilos (Qwen3-14B)',
+        'Upload automático para YouTube',
+      ],
+      status: 'ACTIVE',
+      featured: false,
+      order: 3,
+    },
+    {
+      name: 'Videoclip Generator',
+      tagline: 'Gerador de videoclipes com IA',
+      description:
+        'Plataforma para criação de videoclipes musicais com IA. Gera cenas via SDXL, Wan 2.1 I2V, Veo 3 API ou automação browser do Gemini, com legendas e sincronização de áudio.',
+      longDescription:
+        'O Videoclip Generator é uma plataforma para criação automatizada de videoclipes musicais usando IA. Suporta múltiplas estratégias de geração: SDXL local via ComfyUI, Gemini API, Veo 3 API, Wan 2.1 I2V local, e automação browser do Gemini Web (free tier). Inclui state machine com persistência para recuperação de crashes, rate limiting e quota reset.',
+      slug: 'videoclip-generator',
+      url: 'https://brunointegrations.com/videoclip',
+      repoUrl: 'https://github.com/brunomrtns/videoclip-generator',
+      tech: ['React', 'Fastify', 'Prisma', 'PostgreSQL', 'Python', 'ComfyUI', 'Playwright', 'Docker'],
+      features: [
+        'Múltiplas estratégias: SDXL, Wan 2.1, Veo 3, Gemini Browser',
+        'State machine com persistência e recuperação de crashes',
+        'Legendas automáticas e sincronização com música',
+        'Anti-detecção para automação browser',
+      ],
+      status: 'ACTIVE',
+      featured: false,
+      order: 4,
+    },
+    {
+      name: 'video-generate',
+      tagline: 'Engine central de renderização de vídeo',
+      description:
+        'Engine Python de renderização de vídeo que serve como núcleo para GPCG e Videoclip Generator. Gerencia perfis de vídeo, TTS, legendas, transições e composição FFmpeg.',
+      longDescription:
+        'O video-generate é a engine central de renderização de vídeo da Brunointegrations. É uma biblioteca Python usada via subprocess por GPCG e Videoclip Generator. Gerencia perfis de vídeo customizáveis (9:16, 16:9, 1:1, 4:5), síntese de voz (XTTS), legendas com estilos, transições FFmpeg xfade, e composição final com música de fundo.',
+      slug: 'video-generate',
+      url: 'https://github.com/brunomrtns/video-generate',
+      repoUrl: 'https://github.com/brunomrtns/video-generate',
+      tech: ['Python', 'FFmpeg', 'XTTS', 'Ollama', 'CUDA'],
+      features: [
+        'Perfis de vídeo customizáveis (9:16, 16:9, 1:1, 4:5)',
+        'TTS com clonagem de voz (XTTS)',
+        'Legendas com estilos e transições FFmpeg xfade',
+        'Composição final com música de fundo',
+      ],
+      status: 'ACTIVE',
+      featured: false,
+      order: 5,
+    },
+    {
+      name: 'SEO System',
+      tagline: 'Sistema de otimização SEO',
+      description:
+        'Sistema para análise e otimização de conteúdo para motores de busca, com ferramentas de auditoria, monitoramento de rankings e sugestões de melhoria.',
+      longDescription:
+        'O SEO System é uma plataforma para otimização de conteúdo voltado a motores de busca. Oferece auditoria técnica, monitoramento de posições, análise de palavras-chave e sugestões automáticas de melhoria para aumentar a visibilidade orgânica.',
+      slug: 'seo-system',
+      url: 'https://brunointegrations.com/seo',
+      repoUrl: 'https://github.com/brunomrtns/seo-system',
+      tech: ['Node.js', 'EJS', 'PostgreSQL', 'Docker', 'nginx'],
+      features: [
+        'Auditoria técnica de SEO',
+        'Monitoramento de rankings',
+        'Análise de palavras-chave',
+        'Sugestões automáticas de melhoria',
+      ],
+      status: 'ACTIVE',
+      featured: false,
+      order: 6,
     },
   ];
 

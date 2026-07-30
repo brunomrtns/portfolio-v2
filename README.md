@@ -43,7 +43,7 @@ portfolio-v2/
 │   ├── web/              # React + Vite SPA (port 3103)
 │   └── (sem worker)
 ├── packages/
-│   ├── shared/           # Helpers, bcrypt, validações Zod
+│   ├── shared/           # Helpers, validações Zod
 │   └── types/            # Tipos TypeScript compartilhados
 ├── docker/
 │   ├── docker-compose.yml         # Stack de produção (API + Web + Postgres)
@@ -79,12 +79,10 @@ portfolio-v2/
 ### Backend (`apps/api` — Node.js/Fastify)
 
 - **Fastify** + **Prisma ORM** (PostgreSQL)
-- **JWT auth** com bcrypt, middleware de proteção de rotas admin
+- **BI Identity SSO** — autenticação via cookie `bi_auth` (validado contra o Identity Service), sem login local
 - Rate limiting, helmet, CORS
 - **Rotas**:
   - `GET /api/health` — health check
-  - `POST /api/auth/login` — autenticação admin
-  - `GET /api/auth/me` — perfil do usuário logado
   - `GET /api/products` — lista de produtos públicos
   - `GET /api/skills` — stack técnica
   - `GET /api/experience` — experiência profissional
@@ -119,7 +117,7 @@ portfolio-v2/
 - `/` — Landing page (Hero, Sobre, Produtos, Stack, Experiência, Formação, Contato)
 - `/portfolio/blog` — Lista de artigos
 - `/portfolio/blog/:slug` — Artigo individual (markdown render)
-- `/portfolio/panel` — Painel admin (login + CRUD)
+- `/portfolio/panel` — Painel admin (SSO via BI Identity + CRUD)
 
 ---
 
@@ -250,10 +248,9 @@ Veja `.env.example` para a lista completa. Variáveis principais:
 | `POSTGRES_USER` | `portfolio` | Usuário do PostgreSQL |
 | `POSTGRES_PASSWORD` | — | Senha do PostgreSQL (obrigatório) |
 | `POSTGRES_DB` | `portfolio` | Nome do banco |
-| `JWT_SECRET` | — | Secret para JWT (obrigatório, mínimo 32 chars) |
+| `BI_IDENTITY_URL` | `http://bi-api:3300` | URL do BI Identity Service para validação do cookie `bi_auth` |
 | `CORS_ORIGIN` | `https://brunointegrations.com` | Origem permitida para CORS |
-| `ADMIN_EMAIL` | — | Email do admin inicial (seed) |
-| `ADMIN_PASSWORD` | — | Senha do admin inicial (seed) |
+| `ADMIN_EMAIL` | — | Email do admin (associado ao BI Identity) |
 
 ---
 
@@ -275,7 +272,7 @@ Veja `.env.example` para a lista completa. Variáveis principais:
 
 ## Tech stack
 
-**Backend:** Node.js 22, Fastify 5, Prisma 6, PostgreSQL 16, JWT, bcrypt, Zod
+**Backend:** Node.js 22, Fastify 5, Prisma 6, PostgreSQL 16, BI Identity SSO, Zod
 
 **Frontend:** React 19, Vite 6, TypeScript 5, Tailwind CSS v4, Framer Motion, GSAP, TanStack Query 5, i18next, Lenis, react-markdown
 
