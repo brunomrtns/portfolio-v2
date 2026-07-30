@@ -1,70 +1,34 @@
 import type { FastifyInstance, FastifyPluginAsync } from 'fastify';
-import { loginSchema, AuthError, comparePassword } from '@portfolio/shared';
-import type { LoginResponse, MeResponse, User } from '@portfolio/types';
-import { signToken, type JwtPayload } from '../utils/jwt.js';
-import { requireAuth, JWT_SECRET } from '../plugins/auth.js';
+import type { MeResponse, User } from '@portfolio/types';
+import { requireAuth, type BiUser } from '../plugins/auth.js';
 
-// ── Auth routes ───────────────────────────────────────────────────────────────
+// ── Auth routes (BI Identity SSO) ─────────────────────────────────────────────
+
+const SSO_LOGIN_REDIRECT = '/id/login?redirect=/portfolio/panel';
 
 const authRoutes: FastifyPluginAsync = async (app: FastifyInstance) => {
-  // ── POST /auth/login ────────────────────────────────────────────────────────
-  app.post('/login', async (request, reply): Promise<LoginResponse> => {
-    const { email, password } = loginSchema.parse(request.body);
+  // ── GET /auth/sso-redirect ──────────────────────────────────────────────────
+  // Redirects the browser to the BI Identity login page.
+  app.get('/sso-redirect', async (_request, reply) => {
+    return reply.redirect(SSO_LOGIN_REDIRECT, 302);
+  });
 
-    const user = await app.prisma.user.findUnique({
-      where: { email },
-    });
-
-    if (!user) {
-      throw new AuthError('Invalid email or password');
-    }
-
-    const valid = await comparePassword(password, user.passwordHash);
-    if (!valid) {
-      throw new AuthError('Invalid email or password');
-    }
-
-    const payload: JwtPayload = {
-      userId: user.id,
-      email: user.email,
-      role: user.role,
-    };
-
-    const accessToken = signToken(payload, JWT_SECRET);
-
-    const userResponse: User = {
-      id: user.id,
-      email: user.email,
-      role: user.role as User['role'],
-      createdAt: user.createdAt.toISOString(),
-    };
-
-    return reply.send({
-      user: userResponse,
-      tokens: {
-        accessToken,
-        expiresIn: 7 * 24 * 60 * 60, // 7 days in seconds
-      },
-    });
+  // ── GET /auth/logout ────────────────────────────────────────────────────────
+  // Clears local state and redirects to BI Identity login.
+  app.get('/logout', async (_request, reply) => {
+    return reply.redirect(SSO_LOGIN_REDIRECT, 302);
   });
 
   // ── GET /auth/me (requireAuth) ──────────────────────────────────────────────
+  // Returns the authenticated BI Identity user.
   app.get('/me', { preHandler: [requireAuth] }, async (request, reply): Promise<MeResponse> => {
-    const userId = request.userId!;
-
-    const user = await app.prisma.user.findUnique({
-      where: { id: userId },
-    });
-
-    if (!user) {
-      throw new AuthError('User not found');
-    }
+    const biUser = request.userPayload as BiUser;
 
     const userResponse: User = {
-      id: user.id,
-      email: user.email,
-      role: user.role as User['role'],
-      createdAt: user.createdAt.toISOString(),
+      id: biUser.id,
+      email: biUser.email,
+      role: 'ADMIN' as User['role'],
+      createdAt: new Date().toISOString(),
     };
 
     return reply.send({ user: userResponse });

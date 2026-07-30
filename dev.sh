@@ -276,11 +276,10 @@ API_ENV="${SCRIPT_DIR}/apps/api/.env"
 if [[ ! -f "${API_ENV}" ]]; then
     cat > "${API_ENV}" << 'APIENV'
 DATABASE_URL="postgresql://portfolio:portfolio@localhost:5434/portfolio?schema=public"
-JWT_SECRET="local-dev-secret-not-for-production"
+BI_IDENTITY_URL="http://localhost:3300"
 PORT=3104
 CORS_ORIGIN="http://localhost:3103"
 ADMIN_EMAIL=brunomartinsss@gmail.com
-ADMIN_PASSWORD=ChangeMe123!
 APIENV
     log_ok "Created apps/api/.env (dev)"
 else

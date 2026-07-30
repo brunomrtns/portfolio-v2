@@ -1,33 +1,13 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
-import { api, ApiError, setAccessToken, getAccessToken } from './api-client';
+import { api, ApiError } from './api-client';
 
 describe('api-client', () => {
   beforeEach(() => {
-    setAccessToken(null);
     vi.restoreAllMocks();
   });
 
   afterEach(() => {
     vi.unstubAllEnvs();
-  });
-
-  describe('token management', () => {
-    it('setAccessToken stores in localStorage', () => {
-      setAccessToken('my-token');
-      expect(localStorage.getItem('portfolio_access_token')).toBe('my-token');
-    });
-
-    it('setAccessToken(null) removes from localStorage', () => {
-      setAccessToken('my-token');
-      setAccessToken(null);
-      expect(localStorage.getItem('portfolio_access_token')).toBeNull();
-    });
-
-    it('getAccessToken reads from localStorage', () => {
-      localStorage.setItem('portfolio_access_token', 'stored-token');
-      // Reset the module-level cache by re-reading
-      expect(getAccessToken()).toBe('stored-token');
-    });
   });
 
   describe('request helper', () => {
@@ -43,8 +23,18 @@ describe('api-client', () => {
       expect(init?.headers).toHaveProperty('Accept-Language');
     });
 
-    it('includes auth header when auth=true', async () => {
-      setAccessToken('jwt-123');
+    it('includes credentials: include in fetch options', async () => {
+      const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+        new Response(JSON.stringify([]), { status: 200 }),
+      );
+
+      await api.products.list();
+
+      const [, init] = fetchSpy.mock.calls[0];
+      expect(init?.credentials).toBe('include');
+    });
+
+    it('does not include Authorization header (SSO uses cookies)', async () => {
       const fetchSpy = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
         new Response(JSON.stringify([]), { status: 200 }),
       );
@@ -52,7 +42,8 @@ describe('api-client', () => {
       await api.auth.me();
 
       const [, init] = fetchSpy.mock.calls[0];
-      expect((init?.headers as Record<string, string>).Authorization).toBe('Bearer jwt-123');
+      const headers = init?.headers as Record<string, string>;
+      expect(headers.Authorization).toBeUndefined();
     });
 
     it('throws ApiError on non-ok response', async () => {

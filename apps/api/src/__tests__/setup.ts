@@ -1,7 +1,7 @@
 import { vi, beforeEach } from 'vitest';
 
-// Stable JWT secret for tests
-process.env.JWT_SECRET = 'test-secret-at-least-32-characters-long-for-jwt';
+// Stable env for tests
+process.env.BI_IDENTITY_URL = 'http://mock-identity:3300';
 process.env.NODE_ENV = 'test';
 process.env.CORS_ORIGIN = 'http://localhost:3103';
 

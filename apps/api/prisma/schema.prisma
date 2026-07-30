@@ -14,7 +14,8 @@ datasource db {
 model User {
   id           String   @id @default(cuid())
   email        String   @unique
-  passwordHash String
+  passwordHash String?
+  biIdentityId String?  @unique @map("bi_identity_id")
   role         String   @default("ADMIN")
   createdAt    DateTime @default(now())
 

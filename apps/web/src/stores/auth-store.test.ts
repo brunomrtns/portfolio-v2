@@ -1,24 +1,32 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { UserRole } from '@portfolio/types';
 import { useAuthStore } from './auth-store';
-import { setAccessToken } from '@/lib/api-client';
 
 // Mock the api-client module
 vi.mock('@/lib/api-client', () => ({
   api: {
     auth: {
       me: vi.fn(),
-      login: vi.fn(),
+      logout: vi.fn(),
     },
   },
-  setAccessToken: vi.fn(),
-  getAccessToken: vi.fn(() => null),
 }));
+
+// Mock window.location
+const mockLocation = {
+  href: '',
+  pathname: '/portfolio/panel',
+};
+Object.defineProperty(window, 'location', {
+  value: mockLocation,
+  writable: true,
+});
 
 describe('auth store', () => {
   beforeEach(() => {
     useAuthStore.setState({ user: null, isLoading: true, isAuthenticated: false });
     vi.clearAllMocks();
+    mockLocation.href = '';
   });
 
   it('starts with null user and loading=true', () => {
@@ -28,20 +36,8 @@ describe('auth store', () => {
     expect(state.isAuthenticated).toBe(false);
   });
 
-  it('init sets loading=false when no token', async () => {
-    const { getAccessToken } = await import('@/lib/api-client');
-    vi.mocked(getAccessToken).mockReturnValue(null);
-
-    await useAuthStore.getState().init();
-
-    const state = useAuthStore.getState();
-    expect(state.isLoading).toBe(false);
-    expect(state.isAuthenticated).toBe(false);
-  });
-
-  it('init fetches user when token exists', async () => {
-    const { api, getAccessToken } = await import('@/lib/api-client');
-    vi.mocked(getAccessToken).mockReturnValue('fake-token');
+  it('init sets user when /api/auth/me succeeds', async () => {
+    const { api } = await import('@/lib/api-client');
     vi.mocked(api.auth.me).mockResolvedValue({
       user: { id: '1', email: 'test@test.com', role: UserRole.ADMIN, createdAt: '2024-01-01' },
     });
@@ -54,9 +50,8 @@ describe('auth store', () => {
     expect(state.isLoading).toBe(false);
   });
 
-  it('init clears token on api failure', async () => {
-    const { api, getAccessToken, setAccessToken } = await import('@/lib/api-client');
-    vi.mocked(getAccessToken).mockReturnValue('expired-token');
+  it('init redirects to SSO login on api failure', async () => {
+    const { api } = await import('@/lib/api-client');
     vi.mocked(api.auth.me).mockRejectedValue(new Error('401'));
 
     await useAuthStore.getState().init();
@@ -64,26 +59,13 @@ describe('auth store', () => {
     const state = useAuthStore.getState();
     expect(state.isAuthenticated).toBe(false);
     expect(state.user).toBeNull();
-    expect(setAccessToken).toHaveBeenCalledWith(null);
+    expect(state.isLoading).toBe(false);
+    expect(mockLocation.href).toContain('/id/login');
   });
 
-  it('login stores token and user', async () => {
-    const { api, setAccessToken } = await import('@/lib/api-client');
-    vi.mocked(api.auth.login).mockResolvedValue({
-      user: { id: '1', email: 'admin@test.com', role: UserRole.ADMIN, createdAt: '2024-01-01' },
-      tokens: { accessToken: 'jwt-token', expiresIn: 604800 },
-    });
-
-    await useAuthStore.getState().login('admin@test.com', 'pass');
-
-    const state = useAuthStore.getState();
-    expect(state.isAuthenticated).toBe(true);
-    expect(state.user?.email).toBe('admin@test.com');
-    expect(setAccessToken).toHaveBeenCalledWith('jwt-token');
-  });
-
-  it('logout clears state and token', async () => {
-    const { setAccessToken } = await import('@/lib/api-client');
+  it('logout calls api and redirects to SSO login', async () => {
+    const { api } = await import('@/lib/api-client');
+    vi.mocked(api.auth.logout).mockResolvedValue(undefined);
 
     useAuthStore.setState({
       user: { id: '1', email: 'a@b.com', role: UserRole.ADMIN, createdAt: '2024' },
@@ -96,6 +78,8 @@ describe('auth store', () => {
     const state = useAuthStore.getState();
     expect(state.isAuthenticated).toBe(false);
     expect(state.user).toBeNull();
-    expect(setAccessToken).toHaveBeenCalledWith(null);
+    // The redirect happens in a .finally() callback
+    await new Promise((resolve) => setTimeout(resolve, 10));
+    expect(mockLocation.href).toContain('/id/login');
   });
 });

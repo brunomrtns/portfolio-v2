@@ -1,13 +1,14 @@
 import { create } from 'zustand';
-import { api, setAccessToken, getAccessToken } from '@/lib/api-client';
+import { api } from '@/lib/api-client';
 import type { User } from '@portfolio/types';
+
+const SSO_LOGIN_URL = '/id/login?redirect=/portfolio/panel';
 
 interface AuthState {
   user: User | null;
   isLoading: boolean;
   isAuthenticated: boolean;
   init: () => Promise<void>;
-  login: (email: string, password: string) => Promise<void>;
   logout: () => void;
 }
 
@@ -17,28 +18,21 @@ export const useAuthStore = create<AuthState>((set) => ({
   isAuthenticated: false,
 
   init: async () => {
-    const token = getAccessToken();
-    if (!token) {
-      set({ isLoading: false });
-      return;
-    }
     try {
       const res = await api.auth.me();
       set({ user: res.user, isAuthenticated: true, isLoading: false });
     } catch {
-      setAccessToken(null);
+      // Not authenticated — redirect to BI Identity login
       set({ user: null, isAuthenticated: false, isLoading: false });
+      window.location.href = SSO_LOGIN_URL;
     }
   },
 
-  login: async (email, password) => {
-    const res = await api.auth.login(email, password);
-    setAccessToken(res.tokens.accessToken);
-    set({ user: res.user, isAuthenticated: true });
-  },
-
   logout: () => {
-    setAccessToken(null);
     set({ user: null, isAuthenticated: false });
+    // Call the API logout endpoint, then redirect to BI Identity login
+    void api.auth.logout().finally(() => {
+      window.location.href = SSO_LOGIN_URL;
+    });
   },
 }));

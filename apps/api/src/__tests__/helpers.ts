@@ -2,13 +2,41 @@ import { vi } from 'vitest';
 import Fastify from 'fastify';
 import cors from '@fastify/cors';
 import cookie from '@fastify/cookie';
-import { signToken } from '../utils/jwt.js';
 
 // Re-import the mocked prisma client to access the mock instance
 const prismaModule = (await import('@prisma/client')) as unknown as {
   __mockPrisma: Record<string, Record<string, ReturnType<typeof vi.fn>>>;
 };
 export const mockPrisma = prismaModule.__mockPrisma;
+
+// ── Mock BI Identity user ─────────────────────────────────────────────────────
+
+export function mockBiUser(overrides: Record<string, unknown> = {}) {
+  return {
+    id: 'user-1',
+    email: 'admin@test.com',
+    name: 'Admin User',
+    status: 'ACTIVE',
+    isSuperAdmin: true,
+    roles: ['ADMIN'],
+    organizations: [],
+    ...overrides,
+  };
+}
+
+// ── Mock fetch for BI Identity /api/auth/check ────────────────────────────────
+
+export function mockFetchOk(user: Record<string, unknown> = mockBiUser()): void {
+  vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+    new Response(JSON.stringify(user), { status: 200, headers: { 'Content-Type': 'application/json' } }),
+  );
+}
+
+export function mockFetchUnauthorized(): void {
+  vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+    new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 }),
+  );
+}
 
 export async function buildApp() {
   const app = Fastify({ logger: false });
@@ -41,12 +69,12 @@ export async function buildApp() {
   return app;
 }
 
-export function makeAuthToken(userId = 'user-1', email = 'admin@test.com'): string {
-  return signToken({ userId, email, role: 'ADMIN' }, process.env.JWT_SECRET!);
-}
+// ── Cookie helper ─────────────────────────────────────────────────────────────
 
-export function authHeader(token: string): Record<string, string> {
-  return { authorization: `Bearer ${token}` };
+export const TEST_COOKIE = 'bi_auth=valid-test-token';
+
+export function authCookie(): Record<string, string> {
+  return { cookie: TEST_COOKIE };
 }
 
 // Factory helpers for mock data
@@ -54,7 +82,8 @@ export function mockUser(overrides: Record<string, unknown> = {}) {
   return {
     id: 'user-1',
     email: 'admin@test.com',
-    passwordHash: '$2a$12$mockhash',
+    passwordHash: null,
+    biIdentityId: 'bi-user-1',
     role: 'ADMIN',
     createdAt: new Date('2024-01-01'),
     ...overrides,

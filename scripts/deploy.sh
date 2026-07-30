@@ -326,7 +326,6 @@ POSTGRES_DB=$(grep '^POSTGRES_DB=' "$PROJECT_ROOT/.env.prod" | cut -d= -f2-)
 vps "docker run --rm --network portfolio-net \
   -e DATABASE_URL='postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@portfolio-postgres:5432/${POSTGRES_DB}?schema=public' \
   -e ADMIN_EMAIL='$(grep '^ADMIN_EMAIL=' "$PROJECT_ROOT/.env.prod" | cut -d= -f2-)' \
-  -e ADMIN_PASSWORD='$(grep '^ADMIN_PASSWORD=' "$PROJECT_ROOT/.env.prod" | cut -d= -f2-)' \
   -v $VPS_PATH/apps/api/prisma:/app/apps/api/prisma:ro \
   -w /app/apps/api portfolio-api:latest \
   sh -c 'node \$(find /app/node_modules/.pnpm -path \"*/prisma/build/index.js\" | head -1) migrate deploy && node dist/seeds/index.cjs' 2>&1"

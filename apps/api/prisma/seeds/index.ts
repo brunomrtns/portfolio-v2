@@ -1,5 +1,4 @@
 import { PrismaClient } from '@prisma/client';
-import { hashPassword } from '@portfolio/shared';
 
 const prisma = new PrismaClient();
 
@@ -67,24 +66,23 @@ async function generateAllTranslations(
 async function main(): Promise<void> {
   console.log('🌱 Seeding database...');
 
-  // ── Admin user ──────────────────────────────────────────────────────────────
+  // ── Admin user (linked to BI Identity by email) ─────────────────────────────
+  // BI Identity handles user creation and authentication. We only create a
+  // local record if ADMIN_EMAIL is provided and no user with that email exists.
   const adminEmail = process.env.ADMIN_EMAIL ?? 'brunomartinsss@gmail.com';
-  const adminPassword = process.env.ADMIN_PASSWORD ?? 'ChangeMe123!';
 
   const existingUser = await prisma.user.findUnique({
     where: { email: adminEmail },
   });
 
   if (!existingUser) {
-    const passwordHash = await hashPassword(adminPassword);
     await prisma.user.create({
       data: {
         email: adminEmail,
-        passwordHash,
         role: 'ADMIN',
       },
     });
-    console.log(`  ✓ Admin user created (${adminEmail})`);
+    console.log(`  ✓ Admin user created (${adminEmail}) — link to BI Identity via biIdentityId`);
   } else {
     console.log(`  → Admin user already exists (${adminEmail})`);
   }

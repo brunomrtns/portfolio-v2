@@ -6,7 +6,6 @@ import type {
   Category,
   Skill,
   Experience,
-  LoginResponse,
   MeResponse,
 } from '@portfolio/types';
 import i18n from '@/i18n/i18n';
@@ -15,34 +14,15 @@ import i18n from '@/i18n/i18n';
 
 const API_BASE = import.meta.env.VITE_API_URL ?? '/portfolio/api';
 
+// ── SSO redirect ──────────────────────────────────────────────────────────────
+
+const SSO_LOGIN_URL = '/id/login?redirect=/portfolio/panel';
+
 // ── Current language helper ───────────────────────────────────────────────────
 
 function getCurrentLang(): string {
   return i18n.language ?? 'pt-BR';
 }
-
-// ── Token management ──────────────────────────────────────────────────────────
-
-let accessToken: string | null = null;
-
-export function setAccessToken(token: string | null): void {
-  accessToken = token;
-  if (token) {
-    localStorage.setItem('portfolio_access_token', token);
-  } else {
-    localStorage.removeItem('portfolio_access_token');
-  }
-}
-
-export function getAccessToken(): string | null {
-  if (!accessToken) {
-    accessToken = localStorage.getItem('portfolio_access_token');
-  }
-  return accessToken;
-}
-
-// Initialize from localStorage on module load
-getAccessToken();
 
 // ── Error class ───────────────────────────────────────────────────────────────
 
@@ -63,11 +43,10 @@ interface RequestOptions {
   method?: string;
   body?: unknown;
   params?: Record<string, string | number | undefined>;
-  auth?: boolean;
 }
 
 async function request<T>(path: string, options: RequestOptions = {}): Promise<T> {
-  const { method = 'GET', body, params, auth = false } = options;
+  const { method = 'GET', body, params } = options;
 
   const url = new URL(`${API_BASE}${path}`, window.location.origin);
   if (params) {
@@ -81,18 +60,21 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
     'Accept-Language': getCurrentLang(),
   };
 
-  if (auth) {
-    const token = getAccessToken();
-    if (token) headers.Authorization = `Bearer ${token}`;
-  }
-
   const res = await fetch(url.toString(), {
     method,
     headers,
     body: body !== undefined ? JSON.stringify(body) : undefined,
+    credentials: 'include',
   });
 
   if (!res.ok) {
+    // On 401, redirect to BI Identity login
+    if (res.status === 401 && window.location.pathname.startsWith('/portfolio/panel')) {
+      window.location.href = SSO_LOGIN_URL;
+      // Return a never-resolving promise to prevent further processing
+      return new Promise(() => {});
+    }
+
     let errorBody: unknown = null;
     try {
       errorBody = await res.json();
@@ -151,47 +133,46 @@ export const api = {
       request('/contact', { method: 'POST', body: data }),
   },
 
-  // Auth
+  // Auth (BI Identity SSO)
   auth: {
-    login: (email: string, password: string): Promise<LoginResponse> =>
-      request('/auth/login', { method: 'POST', body: { email, password } }),
-    me: (): Promise<MeResponse> => request('/auth/me', { auth: true }),
+    me: (): Promise<MeResponse> => request('/auth/me'),
+    logout: (): Promise<void> => request('/auth/logout'),
   },
 
   // Admin — Products
   admin: {
     products: {
-      list: (): Promise<Product[]> => request('/admin/products', { auth: true }),
+      list: (): Promise<Product[]> => request('/admin/products'),
       create: (data: Partial<Product>): Promise<Product> =>
-        request('/admin/products', { method: 'POST', body: data, auth: true }),
+        request('/admin/products', { method: 'POST', body: data }),
       update: (id: string, data: Partial<Product>): Promise<Product> =>
-        request(`/admin/products/${id}`, { method: 'PUT', body: data, auth: true }),
+        request(`/admin/products/${id}`, { method: 'PUT', body: data }),
       delete: (id: string): Promise<void> =>
-        request(`/admin/products/${id}`, { method: 'DELETE', auth: true }),
+        request(`/admin/products/${id}`, { method: 'DELETE' }),
     },
     articles: {
-      list: (): Promise<Article[]> => request('/admin/articles', { auth: true }),
+      list: (): Promise<Article[]> => request('/admin/articles'),
       create: (data: Record<string, unknown>): Promise<Article> =>
-        request('/admin/articles', { method: 'POST', body: data, auth: true }),
+        request('/admin/articles', { method: 'POST', body: data }),
       update: (id: string, data: Record<string, unknown>): Promise<Article> =>
-        request(`/admin/articles/${id}`, { method: 'PUT', body: data, auth: true }),
+        request(`/admin/articles/${id}`, { method: 'PUT', body: data }),
       delete: (id: string): Promise<void> =>
-        request(`/admin/articles/${id}`, { method: 'DELETE', auth: true }),
+        request(`/admin/articles/${id}`, { method: 'DELETE' }),
     },
     categories: {
-      list: (): Promise<Category[]> => request('/admin/categories', { auth: true }),
+      list: (): Promise<Category[]> => request('/admin/categories'),
       create: (data: { name: string; color?: string }): Promise<Category> =>
-        request('/admin/categories', { method: 'POST', body: data, auth: true }),
+        request('/admin/categories', { method: 'POST', body: data }),
       update: (id: string, data: Partial<Category>): Promise<Category> =>
-        request(`/admin/categories/${id}`, { method: 'PUT', body: data, auth: true }),
+        request(`/admin/categories/${id}`, { method: 'PUT', body: data }),
       delete: (id: string): Promise<void> =>
-        request(`/admin/categories/${id}`, { method: 'DELETE', auth: true }),
+        request(`/admin/categories/${id}`, { method: 'DELETE' }),
     },
     messages: {
       list: (): Promise<import('@portfolio/types').ContactMessage[]> =>
-        request('/admin/messages', { auth: true }),
+        request('/admin/messages'),
       markRead: (id: string): Promise<void> =>
-        request(`/admin/messages/${id}/read`, { method: 'PUT', auth: true }),
+        request(`/admin/messages/${id}/read`, { method: 'PUT' }),
     },
   },
 };

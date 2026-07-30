@@ -15,6 +15,8 @@ const PORT = parseInt(process.env.PORT ?? '3104', 10);
 const HOST = process.env.HOST ?? '0.0.0.0';
 const CORS_ORIGIN = process.env.CORS_ORIGIN ?? 'http://localhost:5173';
 
+// BI_IDENTITY_URL is read in plugins/auth.ts (default: http://bi-api:3300)
+
 async function buildServer() {
   const app = Fastify({
     logger: {

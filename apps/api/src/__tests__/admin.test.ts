@@ -1,9 +1,10 @@
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest';
 import {
   buildApp,
   mockPrisma,
-  makeAuthToken,
-  authHeader,
+  mockFetchOk,
+  mockFetchUnauthorized,
+  authCookie,
   mockProduct,
   mockArticle,
   mockCategory,
@@ -14,31 +15,35 @@ import {
 
 describe('Admin routes', () => {
   let app: Awaited<ReturnType<typeof buildApp>>;
-  let token: string;
+
+  beforeEach(() => {
+    vi.restoreAllMocks();
+  });
 
   afterEach(async () => {
     if (app) await app.close();
   });
 
   async function buildAuthedApp() {
+    mockFetchOk();
     app = await buildApp();
-    token = makeAuthToken();
     return app;
   }
 
   describe('auth guard', () => {
-    it('rejects all admin routes without token', async () => {
+    it('rejects all admin routes without cookie', async () => {
       app = await buildApp();
       const res = await app.inject({ method: 'GET', url: '/api/admin/products' });
       expect(res.statusCode).toBe(401);
     });
 
-    it('rejects with invalid token', async () => {
+    it('rejects with invalid cookie (BI Identity 401)', async () => {
+      mockFetchUnauthorized();
       app = await buildApp();
       const res = await app.inject({
         method: 'GET',
         url: '/api/admin/products',
-        headers: authHeader('garbage'),
+        headers: authCookie(),
       });
       expect(res.statusCode).toBe(401);
     });
@@ -52,7 +57,7 @@ describe('Admin routes', () => {
       const res = await app.inject({
         method: 'GET',
         url: '/api/admin/products',
-        headers: authHeader(token),
+        headers: authCookie(),
       });
 
       expect(res.statusCode).toBe(200);
@@ -67,7 +72,7 @@ describe('Admin routes', () => {
       const res = await app.inject({
         method: 'POST',
         url: '/api/admin/products',
-        headers: authHeader(token),
+        headers: authCookie(),
         payload: {
           name: 'Trivestia',
           tagline: 'Plataforma financeira',
@@ -87,7 +92,7 @@ describe('Admin routes', () => {
       const res = await app.inject({
         method: 'POST',
         url: '/api/admin/products',
-        headers: authHeader(token),
+        headers: authCookie(),
         payload: {
           name: 'Trivestia',
           tagline: 'x',
@@ -106,7 +111,7 @@ describe('Admin routes', () => {
       const res = await app.inject({
         method: 'GET',
         url: '/api/admin/products/prod-1',
-        headers: authHeader(token),
+        headers: authCookie(),
       });
 
       expect(res.statusCode).toBe(200);
@@ -120,7 +125,7 @@ describe('Admin routes', () => {
       const res = await app.inject({
         method: 'GET',
         url: '/api/admin/products/nope',
-        headers: authHeader(token),
+        headers: authCookie(),
       });
 
       expect(res.statusCode).toBe(404);
@@ -137,7 +142,7 @@ describe('Admin routes', () => {
       const res = await app.inject({
         method: 'PUT',
         url: '/api/admin/products/prod-1',
-        headers: authHeader(token),
+        headers: authCookie(),
         payload: { name: 'Updated' },
       });
 
@@ -153,7 +158,7 @@ describe('Admin routes', () => {
       const res = await app.inject({
         method: 'DELETE',
         url: '/api/admin/products/prod-1',
-        headers: authHeader(token),
+        headers: authCookie(),
       });
 
       expect(res.statusCode).toBe(204);
@@ -166,7 +171,7 @@ describe('Admin routes', () => {
       const res = await app.inject({
         method: 'DELETE',
         url: '/api/admin/products/nope',
-        headers: authHeader(token),
+        headers: authCookie(),
       });
 
       expect(res.statusCode).toBe(404);
@@ -181,7 +186,7 @@ describe('Admin routes', () => {
       const res = await app.inject({
         method: 'GET',
         url: '/api/admin/articles',
-        headers: authHeader(token),
+        headers: authCookie(),
       });
 
       expect(res.statusCode).toBe(200);
@@ -195,7 +200,7 @@ describe('Admin routes', () => {
       const res = await app.inject({
         method: 'POST',
         url: '/api/admin/articles',
-        headers: authHeader(token),
+        headers: authCookie(),
         payload: {
           title: 'Hello World',
           excerpt: 'Short summary',
@@ -217,7 +222,7 @@ describe('Admin routes', () => {
       const res = await app.inject({
         method: 'PUT',
         url: '/api/admin/articles/art-1',
-        headers: authHeader(token),
+        headers: authCookie(),
         payload: { title: 'Updated' },
       });
 
@@ -233,7 +238,7 @@ describe('Admin routes', () => {
       const res = await app.inject({
         method: 'DELETE',
         url: '/api/admin/articles/art-1',
-        headers: authHeader(token),
+        headers: authCookie(),
       });
 
       expect(res.statusCode).toBe(204);
@@ -248,7 +253,7 @@ describe('Admin routes', () => {
       const res = await app.inject({
         method: 'GET',
         url: '/api/admin/categories',
-        headers: authHeader(token),
+        headers: authCookie(),
       });
 
       expect(res.statusCode).toBe(200);
@@ -262,7 +267,7 @@ describe('Admin routes', () => {
       const res = await app.inject({
         method: 'POST',
         url: '/api/admin/categories',
-        headers: authHeader(token),
+        headers: authCookie(),
         payload: { name: 'Engenharia' },
       });
 
@@ -277,7 +282,7 @@ describe('Admin routes', () => {
       const res = await app.inject({
         method: 'DELETE',
         url: '/api/admin/categories/cat-1',
-        headers: authHeader(token),
+        headers: authCookie(),
       });
 
       expect(res.statusCode).toBe(204);
@@ -292,7 +297,7 @@ describe('Admin routes', () => {
       const res = await app.inject({
         method: 'GET',
         url: '/api/admin/skills',
-        headers: authHeader(token),
+        headers: authCookie(),
       });
 
       expect(res.statusCode).toBe(200);
@@ -305,7 +310,7 @@ describe('Admin routes', () => {
       const res = await app.inject({
         method: 'POST',
         url: '/api/admin/skills',
-        headers: authHeader(token),
+        headers: authCookie(),
         payload: { name: 'React', category: 'Frontend' },
       });
 
@@ -321,7 +326,7 @@ describe('Admin routes', () => {
       const res = await app.inject({
         method: 'GET',
         url: '/api/admin/experience',
-        headers: authHeader(token),
+        headers: authCookie(),
       });
 
       expect(res.statusCode).toBe(200);
@@ -334,7 +339,7 @@ describe('Admin routes', () => {
       const res = await app.inject({
         method: 'POST',
         url: '/api/admin/experience',
-        headers: authHeader(token),
+        headers: authCookie(),
         payload: {
           role: 'Developer',
           company: 'Acme',
@@ -354,7 +359,7 @@ describe('Admin routes', () => {
       const res = await app.inject({
         method: 'GET',
         url: '/api/admin/messages',
-        headers: authHeader(token),
+        headers: authCookie(),
       });
 
       expect(res.statusCode).toBe(200);
@@ -367,7 +372,7 @@ describe('Admin routes', () => {
       const res = await app.inject({
         method: 'GET',
         url: '/api/admin/messages?unread=true',
-        headers: authHeader(token),
+        headers: authCookie(),
       });
 
       expect(res.statusCode).toBe(200);
@@ -384,7 +389,7 @@ describe('Admin routes', () => {
       const res = await app.inject({
         method: 'PUT',
         url: '/api/admin/messages/msg-1/read',
-        headers: authHeader(token),
+        headers: authCookie(),
       });
 
       expect(res.statusCode).toBe(200);
@@ -399,7 +404,7 @@ describe('Admin routes', () => {
       const res = await app.inject({
         method: 'DELETE',
         url: '/api/admin/messages/msg-1',
-        headers: authHeader(token),
+        headers: authCookie(),
       });
 
       expect(res.statusCode).toBe(204);

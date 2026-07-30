@@ -1,10 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
 import { toast } from 'sonner';
-import { Loader2, Lock, Mail, LogOut, FileText, Package, Inbox, Plus, Edit, Trash2 } from 'lucide-react';
+import { Loader2, LogOut, FileText, Package, Inbox, Plus, Edit, Trash2 } from 'lucide-react';
 import { useAuthStore } from '@/stores/auth-store';
 import { api } from '@/lib/api-client';
 import { Button } from '@/components/ui/button';
@@ -14,11 +11,9 @@ import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 import type { Article, Product, ContactMessage } from '@portfolio/types';
 
-interface LoginValues { email: string; password: string; }
-
 export default function AdminPage(): React.ReactNode {
   const { t } = useTranslation();
-  const { user, isAuthenticated, isLoading, init, login, logout } = useAuthStore();
+  const { user, isAuthenticated, isLoading, init, logout } = useAuthStore();
 
   useEffect(() => {
     init();
@@ -37,107 +32,18 @@ export default function AdminPage(): React.ReactNode {
   }
 
   if (!isAuthenticated) {
-    return <LoginView onLogin={login} />;
+    // Redirecting to BI Identity login — init() already triggers the redirect
+    return (
+      <div className="flex min-h-dvh items-center justify-center bg-[var(--color-bg)]">
+        <div className="text-center">
+          <Loader2 className="mx-auto h-8 w-8 animate-spin text-[var(--color-accent)]" />
+          <p className="mt-4 text-sm text-[var(--color-text-muted)]">Redirecting to login...</p>
+        </div>
+      </div>
+    );
   }
 
   return <Dashboard user={user} onLogout={logout} />;
-}
-
-// ── Login View ────────────────────────────────────────────────────────────────
-
-function LoginView({ onLogin }: { onLogin: (email: string, password: string) => Promise<void> }): React.ReactNode {
-  const { t } = useTranslation();
-  const [submitting, setSubmitting] = useState(false);
-
-  const loginSchema = z.object({
-    email: z.string().email(t('admin.validationEmailInvalid')),
-    password: z.string().min(1, t('admin.validationPasswordRequired')),
-  });
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<LoginValues>({
-    resolver: zodResolver(loginSchema),
-    defaultValues: { email: '', password: '' },
-  });
-
-  const onSubmit = async (values: LoginValues): Promise<void> => {
-    setSubmitting(true);
-    try {
-      await onLogin(values.email, values.password);
-      toast.success(t('admin.loginSuccess'));
-    } catch (err) {
-      const message = err instanceof Error ? err.message : t('admin.loginError');
-      toast.error(message);
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  return (
-    <div className="relative flex min-h-dvh items-center justify-center overflow-hidden bg-[var(--color-bg)]">
-      <div className="mesh-bg-dense" />
-      <div className="noise" />
-
-      <div className="relative w-full max-w-md px-6">
-        <div className="glass-strong rounded-2xl p-8">
-          <div className="mb-8 text-center">
-            <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--color-accent-glow)]">
-              <Lock className="h-6 w-6 text-[var(--color-accent)]" />
-            </div>
-            <h1 className="font-serif text-2xl font-bold text-[var(--color-text)]">
-              {t('admin.title')}
-            </h1>
-            <p className="mt-2 text-sm text-[var(--color-text-muted)]">
-              {t('admin.subtitle')}
-            </p>
-          </div>
-
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-            <div className="space-y-2">
-              <Label htmlFor="admin-email">{t('admin.email')}</Label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--color-text-muted)]" />
-                <Input
-                  id="admin-email"
-                  type="email"
-                  placeholder="seu@email.com"
-                  className="pl-10"
-                  {...register('email')}
-                />
-              </div>
-              {errors.email && <p className="text-xs text-red-400">{errors.email.message}</p>}
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="admin-password">{t('admin.password')}</Label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--color-text-muted)]" />
-                <Input
-                  id="admin-password"
-                  type="password"
-                  placeholder="••••••••"
-                  className="pl-10"
-                  {...register('password')}
-                />
-              </div>
-              {errors.password && <p className="text-xs text-red-400">{errors.password.message}</p>}
-            </div>
-
-            <Button type="submit" variant="primary" size="lg" disabled={submitting} className="w-full">
-              {submitting ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                t('admin.login')
-              )}
-            </Button>
-          </form>
-        </div>
-      </div>
-    </div>
-  );
 }
 
 // ── Dashboard ─────────────────────────────────────────────────────────────────

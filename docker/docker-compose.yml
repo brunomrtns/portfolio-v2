@@ -33,12 +33,13 @@ services:
         condition: service_healthy
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@portfolio-postgres:5432/${POSTGRES_DB}?schema=public
-      JWT_SECRET: ${JWT_SECRET}
+      BI_IDENTITY_URL: http://bi-api:3300
       PORT: 3104
       CORS_ORIGIN: ${CORS_ORIGIN}
     networks:
       - portfolio-net
       - trivestia-net
+      - bi-net
     healthcheck:
       test: ['CMD', 'wget', '--spider', '-q', 'http://127.0.0.1:3104/api/health']
       interval: 15s
@@ -74,3 +75,6 @@ networks:
   trivestia-net:
     external: true
     name: trivestia-net
+  bi-net:
+    external: true
+    name: bi-net
